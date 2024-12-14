@@ -1,13 +1,35 @@
 import { Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Msgbox from "../../components/msgBox/MsgBox";
 import CircularAvt from "../../components/circularAvt/CircularAvt";
 import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
+import axios from 'axios';
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
+  const [categories, setCategories] = useState([]);
+  // const [loading, setLoading] = useState(false);
+
+  const fetchCategories = async()=>{
+    try {
+      const response = await axios('https://appv2.captainchef.net/AppV2/public/get-subscription-categories');
+      // console.log(response.data.data);
+      
+      setCategories(response.data.data);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  useEffect(()=>{
+    // setLoading(true);
+    fetchCategories();
+  },[])
+
   const arr = [
     { title: "Weight", name: "Maintenance Plan", img: "/weight.png" },
     { title: "Muscles Gain", name: "Plan", img: "/muscleGain.png" },
@@ -110,13 +132,13 @@ const Subscriptions = () => {
             },
           }}
         >
-          {arr.map((item, index) => (
+           {categories.map((data) => (
             <Cards2
-              key={index}
-              color={getTextColor(item.title)}
-              title={item.title}
-              name={item.name}
-              img={item.img}
+              key={data.id}
+              color={getTextColor(data.category_name_en)}
+              title={data.category_name_en}
+              // name={item.name}
+              img={data.image}
             />
           ))}
         </Box>

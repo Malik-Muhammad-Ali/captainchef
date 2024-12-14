@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function PlansCategoryCard({ color, title, name, img }) {
   const navigate = useNavigate();
+  
   return (
     <Card
       sx={{

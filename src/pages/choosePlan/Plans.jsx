@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Box, Grid2, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
+import { useParams } from "react-router-dom";
 
 const plans = () => {
+  const { categoryId } = useParams();
+  console.log(categoryId);
   const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
   return (
@@ -202,7 +205,6 @@ const plans = () => {
       >
         {Array.from({ length: 8 }).map((_, index) => (
           <Grid2
-            item
             xs={12}
             sm={6}
             md={3}

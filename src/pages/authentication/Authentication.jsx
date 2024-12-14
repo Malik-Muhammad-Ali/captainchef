@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthenticationComponent from "../../components/authenticationComponent/AuthenticationComponent";
 import Welcome from "../../components/welcome/Welcome";
-import ForgetPassword from "../../components/forgetPassword/ForgetPassword";
-import RegeneratePassword from "../../components/regeneratePassword/RegeneratePassword";
+import NotRegisteredYet from "../../components/notRegisterYet/NotRegisterYet";
 
 const Authentication = () => {
+  const [userExisted, setUserExisted] = useState(false);
+  const [authenticatedComponent, setAuthenticatedComponent] = useState(true);
+
   return (
     <>
-      <AuthenticationComponent />
-      <Welcome />
-      <ForgetPassword />
-      <RegeneratePassword />
+      {authenticatedComponent && (
+        <AuthenticationComponent
+          setUserExisted={setUserExisted}
+          setAuthenticatedComponent={setAuthenticatedComponent}
+        />
+      )}
+      {userExisted && (
+        <Welcome
+          setUserExisted={setUserExisted}
+          setAuthenticatedComponent={setAuthenticatedComponent}
+        />
+      )}
+
+      {!userExisted && !authenticatedComponent && (
+        <NotRegisteredYet
+          setAuthenticatedComponent={setAuthenticatedComponent}
+        />
+      )}
     </>
   );
 };

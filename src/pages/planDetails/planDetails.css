@@ -1,0 +1,427 @@
+.container {
+  background-color: #f5f5f5;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.planDetails {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  margin-top: 40px;
+  gap: 40px;
+}
+.leftCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: white;
+  padding: 10px;
+  border-radius: 24px;
+}
+.leftCardImg {
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.categoryName {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  font-family: "Poppins";
+  background-color: #d92531;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 5px;
+}
+.meaInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.calInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.rightCard {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.freePlan {
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  background-color: #ccffdb;
+  padding: 0px 20px 10px 20px;
+  border-radius: 16px;
+  border: 2px solid #20a00b;
+}
+.freePlanUpper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: "Poppins";
+  > p {
+    font-weight: 500;
+    font-size: 22px;
+  }
+}
+.freePlanLower {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.textAndIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: "Poppins";
+  color: #515151;
+}
+.rightCardLower {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 16px;
+  font-family: "Poppins";
+}
+.weekDays {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.weekDays::-webkit-scrollbar {
+  display: none;
+}
+.foodType {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  div {
+    flex: 1;
+    background-color: #f8f8f8;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #1f1f1f;
+  }
+}
+.meals {
+  margin-top: 40px;
+  font-family: "Poppins";
+  p {
+    font-weight: 600;
+    font-size: 22px;
+  }
+}
+.mealCardContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.mealCard {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px 16px 12px;
+  background-color: white;
+  border-radius: 16px;
+  align-items: center;
+}
+.infoTagImg {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+.spicyTagImg {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  background-color: #ff2900;
+  border-radius: 50%;
+  padding: 5px;
+}
+.recommended {
+  position: absolute;
+  bottom: 16px;
+  right: 14px;
+  background-color: #20a00b;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.subscribeButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.subscribeButton {
+  background-color: #d92531;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-family: "Poppins";
+  font-size: 18px;
+  font-weight: 300;
+  cursor: pointer;
+  margin-top: 40px;
+}
+.weekday {
+  border: 1px solid #0f001a;
+  border-radius: 40px;
+  padding: 2px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+}
+.weekdayFirstDiv {
+  border: 1px solid #f8f8f8;
+  padding: 3px 2px;
+  border-radius: 50%;
+}
+.title {
+  font-size: 18px;
+  text-align: center;
+}
+.selectButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d92531;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-family: "Poppins";
+  font-weight: 400;
+  cursor: pointer;
+}
+
+@media (min-width: 1131px) {
+  .textAndIcon {
+    font-size: 16px;
+    gap: 8px;
+  }
+  .daysIcon,
+  .mealsIcon,
+  .calIcon,
+  .snackIcon {
+    width: 20px;
+    height: 20px;
+  }
+  .srIcon {
+    width: 22px;
+    height: 22px;
+  }
+  .juiceIcon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1025px) {
+  .container {
+    padding: 1rem;
+  }
+  .mealCardContainer {
+    gap: 10px;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1130px) {
+  .mealCardContainer {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .textAndIcon {
+    font-size: 11px;
+    gap: 6px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  .leftCard {
+    margin-top: 20px;
+  }
+  .planDetails {
+    flex-direction: column;
+  }
+  .freePlan {
+    padding: 0px 10px 10px 10px;
+  }
+  .rightCardLower {
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 900px) {
+  .mealCardContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .textAndIcon {
+    font-size: 10px;
+    gap: 6px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 500px) and (max-width: 768px) {
+  .leftCard {
+    flex-direction: row;
+    gap: 20px;
+  }
+  .leftCardImg {
+    height: 100%;
+    object-fit: cover;
+  }
+  .leftCardText {
+    width: 70%;
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding: 1rem 0rem;
+  }
+  .categoryName {
+    font-size: 12px;
+  }
+  .freePlanLower {
+    gap: 10px 20px;
+    justify-content: start;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+  .mealCardContainer {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .mealCard {
+    flex-direction: row;
+  }
+  .foodType {
+    font-size: 10px;
+    gap: 10px;
+    div {
+      border-radius: 8px;
+    }
+  }
+  .title {
+    font-size: 15px;
+  }
+  .mealCardImg {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+  }
+  .infoTagImg {
+    top: 0px;
+    left: 0px;
+  }
+  .spicyTagImg {
+    top: 4px;
+    right: 34px;
+  }
+  .recommended {
+    bottom: 0px;
+    right: 34px;
+  }
+  .planTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .textAndIcon {
+    gap: 6px;
+    font-size: 10px;
+    font-family: "Poppins";
+  }
+  .freeplanIcons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .calInfo {
+    padding: 0px 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .freePlanLower {
+    gap: 10px;
+  }
+  .freeplanIcons {
+    gap: 2px;
+  }
+}
+
+/* Medium Mobile */
+@media (max-width: 375px) {
+  .freePlanUpper p {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .freePlanUpper div {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  .freePlanLower {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding: 1rem 1rem;
+  }
+  .recommended {
+    right: 0px;
+    width: 86%;
+  }
+  .mealCardText {
+    font-size: 8px;
+  }
+  .spicyTagImg {
+    right: 8px;
+    top: 6px;
+  }
+  .infoTagImg {
+    top: 2px;
+    left: 6px;
+  }
+  .mealCard {
+    gap: 40px;
+  }
+  .weekday {
+    flex-direction: column-reverse;
+    padding: 10px 6px;
+    background-color: #f8f8f8;
+    border-top: 50%;
+    border-bottom: 50%;
+  }
+}

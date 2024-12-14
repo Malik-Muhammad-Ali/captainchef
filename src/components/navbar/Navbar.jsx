@@ -13,13 +13,15 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
+import useAppStore from "../../store/store";
+import Logo from '../../../public/logocaptainchef.png'
 
 const Navbar = () => {
+  const { authenticated } = useAppStore();
   const location = useLocation();
   const [language, setLanguage] = useState("");
   const [flag, setFlag] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   //   Flag Change
   const handleChange = (event) => {
@@ -63,7 +65,7 @@ const Navbar = () => {
               width: "100%",
             }}
           >
-            <img src="logocaptainchef.png" alt="logo" />
+            <img src={Logo} alt="logo" />
           </Box>
 
           {/* Display elements on large screens */}
@@ -199,13 +201,14 @@ const Navbar = () => {
                 height: "56px",
                 borderRadius: "12px",
                 width: { xs: "56px", sm: "40px", md: "130px", lg: "197px" },
+                boxShadow: 'none'
               }}
             >
               Download App
             </Button>
 
             {/* Account Icon */}
-            {isAuthenticated && (
+            {authenticated && (
               <Box
                 sx={{
                   width: "56px",
@@ -250,15 +253,14 @@ const Navbar = () => {
               onClick={() => toggleDrawer(true)}
               color="inherit"
               sx={{
-                backgroundColor: "black", // Black background
-                borderRadius: "20%", // Fully rounded
-                padding: "8px", // Add padding to ensure the icon is centered within the button
+                backgroundColor: "black",
+                borderRadius: "20%",
+                padding: "8px",
                 border: "2px solid white",
-                ml: "10px", // Add a white border around the button
+                ml: "10px",
               }}
             >
               <MenuIcon sx={{ color: "white" }} />{" "}
-              {/* Ensure the icon color is white to contrast with the black background */}
             </IconButton>
           </Box>
         </Toolbar>
@@ -283,19 +285,23 @@ const Navbar = () => {
           }}
         >
           {/* Account Icon */}
-          <Box
-            sx={{
-              width: "56px",
-              height: "56px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "20%",
-              backgroundColor: "green",
-            }}
-          >
-            <Person2OutlinedIcon sx={{ color: "white", alignSelf: "center" }} />
-          </Box>
+          {authenticated && (
+            <Box
+              sx={{
+                width: "56px",
+                height: "56px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "20%",
+                backgroundColor: "green",
+              }}
+            >
+              <Person2OutlinedIcon
+                sx={{ color: "white", alignSelf: "center" }}
+              />
+            </Box>
+          )}
 
           {/* Pages */}
           <Link to="/">
@@ -424,6 +430,7 @@ const Navbar = () => {
               height: "56px",
               borderRadius: "12px",
               width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
+              boxShadow: 'none'
             }}
           >
             Download App

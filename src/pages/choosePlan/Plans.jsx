@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Grid2, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
+import useAppStore from "../../store/store";
+// import { data } from "react-router-dom";
 
-const plans = () => {
+const Plans = () => {
   const [selectedPlan, setSelectedPlan] = useState("Weekly");
+  const { fetchPlans, plans } = useAppStore();
+
+  useEffect(() => {
+    fetchPlans();
+  }, []);
+
+  // console.log(plans);
 
   return (
     <Box
@@ -154,7 +163,7 @@ const plans = () => {
                 xs: "18px 2px", // For small screens (mobile)
                 sm: "12px 0px", // For larger screens (tablet and above)
               },
-              marginLeft: '4px',
+              marginLeft: "4px",
               borderRadius: "12px",
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
@@ -177,7 +186,7 @@ const plans = () => {
                 xs: "18px 10px", // For small screens (mobile)
                 sm: "12px 0px", // For larger screens (tablet and above)
               },
-              marginRight: '4px',
+              marginRight: "4px",
               borderRadius: "12px",
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
@@ -200,20 +209,21 @@ const plans = () => {
           mt: "40px",
         }}
       >
-        {Array.from({ length: 8 }).map((_, index) => (
+        {plans.map((plan) => (
           <Grid2
             item
             xs={12}
             sm={6}
             md={3}
-            key={index}
+            key={plan.id}
+            id={plan.id}
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <PlanCard planId={index} />
+            <PlanCard plan={plan} planID={plan} />
           </Grid2>
         ))}
       </Grid2>
@@ -221,4 +231,4 @@ const plans = () => {
   );
 };
 
-export default plans;
+export default Plans;

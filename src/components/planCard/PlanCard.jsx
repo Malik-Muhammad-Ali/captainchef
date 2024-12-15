@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const PlanCard = ({planId}) => {
+const PlanCard = ({ plan }) => {
   const navigate = useNavigate();
   const features = [
     {
@@ -99,17 +99,17 @@ const PlanCard = ({planId}) => {
           borderRadius: 4,
           overflow: "hidden",
           position: "relative",
-          boxShadow: 'none'
+          boxShadow: "none",
         }}
       >
         {/* Image Section */}
-        <Box sx={{ position: "relative"}}>
+        <Box sx={{ position: "relative" }}>
           <CardMedia
             // sx={{borderRadius: '10px', boxShadow: '0px 0px 10px 0px #0000001A'}}
             component="img"
             alt="Plan Image"
             height="140"
-            image="/Banner.png" // Replace with your image URL
+            image={plan.plan_image} // Replace with your image URL
           />
 
           {/* Top Left Typo */}
@@ -160,7 +160,7 @@ const PlanCard = ({planId}) => {
               <br />
               Click To See Details
             </Typography>
-          </Box>   
+          </Box>
         </Box>
 
         {/* Content Section */}
@@ -168,7 +168,7 @@ const PlanCard = ({planId}) => {
           {/* Title and Prices */}
           <Box sx={{ textAlign: "left", mb: 1 }}>
             <Typography variant="h6" sx={{ fontSize: "15px" }}>
-              2 Meals
+              {plan.description}
             </Typography>
             <Box sx={{ display: "flex", gap: "8px" }}>
               <Typography
@@ -179,7 +179,7 @@ const PlanCard = ({planId}) => {
                   fontSize: "0.8rem",
                 }}
               >
-                299 SR
+                {plan.basic_amount}
               </Typography>
               <Typography
                 variant="h5"
@@ -188,7 +188,7 @@ const PlanCard = ({planId}) => {
                   fontSize: "1rem",
                 }}
               >
-                250 SR
+                {plan.basic_amount}
               </Typography>
             </Box>
           </Box>
@@ -242,7 +242,7 @@ const PlanCard = ({planId}) => {
                 py: 0.5,
                 fontSize: "0.8rem",
                 height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
-                boxShadow: 'none'
+                boxShadow: "none",
               }}
               onClick={() => navigate(`/subscriptions/plans/${planId}`)}
             >

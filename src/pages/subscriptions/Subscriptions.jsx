@@ -1,13 +1,15 @@
 import { Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import Msgbox from "../../components/msgBox/MsgBox";
 import CircularAvt from "../../components/circularAvt/CircularAvt";
 import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
+import axios from "axios";
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
+
   const arr = [
     { title: "Weight", name: "Maintenance Plan", img: "/weight.png" },
     { title: "Muscles Gain", name: "Plan", img: "/muscleGain.png" },

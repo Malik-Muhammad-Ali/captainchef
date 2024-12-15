@@ -10,8 +10,11 @@ import SubscribeFirst from "../../components/subscribeFirstModal/SubscribeFirst"
 import useAppStore from "../../store/store";
 import { CardContent, Button, Box, useMediaQuery } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
+import { useParams } from "react-router-dom";
 
 const PlanDetails = () => {
+  const { planId } = useParams();
+  console.log(planId)
   const navigate = useNavigate();
   const location = useLocation();
   const isSmallScreen = useMediaQuery("(max-width:500px)");

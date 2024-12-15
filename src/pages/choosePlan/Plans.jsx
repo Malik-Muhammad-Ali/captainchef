@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Box, Grid2, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
-import useAppStore from "../../store/store";
-// import { data } from "react-router-dom";
 
-const Plans = () => {
+const plans = () => {
   const [selectedPlan, setSelectedPlan] = useState("Weekly");
   const { fetchPlans, plans } = useAppStore();
 
@@ -211,7 +209,6 @@ const Plans = () => {
       >
         {plans.map((plan) => (
           <Grid2
-            item
             xs={12}
             sm={6}
             md={3}

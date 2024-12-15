@@ -50,7 +50,7 @@ export default function PlansCategoryCard({ color, title, name, img }) {
         cursor: "pointer",
         boxShadow: 'none'
       }}
-      onClick={() => navigate(`/subscriptions/plans`)}
+      onClick={() => navigate(`/subscriptions/category/1`)}
     >
       <CardMedia
         sx={{
@@ -63,7 +63,6 @@ export default function PlansCategoryCard({ color, title, name, img }) {
           },
           width: '100%',
           objectFit: "cover",
-          // borderBottom: `1px solid ${color}`,
         }}
         image={img}
         title={title}
@@ -87,7 +86,6 @@ export default function PlansCategoryCard({ color, title, name, img }) {
             lg:1,
             xl:2.5,
           },
-          // padding:"4px"
         }}
       >
         <Typography

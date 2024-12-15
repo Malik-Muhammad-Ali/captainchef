@@ -39,9 +39,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/features" element={<Features />} />
           <Route path="/subscriptions" element={<Subscriptions />} />
-          <Route path="/subscriptions/plans" element={<Plans />} />
+          <Route path="/subscriptions/category/:categoryId" element={<Plans />} />
           <Route
-            path="/subscriptions/plans/:planId"
+            path="/subscriptions/category/:categoryId/plans/:planId"
             element={<PlanDetails />}
           />
           <Route path="/authentication" element={<Authentication />} />

@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid2, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
+import useAppStore from "../../store/store";
 
 const plans = () => {
   const [selectedPlan, setSelectedPlan] = useState("Weekly");
+  const { fetchPlans, plans } = useAppStore();
+
+  useEffect(() => {
+    fetchPlans(9);
+  }, []);
 
   return (
     <Box

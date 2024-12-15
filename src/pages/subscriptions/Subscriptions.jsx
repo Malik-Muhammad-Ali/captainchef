@@ -5,41 +5,19 @@ import CircularAvt from "../../components/circularAvt/CircularAvt";
 import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
-import axios from 'axios';
+// import axios from 'axios';
+import useAppStore from "../../store/store";
+
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
-  const [categories, setCategories] = useState([]);
-  // const [loading, setLoading] = useState(false);
-
-  const fetchCategories = async()=>{
-    try {
-      const response = await axios('https://appv2.captainchef.net/AppV2/public/get-subscription-categories');
-      // console.log(response.data.data);
-      
-      setCategories(response.data.data);
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
-  }
+  const {fetchCategories,categories}= useAppStore();
 
   useEffect(()=>{
     // setLoading(true);
     fetchCategories();
   },[])
 
-  const arr = [
-    { title: "Weight", name: "Maintenance Plan", img: "/weight.png" },
-    { title: "Muscles Gain", name: "Plan", img: "/muscleGain.png" },
-    { title: "Takmim", name: "Plan", img: "/takmim.png" },
-    { title: "Captain Chef", name: "Business", img: "/capSpecial.png" },
-    { title: "Weight Loss", name: "Plan", img: "/weightlose.png" },
-    { title: "Low Carb", name: "Plan", img: "/lowCarb.png" },
-    { title: "Diabetes", name: "Plan", img: "/diabetes.png" },
-    { title: "Life Style", name: "Plan", img: "/lifeStyle.png" },
-  ];
 
   const getTextColor = (text) => {
     if (text.includes("Weight")) {
@@ -134,6 +112,7 @@ const Subscriptions = () => {
         >
            {categories.map((data) => (
             <Cards2
+              id={data.id}
               key={data.id}
               color={getTextColor(data.category_name_en)}
               title={data.category_name_en}

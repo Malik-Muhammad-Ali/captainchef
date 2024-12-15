@@ -5,9 +5,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-export default function PlansCategoryCard({ color, title, name, img }) {
+export default function PlansCategoryCard({color, title, img,id }) {
   const navigate = useNavigate();
-  
+  const text = title;
+const nameArray = text.split(" ");
+const titleArray = nameArray.length > 1 ? nameArray.slice(0, -1).join(" ") : text;
+
   return (
     <Card
       sx={{
@@ -51,7 +54,7 @@ export default function PlansCategoryCard({ color, title, name, img }) {
         cursor: "pointer",
         boxShadow: 'none'
       }}
-      onClick={() => navigate(`/subscriptions/plans`)}
+      onClick={() => navigate(`/subscriptions/plans/${id}`)}
     >
       <CardMedia
         sx={{
@@ -106,7 +109,7 @@ export default function PlansCategoryCard({ color, title, name, img }) {
             fontWeight: "bold",
           }}
         >
-          {title}
+          {titleArray}
         </Typography>
         <Typography
           variant="body2"
@@ -121,7 +124,7 @@ export default function PlansCategoryCard({ color, title, name, img }) {
             },
           }}
         >
-          {name}
+          {nameArray[nameArray.length - 1]}
         </Typography>
       </CardContent>
     </Card>

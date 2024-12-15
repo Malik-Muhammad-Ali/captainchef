@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const PlanCard = ({ plan }) => {
+const PlanCard = ({ plan, planID }) => {
   const navigate = useNavigate();
   const features = [
     {
@@ -188,7 +188,7 @@ const PlanCard = ({ plan }) => {
                   fontSize: "1rem",
                 }}
               >
-                {plan.basic_amount}
+                {plan.basic_amount} SR
               </Typography>
             </Box>
           </Box>
@@ -244,7 +244,7 @@ const PlanCard = ({ plan }) => {
                 height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
                 boxShadow: "none",
               }}
-              onClick={() => navigate(`/subscriptions/plans/${planId}`)}
+              onClick={() => navigate(`/subscriptions/plans/${planID}`)}
             >
               See Details
             </Button>

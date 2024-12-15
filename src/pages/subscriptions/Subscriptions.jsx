@@ -5,19 +5,19 @@ import CircularAvt from "../../components/circularAvt/CircularAvt";
 import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
+// import axios from 'axios';
+import useAppStore from "../../store/store";
+
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
-  const arr = [
-    { title: "Weight", name: "Maintenance Plan", img: "/weight.png" },
-    { title: "Muscles Gain", name: "Plan", img: "/muscleGain.png" },
-    { title: "Takmim", name: "Plan", img: "/takmim.png" },
-    { title: "Captain Chef", name: "Business", img: "/capSpecial.png" },
-    { title: "Weight Loss", name: "Plan", img: "/weightlose.png" },
-    { title: "Low Carb", name: "Plan", img: "/lowCarb.png" },
-    { title: "Diabetes", name: "Plan", img: "/diabetes.png" },
-    { title: "Life Style", name: "Plan", img: "/lifeStyle.png" },
-  ];
+  const {fetchCategories,categories}= useAppStore();
+
+  useEffect(()=>{
+    // setLoading(true);
+    fetchCategories();
+  },[])
+
 
   const getTextColor = (text) => {
     if (text.includes("Weight")) {
@@ -110,13 +110,14 @@ const Subscriptions = () => {
             },
           }}
         >
-          {arr.map((item, index) => (
+           {categories.map((data) => (
             <Cards2
-              key={index}
-              color={getTextColor(item.title)}
-              title={item.title}
-              name={item.name}
-              img={item.img}
+              id={data.id}
+              key={data.id}
+              color={getTextColor(data.category_name_en)}
+              title={data.category_name_en}
+              // name={item.name}
+              img={data.image}
             />
           ))}
         </Box>

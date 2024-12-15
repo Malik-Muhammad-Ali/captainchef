@@ -54,7 +54,7 @@ const titleArray = nameArray.length > 1 ? nameArray.slice(0, -1).join(" ") : tex
         cursor: "pointer",
         boxShadow: 'none'
       }}
-      onClick={() => navigate(`/subscriptions/plans/${id}`)}
+      onClick={() => navigate(`/subscriptions/category/${id}`)}
     >
       <CardMedia
         sx={{

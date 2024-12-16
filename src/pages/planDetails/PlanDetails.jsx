@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PlanDetails.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -11,10 +11,11 @@ import useAppStore from "../../store/store";
 import { CardContent, Button, Box, useMediaQuery } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const PlanDetails = () => {
   const { planId } = useParams();
-  console.log(planId)   
+  // console.log(planId);
   const navigate = useNavigate();
   const location = useLocation();
   const isSmallScreen = useMediaQuery("(max-width:500px)");
@@ -23,51 +24,82 @@ const PlanDetails = () => {
   const [mealInfoModalOpen, setMealInfoModalOpen] = useState(false);
   const [subscribeFirstModalOpen, setSubscribeFirstModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [allMeals, setAllMeals] = useState([]);
+  const [mealsByDay, setMealsByDay] = useState([]);
+
+  const fetchMeals = async () => {
+    const response = await axios.get(
+      "https://app.captainchef.net/api/v1/subscription/meals?subscription_category=10"
+    );
+    setAllMeals(response.data);
+    // Extract `selected_products` from each object and combine them
+    setMealsByDay(response.data.map((item) => item.selected_products).flat());
+    setSelectedIndex(0);
+    const mealsForDay = response.data
+      .filter((meal) => meal.meal_day === "Monday")
+      .map((meal) => meal.selected_products)
+      .flat();
+    console.log(mealsForDay);
+    setMealsByDay(mealsForDay);
+  };
+
+  useEffect(() => {
+    fetchMeals();
+  }, []);
 
   const weekdays = [
     {
-      day: "Mon",
+      day: "Monday",
       date: "10 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
     {
-      day: "Tue",
+      day: "Tuesday",
       date: "11 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
     {
-      day: "Wed",
+      day: "Wednesday",
       date: "12 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
     {
-      day: "Thu",
+      day: "Thursday",
       date: "13 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
     {
-      day: "Fri",
+      day: "Friday",
       date: "14 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
     {
-      day: "Sat",
+      day: "Saturday",
       date: "15 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
     {
-      day: "Sun",
+      day: "Sunday",
       date: "16 Dec",
       totalMeals: 3,
       selectedMeals: 0,
     },
   ];
+
+  const handleDayClick = (index) => {
+    setSelectedIndex(index);
+    const mealsForDay = allMeals
+      .filter((meal) => meal.meal_day === weekdays[index].day)
+      .map((meal) => meal.selected_products)
+      .flat();
+    setMealsByDay(mealsForDay);
+  };
 
   const handleSelect = () => {
     if (!authenticated) {
@@ -331,7 +363,7 @@ const PlanDetails = () => {
                   <div
                     className="weekday"
                     key={index}
-                    onClick={() => setSelectedIndex(index)}
+                    onClick={() => handleDayClick(index)}
                     style={{
                       border:
                         selectedIndex === index
@@ -366,9 +398,12 @@ const PlanDetails = () => {
                       }}
                     >
                       <Typography
-                        sx={{ fontSize: isSmallScreen ? "12px" : "16px", fontWeight: '500' }}
+                        sx={{
+                          fontSize: isSmallScreen ? "12px" : "16px",
+                          fontWeight: "500",
+                        }}
                       >
-                        {item.day}
+                        {item.day.slice(0, 3)}
                       </Typography>
                       <Typography
                         sx={{ fontSize: isSmallScreen ? "8px" : "10px" }}
@@ -396,9 +431,9 @@ const PlanDetails = () => {
       <div className="meals">
         <p>Select Meals</p>
         <div className="mealCardContainer">
-          {[...Array(12)].map((_, i) => (
-            <div key={i} className="mealCard">
-              {/* Image */}
+          {mealsByDay.map((meal, index) => (
+            <div key={index} className="mealCard">
+              {/* Image & Tags */}
               <div style={{ position: "relative", textAlign: "center" }}>
                 <img
                   className="mealCardImg"
@@ -406,6 +441,7 @@ const PlanDetails = () => {
                   alt="Meal"
                   style={{ borderRadius: "50%", width: "90%" }}
                 />
+                {/* Info Tag */}
                 <svg
                   onClick={() => setMealInfoModalOpen(true)}
                   className="infoTagImg"
@@ -424,6 +460,7 @@ const PlanDetails = () => {
                   <path d="M21.4082 32.6663V16.333" stroke="#656565" />
                 </svg>
 
+                {/* Free Tag */}
                 <svg
                   className="spicyTagImg"
                   width="26"
@@ -466,14 +503,19 @@ const PlanDetails = () => {
                   </defs>
                 </svg>
 
+                {/* Recommended Tag */}
                 <div className="recommended">Recommended</div>
               </div>
               <CardContent sx={{ padding: "0px", textAlign: "center" }}>
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: "500", fontSize: isSmallScreen ? '13px' : '16px', mb: 1 }}
+                  sx={{
+                    fontWeight: "500",
+                    fontSize: isSmallScreen ? "13px" : "16px",
+                    mb: 1,
+                  }}
                 >
-                  Zukini Peena Pasta
+                  {meal.name}
                 </Typography>
                 <Box display="flex" justifyContent="center" gap={2}>
                   {/* Box 1: 1080 KCal */}
@@ -510,7 +552,7 @@ const PlanDetails = () => {
                       variant="body"
                       sx={{ color: "#515151", fontSize: "12px" }}
                     >
-                      1080 KCal
+                      {JSON.parse(meal.cal_protein).en.cal} KCal
                     </Typography>
                   </Box>
 
@@ -539,7 +581,7 @@ const PlanDetails = () => {
                     fontSize: "0.8rem",
                     margin: "20px 0px 0px 0px",
                     height: "40px",
-                    boxShadow: 'none'
+                    boxShadow: "none",
                   }}
                   className="selectButton"
                   onClick={() => handleSelect()}
@@ -552,8 +594,11 @@ const PlanDetails = () => {
         </div>
       </div>
 
-      <div className="subscribeButtonContainer" onClick={() => handleNavigation()}>
-        <div className="subscribeButton" >Subscribe Now, Schedule Later</div>
+      <div
+        className="subscribeButtonContainer"
+        onClick={() => handleNavigation()}
+      >
+        <div className="subscribeButton">Subscribe Now, Schedule Later</div>
       </div>
       <OrderModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       <MealInfo

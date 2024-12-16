@@ -1,9 +1,9 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 export default function PlansCategoryCard({ color, title, name, img }) {
   const navigate = useNavigate();
@@ -42,36 +42,36 @@ export default function PlansCategoryCard({ color, title, name, img }) {
           xs: "12px",
           sm: "24px",
           md: "24px",
-          lg: "24px"
+          lg: "24px",
         },
         border: "2px solid",
         borderColor: color,
         flexGrow: 1,
         cursor: "pointer",
-        boxShadow: 'none'
+        boxShadow: "none",
       }}
-      onClick={() => navigate(`/subscriptions/category/1`)}
+      onClick={() => navigate(`/subscriptions/category/5`)}
     >
       <CardMedia
         sx={{
           height: {
             xs: 139,
-          sm: 158,
-          md: 175,
-          lg: 215,
-          xl: 280
+            sm: 158,
+            md: 175,
+            lg: 215,
+            xl: 280,
           },
-          width: '100%',
+          width: "100%",
           objectFit: "cover",
         }}
         image={img}
         title={title}
       />
-      
+
       <CardContent
         sx={{
-          display:"flex",
-          flexDirection:"column",
+          display: "flex",
+          flexDirection: "column",
           padding: {
             xs: 0.5,
             sm: 1,
@@ -79,12 +79,12 @@ export default function PlansCategoryCard({ color, title, name, img }) {
             lg: 1.5,
             xl: 2,
           },
-          gap:{
-            xs:0.5,
-            sm:1,
-            md:1,
-            lg:1,
-            xl:2.5,
+          gap: {
+            xs: 0.5,
+            sm: 1,
+            md: 1,
+            lg: 1,
+            xl: 2.5,
           },
         }}
       >
@@ -94,11 +94,11 @@ export default function PlansCategoryCard({ color, title, name, img }) {
           component="div"
           sx={{
             fontSize: {
-              xs: '0.75rem', // Smaller text for smaller screens
-              sm: '1rem',
-              md: '1.25rem',
-              lg: '1.5rem',
-              xl: '1.75rem',
+              xs: "0.75rem", // Smaller text for smaller screens
+              sm: "1rem",
+              md: "1.25rem",
+              lg: "1.5rem",
+              xl: "1.75rem",
             },
             fontWeight: "bold",
           }}
@@ -110,11 +110,11 @@ export default function PlansCategoryCard({ color, title, name, img }) {
           sx={{
             color: color,
             fontSize: {
-              xs: '0.65rem', // Smaller body text for smaller screens
-              sm: '0.85rem',
-              md: '1rem',
-              lg: '1rem',
-              xl: '1.25rem',
+              xs: "0.65rem", // Smaller body text for smaller screens
+              sm: "0.85rem",
+              md: "1rem",
+              lg: "1rem",
+              xl: "1.25rem",
             },
           }}
         >

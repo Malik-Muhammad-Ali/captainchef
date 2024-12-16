@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 
 const PlanDetails = () => {
   const { planId } = useParams();
-  console.log(planId)
+  // console.log(planId)
   const navigate = useNavigate();
   const location = useLocation();
   const isSmallScreen = useMediaQuery("(max-width:500px)");
@@ -366,7 +366,10 @@ const PlanDetails = () => {
                       }}
                     >
                       <Typography
-                        sx={{ fontSize: isSmallScreen ? "12px" : "16px", fontWeight: '500' }}
+                        sx={{
+                          fontSize: isSmallScreen ? "12px" : "16px",
+                          fontWeight: "500",
+                        }}
                       >
                         {item.day}
                       </Typography>
@@ -471,7 +474,11 @@ const PlanDetails = () => {
               <CardContent sx={{ padding: "0px", textAlign: "center" }}>
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: "500", fontSize: isSmallScreen ? '13px' : '16px', mb: 1 }}
+                  sx={{
+                    fontWeight: "500",
+                    fontSize: isSmallScreen ? "13px" : "16px",
+                    mb: 1,
+                  }}
                 >
                   Zukini Peena Pasta
                 </Typography>
@@ -539,7 +546,7 @@ const PlanDetails = () => {
                     fontSize: "0.8rem",
                     margin: "20px 0px 0px 0px",
                     height: "40px",
-                    boxShadow: 'none'
+                    boxShadow: "none",
                   }}
                   className="selectButton"
                   onClick={() => handleSelect()}
@@ -552,8 +559,11 @@ const PlanDetails = () => {
         </div>
       </div>
 
-      <div className="subscribeButtonContainer" onClick={() => handleNavigation()}>
-        <div className="subscribeButton" >Subscribe Now, Schedule Later</div>
+      <div
+        className="subscribeButtonContainer"
+        onClick={() => handleNavigation()}
+      >
+        <div className="subscribeButton">Subscribe Now, Schedule Later</div>
       </div>
       <OrderModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       <MealInfo

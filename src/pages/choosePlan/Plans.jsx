@@ -1,17 +1,30 @@
 import { useEffect, useState } from "react";
-import { Box, Grid2, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Grid2,
+  IconButton,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
+import useAppStore from "../../store/store";
 
-const plans = () => {
+const Plans = () => {
   const [selectedPlan, setSelectedPlan] = useState("Weekly");
+  const [loading, setLoading] = useState(true); // Add a loading state
   const { fetchPlans, plans } = useAppStore();
 
   useEffect(() => {
-    fetchPlans();
-  }, []);
+    // Simulating a delay for fetching plans (optional, to see the loading state in action)
+    const fetchData = async () => {
+      setLoading(true); // Set loading to true before fetching
+      await fetchPlans();
+      setLoading(false); // Set loading to false once the data is fetched
+    };
 
-  // console.log(plans);
+    fetchData();
+  }, []);
 
   return (
     <Box
@@ -21,6 +34,7 @@ const plans = () => {
         backgroundColor: "#f5f5f5",
       }}
     >
+      {/* Header Box */}
       <Box
         sx={{
           display: "flex",
@@ -32,7 +46,7 @@ const plans = () => {
           ml: { lg: "35px", md: "30px", sm: "60px", xs: "0", xl: "100px" },
         }}
       >
-        {/* First Child Box */}
+        {/* Left Section */}
         <Box
           sx={{
             display: "flex",
@@ -47,94 +61,36 @@ const plans = () => {
             flexDirection: { lg: "row", md: "row", sm: "row", xs: "column" },
           }}
         >
-          {/* Icon */}
+          {/* Back Icon */}
           <IconButton
             sx={{
               borderRadius: "20%",
               backgroundColor: "#fff",
-              // boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
               width: { xs: "40px", sm: "40px", md: "45px" },
               height: { xs: "40px", sm: "40px", md: "45px" },
             }}
           >
             <ArrowBackIosIcon
               sx={{
-                // color: "#000",
                 paddingLeft: { xs: "5px", sm: "8px" },
                 fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
               }}
             />
           </IconButton>
 
-          {/* "Choose Plan" Typography */}
-          {/* Box for mobile screens only */}
-          <Box
+          {/* Title */}
+          <Typography
             sx={{
-              display: { xs: "flex", sm: "none" }, // Visible only on xs screens
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "90vw", // Full width for mobile
-              // px: "16px", // Optional padding for spacing
-              pr: "14px",
+              fontSize: { sm: "20px", md: "24px" },
+              fontWeight: "600",
+              color: "#000",
             }}
           >
-            <Typography
-              sx={{
-                fontSize: { xs: "15px" },
-                fontWeight: "600",
-                color: "#000",
-              }}
-            >
-              Choose Plan
-            </Typography>
-            <Box sx={{}}>
-              <Typography
-                sx={{
-                  color: "#D92531",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                  fontSize: { xs: "12px" },
-                  justifySelf: "end",
-                  alignSelf: "flex-end",
-                }}
-              >
-                Custom Plan
-              </Typography>
-            </Box>
-          </Box>
-
-          {/* Box for larger screens */}
-          <Box
-            sx={{
-              display: { xs: "none", sm: "flex" }, // Hidden on xs screens
-              justifyContent: { xs: "center" },
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: { sm: "20px", md: "24px" },
-                fontWeight: "600",
-                color: "#000",
-              }}
-            >
-              Choose Plan
-            </Typography>
-            <Typography
-              sx={{
-                color: "#D92531",
-                textDecoration: "underline",
-                cursor: "pointer",
-                fontSize: { sm: "16px", md: "16px" },
-                ml: { md: "10px", lg: "10px", sm: "10px" },
-              }}
-            >
-              Custom Plan
-            </Typography>
-          </Box>
+            Choose Plan
+          </Typography>
         </Box>
 
-        {/* Second Child Box */}
+        {/* Plan Selection Box */}
         <Box
           sx={{
             display: "flex",
@@ -145,7 +101,7 @@ const plans = () => {
             border: "1px solid #ddd",
             width: { xs: "100%", sm: "200px" },
             marginTop: { xs: "30px", sm: "0" },
-            height: { xs: "63px", sm: "", md: "", lg: "" },
+            height: { xs: "63px", sm: "" },
           }}
         >
           {/* Weekly Option */}
@@ -157,10 +113,7 @@ const plans = () => {
               backgroundColor:
                 selectedPlan === "Weekly" ? "#D92531" : "transparent",
               color: selectedPlan === "Weekly" ? "#fff" : "#000",
-              padding: {
-                xs: "18px 2px", // For small screens (mobile)
-                sm: "12px 0px", // For larger screens (tablet and above)
-              },
+              padding: { xs: "18px 2px", sm: "12px 0px" },
               marginLeft: "4px",
               borderRadius: "12px",
               cursor: "pointer",
@@ -180,15 +133,11 @@ const plans = () => {
               backgroundColor:
                 selectedPlan === "Monthly" ? "#D92531" : "transparent",
               color: selectedPlan === "Monthly" ? "#fff" : "#000",
-              padding: {
-                xs: "18px 10px", // For small screens (mobile)
-                sm: "12px 0px", // For larger screens (tablet and above)
-              },
+              padding: { xs: "18px 10px", sm: "12px 0px" },
               marginRight: "4px",
               borderRadius: "12px",
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
-              // fontWeight: "bold",
               transition: "background-color 0.3s ease",
             }}
           >
@@ -197,33 +146,59 @@ const plans = () => {
         </Box>
       </Box>
 
-      <Grid2
-        container
-        spacing={2}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          mt: "40px",
-        }}
-      >
-        {plans.map((plan) => (
-          <Grid2
-            xs={12}
-            sm={6}
-            md={3}
-            key={plan.id}
-            id={plan.id}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <PlanCard plan={plan} planID={plan} />
-          </Grid2>
-        ))}
-      </Grid2>
+      {/* Conditional Rendering: Show Loading or Content */}
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
+          <CircularProgress color="#D92531" />
+          <Typography sx={{ marginLeft: 2, fontSize: "1.2rem" }}>
+            Loading Plans...
+          </Typography>
+        </Box>
+      ) : (
+        <Grid2
+          container
+          spacing={2}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mt: "40px",
+          }}
+        >
+          {plans
+            .filter((plan) => plan && plan.id) // Filter only valid plans
+            .map((plan) => (
+              <Grid2
+                xs={12}
+                sm={6}
+                md={3}
+                key={plan.id}
+                id={plan.id}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <PlanCard
+                  plan={plan}
+                  planID={plan.id}
+                  days={plan.total_days}
+                  items={plan.no_of_items.items.filter(
+                    (item) => item.value > 0
+                  )} // Only show items with value > 0
+                />
+              </Grid2>
+            ))}
+        </Grid2>
+      )}
     </Box>
   );
 };

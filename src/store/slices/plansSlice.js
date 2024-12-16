@@ -12,7 +12,7 @@ const PlansSlice = (set) => ({
                 // },
             });
             const data = response.data.data;
-            console.log(response),
+            // console.log(response),
             set({ plans: data });
             // console.log(data);
             

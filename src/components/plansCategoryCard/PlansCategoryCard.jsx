@@ -5,11 +5,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-export default function PlansCategoryCard({color, title, img,id }) {
+export default function PlansCategoryCard({color , title , img , id , language }) {
   const navigate = useNavigate();
-  const text = title;
-const nameArray = text.split(" ");
-const titleArray = nameArray.length > 1 ? nameArray.slice(0, -1).join(" ") : text;
+  const nameArray = title.split(" ");
+  const isRTL = language === "ar";
+
+  // Adjust the title arrangement for RTL and LTR
+  const titleText = nameArray.length > 1 ? nameArray.slice(0, -1).join(" ") : title;
+  const lastWord = isRTL ? nameArray[0] : nameArray[nameArray.length - 1];
 
   return (
     <Card
@@ -107,9 +110,10 @@ const titleArray = nameArray.length > 1 ? nameArray.slice(0, -1).join(" ") : tex
               xl: '1.75rem',
             },
             fontWeight: "bold",
+            textAlign: isRTL ? "right" : "left",
           }}
         >
-          {titleArray}
+          {titleText}
         </Typography>
         <Typography
           variant="body2"
@@ -122,9 +126,10 @@ const titleArray = nameArray.length > 1 ? nameArray.slice(0, -1).join(" ") : tex
               lg: '1rem',
               xl: '1.25rem',
             },
+            textAlign: isRTL ? "right" : "left",
           }}
         >
-          {nameArray[nameArray.length - 1]}
+          {lastWord}
         </Typography>
       </CardContent>
     </Card>

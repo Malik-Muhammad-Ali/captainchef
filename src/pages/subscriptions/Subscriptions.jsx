@@ -1,41 +1,25 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Msgbox from "../../components/msgBox/MsgBox";
 import CircularAvt from "../../components/circularAvt/CircularAvt";
 import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
-// import axios from 'axios';
 import useAppStore from "../../store/store";
 
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
+  const [language, setLanguage] = useState("en");
   const {fetchCategories,categories}= useAppStore();
+  const isRTL = language === "ar";
 
   useEffect(()=>{
-    // setLoading(true);
     fetchCategories();
   },[])
 
 
-  const getTextColor = (text) => {
-    if (text.includes("Weight")) {
-      return "#FFCA44";
-    } else if (text.includes("Muscles")) {
-      return "#352A6E";
-    } else if (text.includes("Takmim")) {
-      return "#0EA81D";
-    } else if (text.includes("Captain")) {
-      return "#CE2729";
-    } else if (text.includes("Carb")) {
-      return "#AE77BA";
-    } else if (text.includes("Diabetes")) {
-      return "#2A70B6";
-    } else {
-      return "#FD88BF";
-    }
-  };
+  const getTextColor = ["#FFCA44","#352A6E","#0EA81D","#CE2729","#D2252B","#AE77BA","#2A70B6","#FD88BF"]
 
   return (
     <Box
@@ -72,7 +56,8 @@ const Subscriptions = () => {
               md: "35px",
             },
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: isRTL ? "flex-start" : "flex-end",
+            alignSelf: isRTL ? "flex-end" : "flex-start",
           }}
         >
           <Typography
@@ -91,32 +76,24 @@ const Subscriptions = () => {
               fontFamily: "Open Sans, sans-serif",
             }}
           >
-            Plan Categories
+            {language === "en" ? "Plan Categories" : "أقسام الخطط "}  
           </Typography>
         </Box>
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
             flexWrap: "wrap",
             gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
-            padding: { xs: "2px" },
-            maxWidth: {
-              xs: "300px",
-              sm: "620px",
-              md: "930px",
-              lg: "1180px",
-              xl: "2000px",
-            },
+            maxWidth: { xs: "300px", sm: "620px", md: "930px", lg: "1180px", xl: "2000px" },
           }}
         >
-           {categories.map((data) => (
+          {categories.map((data, index) => (
             <Cards2
-              id={data.id}
               key={data.id}
-              color={getTextColor(data.category_name_en)}
-              title={data.category_name_en}
-              // name={item.name}
+              id={data.id}
+              language={language}
+              color={getTextColor[index % getTextColor.length]}
+              title={language === "en" ? data.category_name_en : data.category_name_ar}
               img={data.image}
             />
           ))}

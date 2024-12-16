@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 
 const PlanDetails = () => {
   const { planId } = useParams();
-  console.log(planId)
+  console.log(planId)   
   const navigate = useNavigate();
   const location = useLocation();
   const isSmallScreen = useMediaQuery("(max-width:500px)");

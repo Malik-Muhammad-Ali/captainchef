@@ -408,7 +408,7 @@ const PlanCard = ({ plan, planID, days, items, delivery, range }) => {
               >
                 <Box sx={{ width: "20px", height: "20px" }}>
                   {/* dangerouslySetInnerHTML={{ _html:  }} */}
-                  {features[index]}
+                  {features[(index + 3) % features.length]}
                 </Box>
                 <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
                   {item.value} {item.name}

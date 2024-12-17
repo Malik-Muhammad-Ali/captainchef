@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 const NotRegisterYet = () => {
   const navigate = useNavigate();
+  const { otp } = useAppStore();
   const [pin, setPin] = useState(["", "", "", ""]);
+  const [error, setError] = useState();
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/\D/g, "");
@@ -14,11 +17,20 @@ const NotRegisterYet = () => {
       const newPin = [...pin];
       newPin[index] = value;
       setPin(newPin);
-
       // Automatically focus on the next field
       if (value && index < 3) {
         document.getElementById(`pin-${index + 1}`).focus();
       }
+    }
+  };
+
+  const handleSubmit = () => {
+    const pinValue = pin.join("");
+    if (pinValue === otp) {
+      setError(null);
+      navigate("/createaccount");
+    } else {
+      setError("Invalid OTP");
     }
   };
 
@@ -50,7 +62,7 @@ const NotRegisterYet = () => {
             boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
             backgroundColor: "#fff",
             transition: "transform 0.2s ease, box-shadow 0.2s ease",
-            cursor: 'pointer'
+            cursor: "pointer",
           }}
           onClick={() => navigate(-1)}
         >
@@ -77,7 +89,6 @@ const NotRegisterYet = () => {
               alt="Authentication Illustration"
               sx={{ width: "369px", height: "205px" }}
             />
-
             {/* Heading */}
             <Typography
               variant="h5"
@@ -88,7 +99,6 @@ const NotRegisterYet = () => {
             >
               Not Registered Yet?
             </Typography>
-
             {/* Description */}
             <Typography
               variant="body1"
@@ -104,7 +114,7 @@ const NotRegisterYet = () => {
               +96653226457895. Please Enter The Code Below
             </Typography>
 
-            {/* Password TextField */}
+            {/* Password TextField */ }
             <Box
               sx={{
                 display: "flex",
@@ -149,7 +159,11 @@ const NotRegisterYet = () => {
                 />
               ))}
             </Box>
-
+            <p
+              style={{ color: "red", textAlign: "center", fontWeight: "bold" }}
+            >
+              {error}
+            </p>
             {/* Button with Forgot Password */}
             <Box
               sx={{
@@ -168,6 +182,7 @@ const NotRegisterYet = () => {
                   width: { xs: "100%", sm: "360px", md: "512px" },
                   height: { xs: "56px", sm: "56px", md: "56px" },
                 }}
+                onClick={() => handleSubmit()}
               >
                 Submit
               </Button>

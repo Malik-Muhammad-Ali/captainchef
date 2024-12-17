@@ -12,15 +12,25 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CallIcon from "@mui/icons-material/Call";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
-const AuthenticationComponent = ({setUserExisted, setAuthenticatedComponent}) => {
-
+const AuthenticationComponent = ({
+  setUserExisted,
+  setAuthenticatedComponent,
+}) => {
   const navigate = useNavigate();
+  const { checkUser, user } = useAppStore();
+  const [number, setNumber] = React.useState("");
 
-  const handleSubmit = () => {
-    setUserExisted(true);
-    setAuthenticatedComponent(false);
-  }
+  const handleSubmit = async () => {
+    const isUserExist = await checkUser();
+    if (isUserExist === null) {
+      navigate("/otp");
+    } else if (isUserExist) {
+      setUserExisted(true);
+      setAuthenticatedComponent(false);
+    }
+  };
 
   return (
     <>
@@ -102,6 +112,8 @@ const AuthenticationComponent = ({setUserExisted, setAuthenticatedComponent}) =>
               placeholder="+9665--------"
               label="Phone Number"
               variant="outlined"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -143,9 +155,9 @@ const AuthenticationComponent = ({setUserExisted, setAuthenticatedComponent}) =>
                 padding: "10px 16px",
                 width: { xs: "100%", sm: "360px", md: "512px" },
                 height: { xs: "56px", sm: "56px", md: "56px" },
-                boxShadow: 'none'
+                boxShadow: "none",
               }}
-              onClick={()=> handleSubmit()}
+              onClick={() => handleSubmit()}
             >
               Submit
             </Button>

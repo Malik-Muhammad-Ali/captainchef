@@ -1,31 +1,30 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import {
   Box,
   Grid2,
   IconButton,
   Typography,
   CircularProgress,
-  Container,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
 import useAppStore from "../../store/store";
 
 const Plans = () => {
+  const { categoryId } = useParams(); // Get the category ID from the URL
   const [selectedPlan, setSelectedPlan] = useState("weekly");
   const [loading, setLoading] = useState(true); // Add a loading state
   const { fetchPlans, plans } = useAppStore();
-  console.log(plans);
+  // const matchedPlans = plans.filter((plan) => plan.id.toString() == id);
+  // console.log(matchedPlans);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchPlans();
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
+    setLoading(true);
+    fetchPlans(categoryId);
+    setLoading(false);
+  }, [categoryId]);
 
   return (
     <Box

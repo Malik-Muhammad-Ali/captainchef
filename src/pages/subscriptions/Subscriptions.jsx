@@ -10,8 +10,7 @@ import useAppStore from "../../store/store";
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
-  const [language, setLanguage] = useState("en");
-  const {fetchCategories,categories}= useAppStore();
+  const {fetchCategories, categories, language} = useAppStore();
   const isRTL = language === "ar";
 
   useEffect(()=>{

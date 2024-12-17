@@ -13,10 +13,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import CheckoutRightComponent from "../../components/checkoutRightComponent/CheckoutRightComponent";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {
@@ -33,19 +31,9 @@ const Checkout = () => {
     setCollapsedComments(!collapsedComments);
   };
   const [selectedPayment, setSelectedPayment] = useState(null);
-  const [error, setError] = useState(null);
 
   const handleSelection = (paymentMethod) => {
     setSelectedPayment(paymentMethod);
-  };
-
-  const handleNavigation = () => {
-    if (selectedPayment !== null) {
-      setError(null);
-      navigate("/mysubscriptions");
-    } else if (selectedPayment === null) {
-      setError("Please select a payment method");
-    }
   };
 
   const paymentOptions = [
@@ -111,7 +99,7 @@ const Checkout = () => {
               display: "flex",
               alignItems: "center",
               gap: "20px",
-              p: { xs: "10px", sm: "15px", md: "20px" },
+              p: { xs: "15px", sm: "15px", md: "20px" },
             }}
           >
             <IconButton
@@ -122,12 +110,11 @@ const Checkout = () => {
                 width: { xs: "48px", sm: "45px" },
                 height: { xs: "48px", sm: "45px" },
               }}
-              onClick={() => navigate(-1)}
             >
               <ArrowBackIosIcon
                 sx={{
                   color: "#000",
-                  paddingLeft: { xs: "4px", sm: "8px" },
+                  paddingLeft: { xs: "6px", sm: "8px" },
                 }}
               />
             </IconButton>
@@ -207,9 +194,29 @@ const Checkout = () => {
                   </Typography>
                 </Box>
                 <TextField
-                  maxWidth
                   label="Name"
                   margin="normal"
+                  variant="standard"
+                  InputProps={{
+                    disableUnderline: true,
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      position: "absolute",
+                      top: "-10px",
+                      left: "16px",
+                      fontSize: "14px",
+                      // color: "#757575",
+                      background: "white",
+                      padding: "0 4px",
+                      transform: "translate(0, 0)",
+                      pointerEvents: "none",
+                      "&.Mui-focused": {
+                        color: "grey",
+                      },
+                    },
+                  }}
+                  placeholder="" // Empty placeholder since the label acts as one
                   sx={{
                     width: {
                       lg: "530px",
@@ -218,34 +225,88 @@ const Checkout = () => {
                       xs: "313px",
                     },
                     height: { lg: "64px", md: "64px", sm: "56px", xs: "63px" },
-                    top: "16px",
-                    borderRadius: "12px",
-                    background: "#F8F8F8",
+                    backgroundColor: "#F8F8F8", // Subtle grey background
+                    borderRadius: "12px", // Rounded edges
+                    paddingLeft: "14px", // Spacing inside the input
+                    paddingRight: "10px", // Spacing inside the input
+                    position: "relative", // To keep the label aligned
+                    fontSize: "50px", // Text font size
                   }}
                 />
+
                 <TextField
-                  fullWidth
-                  type="number"
                   label="Phone"
                   margin="normal"
+                  variant="standard"
+                  type="number"
+                  InputProps={{
+                    disableUnderline: true,
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      position: "absolute",
+                      top: "-10px",
+                      left: "16px",
+                      fontSize: "14px",
+                      background: "white",
+                      padding: "0 4px",
+                      transform: "translate(0, 0)",
+                      pointerEvents: "none",
+                      "&.Mui-focused": {
+                        color: "grey",
+                      },
+                    },
+                  }}
+                  placeholder="" // Empty placeholder since the label acts as one
                   sx={{
                     width: {
                       lg: "530px",
                       md: "450px",
-
                       sm: "335px",
                       xs: "313px",
                     },
                     height: { lg: "64px", md: "64px", sm: "56px", xs: "63px" },
-                    top: "16px",
-                    borderRadius: "12px",
-                    background: "#F8F8F8",
+                    backgroundColor: "#F8F8F8", // Subtle grey background
+                    borderRadius: "12px", // Rounded edges
+                    paddingLeft: "14px", // Spacing inside the input
+                    paddingRight: "10px", // Spacing inside the input
+                    position: "relative", // To keep the label aligned
+                    fontSize: "16px", // Adjusted font size
+                    "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                      {
+                        WebkitAppearance: "none", // Hides the spinner in Webkit browsers (Chrome, Safari)
+                        margin: 0,
+                      },
+                    "& input[type='number']": {
+                      MozAppearance: "textfield", // Hides the spinner in Firefox
+                    },
                   }}
                 />
+
                 <TextField
-                  fullWidth
                   label="City"
                   margin="normal"
+                  variant="standard"
+                  InputProps={{
+                    disableUnderline: true,
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      position: "absolute",
+                      top: "-10px",
+                      left: "16px",
+                      fontSize: "14px",
+                      // color: "#757575",
+                      background: "white",
+                      padding: "0 4px",
+                      transform: "translate(0, 0)",
+                      pointerEvents: "none",
+                      "&.Mui-focused": {
+                        color: "grey",
+                      },
+                    },
+                  }}
+                  placeholder="" // Empty placeholder since the label acts as one
                   sx={{
                     width: {
                       lg: "530px",
@@ -254,9 +315,12 @@ const Checkout = () => {
                       xs: "313px",
                     },
                     height: { lg: "64px", md: "64px", sm: "56px", xs: "63px" },
-                    top: "16px",
-                    borderRadius: "12px",
-                    background: "#F8F8F8",
+                    backgroundColor: "#F8F8F8", // Subtle grey background
+                    borderRadius: "12px", // Rounded edges
+                    paddingLeft: "14px", // Spacing inside the input
+                    paddingRight: "10px", // Spacing inside the input
+                    position: "relative", // To keep the label aligned
+                    fontSize: "50px", // Text font size
                   }}
                 />
               </Box>
@@ -268,7 +332,7 @@ const Checkout = () => {
               sx={{
                 padding: "16px",
                 width: { lg: "560px", md: "480px", sm: "370px", xs: "345px" },
-                height: "520px",
+                height: "500px",
                 margin: "0 auto",
                 borderRadius: "24px",
               }}
@@ -335,25 +399,18 @@ const Checkout = () => {
                         height: { sm: "45px" },
                       }}
                     >
-                      <span dangerouslySetInnerHTML={{ __html: option.img }} />
+                      <span
+                        dangerouslySetInnerHTML={{ __html: option.img }}
+                        // style={{ marginLeft: "8px" }}
+                      />
                     </Box>
                   </Box>
                 ))}
 
-                <p
-                  style={{
-                    textAlign: "center",
-                    color: "red",
-                    fontSize: "18px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {error}
-                </p>
-
                 <Box
                   sx={{
                     display: "flex",
+                    // alignItems: "center",
                     paddingTop: "40px",
                   }}
                 >
@@ -419,9 +476,9 @@ const Checkout = () => {
                   sx={{
                     width: "48px",
                     height: "48px",
-                    cursor: "pointer",
+                    cursor: "pointer", // Add cursor pointer for better UX
                   }}
-                  onClick={toggleCollapse}
+                  onClick={toggleCollapse} // Add toggle logic
                 >
                   {isCollapsed ? (
                     <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
@@ -430,12 +487,12 @@ const Checkout = () => {
                   )}
                 </Box>
               </Box>
-              {!isCollapsed && (
+              {!isCollapsed && ( // Conditionally render this content
                 <Box
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    mt: "50px",
+                    mt: "30px",
                     width: "100%",
                   }}
                 >
@@ -475,7 +532,7 @@ const Checkout = () => {
               sx={{
                 padding: "16px",
                 width: { lg: "560px", md: "480px", sm: "331px", xs: "345px" },
-                height: isCollapsed1 ? "auto" : "164px",
+                height: isCollapsed1 ? "auto" : "164px", // Adjust height dynamically
                 margin: "0 auto",
                 borderRadius: "24px",
                 gap: "40px",
@@ -505,9 +562,9 @@ const Checkout = () => {
                   sx={{
                     width: "48px",
                     height: "48px",
-                    cursor: "pointer",
+                    cursor: "pointer", // Add cursor pointer for better UX
                   }}
-                  onClick={toggleCollapse1}
+                  onClick={toggleCollapse1} // Toggle logic
                 >
                   {isCollapsed1 ? (
                     <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
@@ -516,7 +573,7 @@ const Checkout = () => {
                   )}
                 </Box>
               </Box>
-              {!isCollapsed1 && (
+              {!isCollapsed1 && ( // Conditionally render this content
                 <Box
                   sx={{
                     height: "80px",
@@ -525,26 +582,57 @@ const Checkout = () => {
                     backgroundColor: "white",
                     borderRadius: "8px",
                     padding: "8px",
-                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                    mt: "16px",
+                    // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                    mt: "16px", // Add margin top for spacing
                   }}
                 >
                   <TextField
-                    fullWidth
-                    label="Apply coupon"
+                    label="Apply Coupon"
                     margin="normal"
+                    variant="standard"
+                    InputProps={{
+                      disableUnderline: true, // Removes underline/border
+                    }}
+                    InputLabelProps={{
+                      sx: {
+                        position: "absolute",
+                        top: "-10px", // Label positioned slightly above the field
+                        left: "16px", // Aligned slightly to the right
+                        fontSize: "14px", // Small, clean font size
+                        background: "white", // Matches the input field background
+                        padding: "0 4px", // Adds spacing around the label
+                        transform: "translate(0, 0)", // Ensures no extra shifting
+                        pointerEvents: "none", // Prevents interaction with the label
+                        "&.Mui-focused": {
+                          color: "grey", // Label color remains consistent
+                        },
+                      },
+                    }}
+                    placeholder="" // No placeholder since the label acts as one
                     sx={{
                       width: {
-                        lg: "519px",
-                        md: "519px",
-                        sm: "195px",
-                        xs: "217px",
+                        lg: "530px",
+                        md: "450px",
+                        sm: "335px",
+                        xs: "313px",
                       },
-                      height: "64px",
-                      borderRadius: "12px",
-                      background: "#F8F8F8",
+                      height: {
+                        lg: "64px",
+                        md: "64px",
+                        sm: "56px",
+                        xs: "63px",
+                      },
+                      backgroundColor: "#F8F8F8", // Subtle grey background
+                      borderRadius: "12px", // Smooth rounded edges
+                      paddingLeft: "14px", // Spacing inside the input field
+                      paddingRight: "10px", // Spacing inside the input field
+                      fontSize: "16px", // Adjusted text font size
+                      display: "flex",
+                      // alignItems: "center", // Centers text vertically
+                      position: "relative", // To keep the label aligned
                     }}
                   />
+
                   <Button
                     variant="contained"
                     sx={{
@@ -594,7 +682,7 @@ const Checkout = () => {
                   sx={{
                     fontSize: "20px",
                     fontWeight: "600",
-                    mb: "8px",
+                    mb: "8px", // Add space below the heading
                   }}
                 >
                   Additional Comments
@@ -618,31 +706,53 @@ const Checkout = () => {
                 <Box
                   sx={{
                     mt: "0px",
-                    width: "100%",
+                    width: "100%", // Ensures full width
                   }}
                 >
                   <TextField
-                    fullWidth
                     label="Comments"
                     margin="normal"
+                    variant="standard"
                     multiline
-                    minRows={3}
-                    maxRows={4}
+                    rows={3} // Initial rows to display
+                    InputProps={{
+                      disableUnderline: true, // Removes underline/border
+                    }}
+                    InputLabelProps={{
+                      sx: {
+                        position: "absolute",
+                        top: "-10px",
+                        left: "16px",
+                        fontSize: "14px",
+                        background: "white", // Matches input field background
+                        padding: "0 4px",
+                        transform: "translate(0, 0)", // No extra shifts
+                        pointerEvents: "none", // Prevent interaction
+                        "&.Mui-focused": {
+                          color: "grey", // Label color on focus
+                        },
+                      },
+                    }}
+                    placeholder="" // Empty placeholder since the label acts as one
                     sx={{
                       width: {
                         lg: "530px",
-                        md: "400px",
-                        sm: "290px",
+                        md: "450px",
+                        sm: "335px",
                         xs: "313px",
                       },
-                      borderRadius: "12px",
-                      background: "#F8F8F8",
-                      "& .MuiOutlinedInput-root": {
-                        padding: "8px",
+                      minHeight: {
+                        lg: "64px",
+                        md: "64px",
+                        sm: "56px",
+                        xs: "63px",
                       },
-                      "& .MuiInputLabel-root": {
-                        fontSize: "16px",
-                      },
+                      backgroundColor: "#F8F8F8", // Subtle grey background
+                      borderRadius: "12px", // Rounded edges
+                      paddingLeft: "14px", // Spacing inside the input
+                      paddingRight: "10px", // Spacing inside the input
+                      position: "relative", // To keep the label aligned
+                      fontSize: "16px", // Text font size
                     }}
                   />
                 </Box>
@@ -668,7 +778,6 @@ const Checkout = () => {
               fontSize: "22px",
               fontWeight: "400",
             }}
-            onClick={() => handleNavigation()}
           >
             Pay bill now
           </Button>

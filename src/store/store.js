@@ -4,6 +4,7 @@ import citySlice from './slices/citySlice';
 import subscriptionCategories from './slices/subscriptionCategories';
 import languageSlice from './slices/languageSlice';
 import mealsSlice from './slices/mealsSlice';
+import PlansSlice from './slices/plansSlice';
 
 const useAppStore = create((set) => ({
     ...userSlice(set),
@@ -11,6 +12,7 @@ const useAppStore = create((set) => ({
     ...subscriptionCategories(set),
     ...languageSlice(set),
     ...mealsSlice(set),
+    ...PlansSlice(set),
   }));
   
   export default useAppStore;

@@ -395,12 +395,12 @@ const Navbar = () => {
                 <Box display="flex" alignItems="center" gap={1}>
                   <img src={flag} alt={language} width="20" height="15" />
                   <Typography>
-                    {language === "english" ? "English" : "Arabic"}
+                    {language === "en" ? "English" : "Arabic"}
                   </Typography>
                 </Box>
               )}
             >
-              <MenuItem value="english">
+              <MenuItem value="en">
                 <Box display="flex" alignItems="center" gap={2}>
                   <img
                     src="https://flagcdn.com/w40/us.png"
@@ -411,7 +411,7 @@ const Navbar = () => {
                   <Typography>English</Typography>
                 </Box>
               </MenuItem>
-              <MenuItem value="arabic">
+              <MenuItem value="ar">
                 <Box display="flex" alignItems="center" gap={1}>
                   <img
                     src="https://flagcdn.com/w40/sa.png"

@@ -14,37 +14,28 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const PlanDetails = () => {
-  const { planId } = useParams();
-  // console.log(planId);
+  const { categoryId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const isSmallScreen = useMediaQuery("(max-width:500px)");
-  const { authenticated, setPlanDetailUrl } = useAppStore();
   const [modalOpen, setModalOpen] = useState(false);
   const [mealInfoModalOpen, setMealInfoModalOpen] = useState(false);
+  const isSmallScreen = useMediaQuery("(max-width:500px)");
   const [subscribeFirstModalOpen, setSubscribeFirstModalOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [allMeals, setAllMeals] = useState([]);
-  const [mealsByDay, setMealsByDay] = useState([]);
 
-  const fetchMeals = async () => {
-    const response = await axios.get(
-      "https://app.captainchef.net/api/v1/subscription/meals?subscription_category=10"
-    );
-    setAllMeals(response.data);
-    // Extract `selected_products` from each object and combine them
-    setMealsByDay(response.data.map((item) => item.selected_products).flat());
-    setSelectedIndex(0);
-    const mealsForDay = response.data
-      .filter((meal) => meal.meal_day === "Monday")
-      .map((meal) => meal.selected_products)
-      .flat();
-    console.log(mealsForDay);
-    setMealsByDay(mealsForDay);
-  };
+  const {
+    authenticated,
+    setPlanDetailUrl,
+    meals,
+    fetchMeals,
+    mealsByDay,
+    setMealsByDay,
+    language,
+  } = useAppStore();
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
-    fetchMeals();
+    fetchMeals(categoryId);
+    setSelectedIndex(0);
   }, []);
 
   const weekdays = [
@@ -94,11 +85,12 @@ const PlanDetails = () => {
 
   const handleDayClick = (index) => {
     setSelectedIndex(index);
-    const mealsForDay = allMeals
-      .filter((meal) => meal.meal_day === weekdays[index].day)
-      .map((meal) => meal.selected_products)
-      .flat();
-    setMealsByDay(mealsForDay);
+    setMealsByDay(
+      meals
+        .filter((meal) => meal.meal_day === weekdays[index].day)
+        .map((meal) => meal.selected_products)
+        .flat()
+    );
   };
 
   const handleSelect = () => {
@@ -136,7 +128,7 @@ const PlanDetails = () => {
         </div>
 
         <Typography variant="h5" sx={{ fontFamily: "Poppins, sans-serif" }}>
-          Plan Details
+          {language === 'en' ? "Plan Details" : "تفاصيل الخطة"}
         </Typography>
       </div>
 
@@ -147,7 +139,7 @@ const PlanDetails = () => {
           {/* Free Plan */}
           <div className="freePlan">
             <div className="freePlanUpper">
-              <p>Free Plan</p>
+              <p>{language === 'en' ? "Free Plan" : "خطة مجانية"}</p>
               <div style={{ display: "flex", gap: "10px" }}>
                 <p>
                   <strike style={{ color: "#515151", fontFamily: "Poppins" }}>
@@ -357,7 +349,7 @@ const PlanDetails = () => {
           <div className="rightCardLower">
             {/* Week Days */}
             <div>
-              <p>Week Days</p>
+              <p>{language === 'en' ? "Week Days" : "أيام الأسبوع"}</p>
               <div className="weekDays">
                 {weekdays.map((item, index) => (
                   <div
@@ -417,7 +409,7 @@ const PlanDetails = () => {
             </div>
             {/* Food Type */}
             <div>
-              <p>Food Types</p>
+              <p>{language === 'en' ? "Food Type" : "نوع الغذاء"}</p>
               <div className="foodType">
                 <div>Snacks (0/1)</div>
                 <div>Juice (0/1)</div>
@@ -429,7 +421,7 @@ const PlanDetails = () => {
       </div>
 
       <div className="meals">
-        <p>Select Meals</p>
+        <p>{language === 'en' ? "Select Meals" : "اختر الوجبات"}</p>
         <div className="mealCardContainer">
           {mealsByDay.map((meal, index) => (
             <div key={index} className="mealCard">
@@ -504,7 +496,7 @@ const PlanDetails = () => {
                 </svg>
 
                 {/* Recommended Tag */}
-                <div className="recommended">Recommended</div>
+                <div className="recommended">{language === 'en' ? "Recommended" : "مُستَحسَن"}</div>
               </div>
               <CardContent sx={{ padding: "0px", textAlign: "center" }}>
                 <Typography
@@ -515,7 +507,7 @@ const PlanDetails = () => {
                     mb: 1,
                   }}
                 >
-                  {meal.name}
+                  {language === 'en' ? meal.name : meal.name_arabic}
                 </Typography>
                 <Box display="flex" justifyContent="center" gap={2}>
                   {/* Box 1: 1080 KCal */}
@@ -598,7 +590,7 @@ const PlanDetails = () => {
         className="subscribeButtonContainer"
         onClick={() => handleNavigation()}
       >
-        <div className="subscribeButton">Subscribe Now, Schedule Later</div>
+        <div className="subscribeButton">{language === 'en' ? "Subscribe Now, Schedule Later" : "اشترك الآن، حدد موعدًا لاحقًا"}</div>
       </div>
       <OrderModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       <MealInfo

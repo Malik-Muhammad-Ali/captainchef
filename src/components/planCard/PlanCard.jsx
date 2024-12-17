@@ -8,10 +8,11 @@ import {
   Button,
   Grid2,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const PlanCard = ({planId}) => {
+const PlanCard = ({ planId }) => {
   const navigate = useNavigate();
+  const { categoryId } = useParams();
   const features = [
     {
       img: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,11 +100,11 @@ const PlanCard = ({planId}) => {
           borderRadius: 4,
           overflow: "hidden",
           position: "relative",
-          boxShadow: 'none'
+          boxShadow: "none",
         }}
       >
         {/* Image Section */}
-        <Box sx={{ position: "relative"}}>
+        <Box sx={{ position: "relative" }}>
           <CardMedia
             // sx={{borderRadius: '10px', boxShadow: '0px 0px 10px 0px #0000001A'}}
             component="img"
@@ -160,7 +161,7 @@ const PlanCard = ({planId}) => {
               <br />
               Click To See Details
             </Typography>
-          </Box>   
+          </Box>
         </Box>
 
         {/* Content Section */}
@@ -242,9 +243,11 @@ const PlanCard = ({planId}) => {
                 py: 0.5,
                 fontSize: "0.8rem",
                 height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
-                boxShadow: 'none'
+                boxShadow: "none",
               }}
-              onClick={() => navigate('/subscriptions/category/1/plans/2')}
+              onClick={() =>
+                navigate(`/subscriptions/category/${categoryId}/plans/2`)
+              }
             >
               See Details
             </Button>

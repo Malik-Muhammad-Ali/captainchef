@@ -17,18 +17,20 @@ import useAppStore from "../../store/store";
 import Logo from '../../../public/logocaptainchef.png'
 
 const Navbar = () => {
-  const { authenticated } = useAppStore();
+  const { authenticated, language, setLanguage } = useAppStore();
   const location = useLocation();
-  const [language, setLanguage] = useState("");
-  const [flag, setFlag] = useState("");
+  // const [language, setLanguage] = useState("");
+  const [flag, setFlag] = useState("https://flagcdn.com/w40/us.png");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   //   Flag Change
   const handleChange = (event) => {
     setLanguage(event.target.value);
     if (event.target.value === "english") {
+      setLanguage("en");
       setFlag("https://flagcdn.com/w40/us.png");
     } else if (event.target.value === "arabic") {
+      setLanguage("ar");
       setFlag("https://flagcdn.com/w40/sa.png");
     }
   };
@@ -162,12 +164,12 @@ const Navbar = () => {
                   <Box display="flex" alignItems="center" gap={1}>
                     <img src={flag} alt={language} width="20" height="15" />
                     <Typography>
-                      {language === "english" ? "English" : "Arabic"}
+                      {language === "en" ? "English" : "Arabic"}
                     </Typography>
                   </Box>
                 )}
               >
-                <MenuItem value="english">
+                <MenuItem value="en">
                   <Box display="flex" alignItems="center" gap={2}>
                     <img
                       src="https://flagcdn.com/w40/us.png"
@@ -178,7 +180,7 @@ const Navbar = () => {
                     <Typography>English</Typography>
                   </Box>
                 </MenuItem>
-                <MenuItem value="arabic">
+                <MenuItem value="ar">
                   <Box display="flex" alignItems="center" gap={1}>
                     <img
                       src="https://flagcdn.com/w40/sa.png"

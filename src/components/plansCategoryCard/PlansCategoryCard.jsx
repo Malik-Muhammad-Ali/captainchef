@@ -70,7 +70,6 @@ export default function PlansCategoryCard({color , title , img , id , language }
           },
           width: '100%',
           objectFit: "cover",
-          // borderBottom: `1px solid ${color}`,
         }}
         image={img}
         title={title}
@@ -94,7 +93,6 @@ export default function PlansCategoryCard({color , title , img , id , language }
             lg:1,
             xl:2.5,
           },
-          // padding:"4px"
         }}
       >
         <Typography
@@ -103,7 +101,7 @@ export default function PlansCategoryCard({color , title , img , id , language }
           component="div"
           sx={{
             fontSize: {
-              xs: '0.75rem', // Smaller text for smaller screens
+              xs: '0.75rem',
               sm: '1rem',
               md: '1.25rem',
               lg: '1.5rem',
@@ -120,7 +118,7 @@ export default function PlansCategoryCard({color , title , img , id , language }
           sx={{
             color: color,
             fontSize: {
-              xs: '0.65rem', // Smaller body text for smaller screens
+              xs: '0.65rem',
               sm: '0.85rem',
               md: '1rem',
               lg: '1rem',

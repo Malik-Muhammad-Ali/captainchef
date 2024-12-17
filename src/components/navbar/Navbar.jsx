@@ -25,11 +25,12 @@ const Navbar = () => {
 
   //   Flag Change
   const handleChange = (event) => {
+    console.log(event.target.value)
     setLanguage(event.target.value);
-    if (event.target.value === "english") {
+    if (event.target.value === "en") {
       setLanguage("en");
       setFlag("https://flagcdn.com/w40/us.png");
-    } else if (event.target.value === "arabic") {
+    } else if (event.target.value === "ar") {
       setLanguage("ar");
       setFlag("https://flagcdn.com/w40/sa.png");
     }

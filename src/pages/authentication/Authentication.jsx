@@ -21,12 +21,6 @@ const Authentication = () => {
           setAuthenticatedComponent={setAuthenticatedComponent}
         />
       )}
-
-      {!userExisted && !authenticatedComponent && (
-        <NotRegisteredYet
-          setAuthenticatedComponent={setAuthenticatedComponent}
-        />
-      )}
     </>
   );
 };

@@ -1,31 +1,30 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import {
   Box,
   Grid2,
   IconButton,
   Typography,
   CircularProgress,
-  Container,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
 import useAppStore from "../../store/store";
 
 const Plans = () => {
+  const { categoryId } = useParams(); // Get the category ID from the URL
   const [selectedPlan, setSelectedPlan] = useState("weekly");
   const [loading, setLoading] = useState(true); // Add a loading state
   const { fetchPlans, plans } = useAppStore();
-  console.log(plans);
+  // const matchedPlans = plans.filter((plan) => plan.id.toString() == id);
+  // console.log(matchedPlans);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchPlans();
-      setLoading(false);
-    };
-
-    fetchData();
-  }, []);
+    setLoading(true);
+    fetchPlans(categoryId);
+    setLoading(false);
+  }, [categoryId]);
 
   return (
     <Box
@@ -36,7 +35,7 @@ const Plans = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        // border: "2px solid black",
+        // border: "2px solid red",
       }}
     >
       {/* Header Box */}
@@ -47,8 +46,9 @@ const Plans = () => {
           justifyContent: { xs: "flex-start", sm: "space-between" },
           alignItems: "center",
           borderRadius: "10px",
-          width: { xs: "100%", sm: "84%", md: "94%", lg: "95%", xl: "92.8%" },
-          ml: { lg: "35px", md: "30px", sm: "60px", xs: "0", xl: "100px" },
+          width: { xs: "350px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
+          // ml: { lg: "0", md: "30px", sm: "0", xs: "0", xl: "100px" },
+          // border: "2px solid green",
         }}
       >
         {/* First Child Box */}
@@ -91,10 +91,12 @@ const Plans = () => {
             sx={{
               display: { xs: "flex", sm: "none" }, // Visible only on xs screens
               justifyContent: "space-between",
+              flexWrap: "wrap",
               alignItems: "center",
-              width: "90vw", // Full width for mobile
+              width: "100%", // Full width for mobile
+              gap: "170px",
               // px: "16px", // Optional padding for spacing
-              pr: "14px",
+              // pr: "14px",
             }}
           >
             <Typography
@@ -113,8 +115,9 @@ const Plans = () => {
                   textDecoration: "underline",
                   cursor: "pointer",
                   fontSize: { xs: "12px" },
-                  justifySelf: "end",
-                  alignSelf: "flex-end",
+                  // ml: "20px",
+                  // justifySelf: "end",
+                  // alignSelf: "flex-end",
                 }}
               >
                 Custom Plan
@@ -237,8 +240,16 @@ const Plans = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: {
+              xs: "center",
+              sm: "flex-start",
+              md: "flex-start",
+              lg: "flex-start",
+            },
             mt: "40px",
+            textAlign: "left",
+            // border: "2px solid black",
+            width: { lg: "1270px", md: "", sm: "630px" },
           }}
         >
           {plans
@@ -252,8 +263,9 @@ const Plans = () => {
                 id={plan.id}
                 sx={{
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  // border: "2px solid black",
+                  // alignItems: "center",
+                  // justifyContent: "center",
                 }}
               >
                 <PlanCard
@@ -261,6 +273,7 @@ const Plans = () => {
                   range={plan.plan_type_range}
                   planID={plan.id}
                   days={plan.total_days}
+                  heading={plan.subscription_cat_name}
                   delivery={plan.city}
                   items={plan.no_of_items.items.filter(
                     (item) => item.value > 0

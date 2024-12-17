@@ -16,11 +16,12 @@ const getFilteredItems = (items) => {
 //   return delivery.filter((deliver) => Number(deliver.delivery_charges));
 // };
 
-const PlanCard = ({ plan, planID, days, items, delivery, range }) => {
+const PlanCard = ({ plan, planID, days, items, delivery, range, heading }) => {
   const filteredItems = getFilteredItems(items);
   // const filteredDelivery = getFilteredDelivery(delivery);
   const navigate = useNavigate();
   const { categoryId } = useParams();
+  console.log(heading);
 
   const features = [
     <svg
@@ -221,7 +222,7 @@ const PlanCard = ({ plan, planID, days, items, delivery, range }) => {
     >
       <Card
         sx={{
-          width: { lg: 300, md: 300, sm: 300, xs: 385 },
+          width: { lg: 300, md: 300, sm: 300, xs: 350 },
           height: "auto",
           margin: "auto",
           borderRadius: 4,
@@ -253,7 +254,7 @@ const PlanCard = ({ plan, planID, days, items, delivery, range }) => {
               fontSize: "0.9rem",
             }}
           >
-            Weight Maintenance Plan
+            {heading}
           </Typography>
 
           {/* Free Plan Rotated Banner */}
@@ -408,7 +409,7 @@ const PlanCard = ({ plan, planID, days, items, delivery, range }) => {
               >
                 <Box sx={{ width: "20px", height: "20px" }}>
                   {/* dangerouslySetInnerHTML={{ _html:  }} */}
-                  {features[index]}
+                  {features[(index + 3) % features.length]}
                 </Box>
                 <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
                   {item.value} {item.name}
@@ -432,7 +433,9 @@ const PlanCard = ({ plan, planID, days, items, delivery, range }) => {
                 boxShadow: "none",
               }}
               onClick={() =>
-                navigate(`/subscriptions/category/${categoryId}/plans/${planID}`)
+                navigate(
+                  `/subscriptions/category/${categoryId}/plans/${planID}`
+                )
               }
             >
               See Details

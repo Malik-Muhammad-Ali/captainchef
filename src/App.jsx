@@ -22,6 +22,7 @@ import RegeneratePassowrd from "./pages/regeneratePassword/RegeneratePassword";
 import Checkout from "./pages/checkout/Checkout";
 import PickupAddress from "./pages/pickupAddress/PickupAddress";
 import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
+import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
 
 // Create a custom theme
 const theme = createTheme({
@@ -53,6 +54,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/mysubscriptions" element={<MySubscriptions />} />
           <Route path="/downloadapp" element={<BarCode />} />
+          <Route path="/otp" element={<NotRegisterYet />} />
         </Routes>
       </Router>
     </ThemeProvider>

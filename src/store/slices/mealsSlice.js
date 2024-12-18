@@ -3,7 +3,7 @@ import axios from "axios";
 const mealsSlice = (set) => ({
   meals: [],
   mealsByDay: [],
-  fetchMeals: async (categoryId) => {
+  fetchMeals: async (categoryId) => { 
     const response = await axios.get(
       `https://app.captainchef.net/api/v1/subscription/meals?subscription_category=${categoryId}`
     );

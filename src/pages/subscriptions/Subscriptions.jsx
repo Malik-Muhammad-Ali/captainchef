@@ -97,6 +97,7 @@ const Subscriptions = () => {
               lg: "1180px",
               xl: "2000px",
             },
+            direction: isRTL ? "rtl" : "ltr",
           }}
         >
           {categories.map((data, index) => (

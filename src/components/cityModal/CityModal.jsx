@@ -13,7 +13,8 @@ import { motion } from "framer-motion";
 import useAppStore from "../../store/store";
 
 const CityModal = () => {
-  const { city, setCity } = useAppStore();
+  const { city, setCity, cities,fetchCities, language } = useAppStore();
+  const isArabic = language == 'ar';
   const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const handleCityChange = (event) => {
@@ -21,10 +22,11 @@ const CityModal = () => {
   };
 
   useEffect(()=>{
+    fetchCities();
     if(!city){
       setOpen(true);
     }
-  })
+  },[city])
 
   const handleSubmit = () => {
     if (city) {
@@ -71,6 +73,7 @@ const CityModal = () => {
             outline: "none",
             backgroundColor: "background.paper",
             padding: isMobile ? "24px" : "32px",
+            direction: isArabic ? "rtl" : "ltr",
           }}
         >
           <Typography
@@ -88,7 +91,7 @@ const CityModal = () => {
               ml: 2,
             }}
           >
-            Select Your City
+            {isArabic? "اختر مدينتك" : "Select Your City"}
           </Typography>
 
           <RadioGroup
@@ -98,10 +101,10 @@ const CityModal = () => {
               width: "100%",
             }}
           >
-            {["Makkah", "Madina", "Riyadh", "Jeddah"].map((cityName) => (
+            {cities.map((cityName) => (
               <FormControlLabel
-                key={cityName}
-                value={cityName}
+                key={cityName.city_name}
+                value={cityName.city_name}
                 control={
                   <Radio
                     sx={{
@@ -112,7 +115,7 @@ const CityModal = () => {
                     }}
                   />
                 }
-                label={cityName}
+                label={isArabic? cityName.city_name_ar : cityName.city_name}
                 sx={{
                   display: "flex",
                   ml: 2,
@@ -121,9 +124,9 @@ const CityModal = () => {
                   marginBottom: "8px",
                   borderRadius: "8px",
                   backgroundColor:
-                    city === cityName ? "#FAE9EA" : "#F8F8F8",
+                    city === cityName.city_name ? "#FAE9EA" : "#F8F8F8",
                   border:
-                    city === cityName
+                    city === cityName.city_name
                       ? "2px solid #D92531"
                       : "1px solid #e0e0e0",
                   fontSize: "18px",

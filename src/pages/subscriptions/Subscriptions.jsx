@@ -84,6 +84,7 @@ const Subscriptions = () => {
             flexWrap: "wrap",
             gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
             maxWidth: { xs: "300px", sm: "620px", md: "930px", lg: "1180px", xl: "2000px" },
+            direction: isRTL ? "rtl" : "ltr",
           }}
         >
           {categories.map((data, index) => (

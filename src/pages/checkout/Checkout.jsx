@@ -196,9 +196,11 @@ const Checkout = () => {
                 <TextField
                   label="Name"
                   margin="normal"
+                  value={"Hussain Gaggal"}
                   variant="standard"
                   InputProps={{
                     disableUnderline: true,
+                    readOnly: true, // Makes the field read-only
                   }}
                   InputLabelProps={{
                     sx: {
@@ -236,11 +238,13 @@ const Checkout = () => {
 
                 <TextField
                   label="Phone"
+                  value={"+966501729924"}
                   margin="normal"
                   variant="standard"
-                  type="number"
+                  // type="number"
                   InputProps={{
                     disableUnderline: true,
+                    readOnly: "true",
                   }}
                   InputLabelProps={{
                     sx: {
@@ -257,7 +261,7 @@ const Checkout = () => {
                       },
                     },
                   }}
-                  placeholder="" // Empty placeholder since the label acts as one
+                  // placeholder="" // Empty placeholder since the label acts as one
                   sx={{
                     width: {
                       lg: "530px",
@@ -287,8 +291,10 @@ const Checkout = () => {
                   label="City"
                   margin="normal"
                   variant="standard"
+                  value={"Riyadh"}
                   InputProps={{
                     disableUnderline: true,
+                    readOnly: true, // Makes the field read-only
                   }}
                   InputLabelProps={{
                     sx: {

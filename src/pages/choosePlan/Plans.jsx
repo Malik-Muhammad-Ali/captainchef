@@ -16,7 +16,7 @@ const Plans = () => {
   const { categoryId } = useParams(); // Get the category ID from the URL
   const [selectedPlan, setSelectedPlan] = useState("weekly");
   const [loading, setLoading] = useState(true); // Add a loading state
-  const { fetchPlans, plans } = useAppStore();
+  const { fetchPlans, plans, language } = useAppStore();
   // const matchedPlans = plans.filter((plan) => plan.id.toString() == id);
   // console.log(matchedPlans);
 
@@ -25,6 +25,7 @@ const Plans = () => {
     fetchPlans(categoryId);
     setLoading(false);
   }, [categoryId]);
+  const isArabic = language === "ar";
 
   return (
     <Box
@@ -35,6 +36,8 @@ const Plans = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        direction: isArabic ? "rtl" : "ltr", // Set text direction based on language
+
         // border: "2px solid red",
       }}
     >
@@ -78,7 +81,7 @@ const Plans = () => {
           >
             <ArrowBackIosIcon
               sx={{
-                // color: "#000",
+                transform: isArabic ? "rotate(180deg)" : "none", // Rotates the arrow for RTL (Arabic)
                 paddingLeft: { xs: "5px", sm: "8px" },
                 fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
               }}
@@ -106,7 +109,7 @@ const Plans = () => {
                 color: "#000",
               }}
             >
-              Choose Plan
+              {isArabic ? "اختر خطة" : "Choose Plan"}
             </Typography>
             <Box sx={{}}>
               <Typography
@@ -120,7 +123,7 @@ const Plans = () => {
                   // alignSelf: "flex-end",
                 }}
               >
-                Custom Plan
+                {isArabic ? "خطة مخصصة" : "Custom Plan"}
               </Typography>
             </Box>
           </Box>
@@ -140,7 +143,7 @@ const Plans = () => {
                 color: "#000",
               }}
             >
-              Choose Plan
+              {isArabic ? "اختر خطة" : "Choose Plan"}
             </Typography>
             <Typography
               sx={{
@@ -151,7 +154,7 @@ const Plans = () => {
                 ml: { md: "10px", lg: "10px", sm: "10px" },
               }}
             >
-              Custom Plan
+              {isArabic ? "خطة مخصصة" : "Custom Plan"}
             </Typography>
           </Box>
         </Box>
@@ -186,10 +189,10 @@ const Plans = () => {
               borderRadius: "12px",
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
-              transition: "background-color 0.3s ease",
+              // transition: "background-color 0.3s ease",
             }}
           >
-            Weekly
+            {isArabic ? "أسبوعي" : "Weekly"}
           </Box>
 
           {/* Monthly Option */}
@@ -210,10 +213,10 @@ const Plans = () => {
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
               // fontWeight: "bold",
-              transition: "background-color 0.3s ease",
+              // transition: "background-color 0.3s ease",
             }}
           >
-            Monthly
+            {isArabic ? "شهري" : "Monthly"}
           </Box>
         </Box>
       </Box>
@@ -248,12 +251,11 @@ const Plans = () => {
             },
             mt: "40px",
             textAlign: "left",
-            // border: "2px solid black",
-            width: { lg: "1270px", md: "", sm: "630px" },
+            width: { lg: "1270px", sm: "630px" },
           }}
         >
           {plans
-            .filter((plan) => plan.plan_type_range == selectedPlan) // Filter only valid plans
+            .filter((plan) => plan.plan_type_range === selectedPlan) // Filter only valid plans
             .map((plan) => (
               <Grid2
                 xs={12}
@@ -263,17 +265,21 @@ const Plans = () => {
                 id={plan.id}
                 sx={{
                   display: "flex",
-                  // border: "2px solid black",
-                  // alignItems: "center",
-                  // justifyContent: "center",
                 }}
               >
                 <PlanCard
                   plan={plan}
                   range={plan.plan_type_range}
+                  title={isArabic ? plan.title_ar : plan.title}
+                  heading={
+                    isArabic
+                      ? plan.subscription_cat_name_ar
+                      : plan.subscription_cat_name
+                  }
                   planID={plan.id}
                   days={plan.total_days}
-                  heading={plan.subscription_cat_name}
+                  freePlans={plan.free_plans || []} // Pass free_plans array or default to an empty array
+                  language={language}
                   delivery={plan.city}
                   items={plan.no_of_items.items.filter(
                     (item) => item.value > 0

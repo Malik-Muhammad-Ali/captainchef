@@ -16,12 +16,25 @@ const getFilteredItems = (items) => {
 //   return delivery.filter((deliver) => Number(deliver.delivery_charges));
 // };
 
-const PlanCard = ({ plan, planID, days, items, delivery, range, heading }) => {
+const PlanCard = ({
+  plan,
+  planID,
+  days,
+  items,
+  delivery,
+  range,
+  heading,
+  arCatName,
+  language,
+  freePlans,
+  title,
+}) => {
   const filteredItems = getFilteredItems(items);
   // const filteredDelivery = getFilteredDelivery(delivery);
   const navigate = useNavigate();
   const { categoryId } = useParams();
-  console.log(heading);
+  console.log(freePlans);
+  const isArabic = language === "ar";
 
   const features = [
     <svg
@@ -240,7 +253,6 @@ const PlanCard = ({ plan, planID, days, items, delivery, range, heading }) => {
             height="140"
             image={plan.plan_image} // Replace with your image URL
           />
-
           {/* Top Left Typo */}
           <Typography
             sx={{
@@ -256,49 +268,73 @@ const PlanCard = ({ plan, planID, days, items, delivery, range, heading }) => {
           >
             {heading}
           </Typography>
-
           {/* Free Plan Rotated Banner */}
-          <Box
-            sx={{
-              position: "absolute",
-              top: 30,
-              right: -40,
-              backgroundColor: "#249A46",
-              color: "white",
-              width: 140,
-              height: 30,
-              transform: "rotate(54deg)",
-              transformOrigin: "center",
-              clipPath: "polygon(18% -895%, 120% 0%, 120% 98%, 0% 100%)", // Straight bottom edge
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: "1",
-            }}
-          >
-            <Typography
-              variant="body2"
+
+          {freePlans && freePlans.length > 0 && (
+            <Box
               sx={{
-                fontSize: "0.6rem",
-                textAlign: "center",
-                lineHeight: "1.2",
-                mr: 1,
+                position: "absolute",
+                top: 30,
+                right: -40,
+                backgroundColor: "#249A46",
+                color: "white",
+                width: 140,
+                height: 30,
+                transform: "rotate(54deg)",
+                transformOrigin: "center",
+                clipPath: "polygon(18% -895%, 120% 0%, 120% 98%, 0% 100%)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: "1",
               }}
             >
-              Free Plan
-              <br />
-              Click To See Details
-            </Typography>
-          </Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: "0.6rem",
+                  textAlign: isArabic ? "center" : "center",
+                  lineHeight: "1.2",
+                  mr: 1,
+                }}
+              >
+                {isArabic ? (
+                  <>
+                    خطة مجانية
+                    <br />
+                    اضغط لرؤية التفاصيل
+                  </>
+                ) : (
+                  <>
+                    Free Plan
+                    <br />
+                    Click To See Details
+                  </>
+                )}
+              </Typography>
+            </Box>
+          )}
         </Box>
 
         {/* Content Section */}
         <CardContent sx={{ padding: "8px 12px" }}>
           {/* Title and Prices */}
-          <Box sx={{ textAlign: "left", mb: 1 }}>
-            <Typography variant="h6" sx={{ fontSize: "15px" }}>
-              {plan.description}
+          <Box
+            sx={{
+              textAlign: "left",
+              mb: 1,
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: "15px",
+                textAlign: isArabic ? "right" : "left", // Adjusts text alignment based on language
+              }}
+            >
+              {title}
             </Typography>
+
             <Box sx={{ display: "flex", gap: "8px" }}>
               <Typography
                 variant="body2"
@@ -431,6 +467,7 @@ const PlanCard = ({ plan, planID, days, items, delivery, range, heading }) => {
                 fontSize: "0.8rem",
                 height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
                 boxShadow: "none",
+                textAlign: isArabic ? "right" : "center", // Adjust alignment if necessary
               }}
               onClick={() =>
                 navigate(
@@ -438,7 +475,7 @@ const PlanCard = ({ plan, planID, days, items, delivery, range, heading }) => {
                 )
               }
             >
-              See Details
+              {isArabic ? "عرض التفاصيل" : "See Details"}
             </Button>
           </Box>
         </CardContent>

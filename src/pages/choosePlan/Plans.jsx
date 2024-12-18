@@ -92,35 +92,48 @@ const Plans = () => {
           {/* Box for mobile screens only */}
           <Box
             sx={{
-              display: { xs: "flex", sm: "none" }, // Visible only on xs screens
+              display: { xs: "flex", sm: "none" },
               justifyContent: "space-between",
-              flexWrap: "wrap",
-              alignItems: "center",
-              width: "100%", // Full width for mobile
-              gap: "170px",
-              // px: "16px", // Optional padding for spacing
-              // pr: "14px",
+              p: "0 10px",
+              width: { lg: "900px", md: "720px", sm: "664px", xs: "330px" },
+              mt: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
             }}
           >
-            <Typography
+            <Box
               sx={{
-                fontSize: { xs: "15px" },
-                fontWeight: "600",
-                color: "#000",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                gap: {
+                  xs: "10px",
+                  sm: "30px",
+                  md: "30px",
+                },
               }}
             >
-              {isArabic ? "اختر خطة" : "Choose Plan"}
-            </Typography>
-            <Box sx={{}}>
               <Typography
                 sx={{
+                  fontSize: { xs: "15px" },
+                  fontWeight: "600",
+                  color: "#000",
+                }}
+              >
+                {isArabic ? "اختر خطة" : "Choose Plan"}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { xs: "12px" },
                   color: "#D92531",
                   textDecoration: "underline",
                   cursor: "pointer",
-                  fontSize: { xs: "12px" },
-                  // ml: "20px",
-                  // justifySelf: "end",
-                  // alignSelf: "flex-end",
                 }}
               >
                 {isArabic ? "خطة مخصصة" : "Custom Plan"}
@@ -134,6 +147,7 @@ const Plans = () => {
               display: { xs: "none", sm: "flex" }, // Hidden on xs screens
               justifyContent: { xs: "center" },
               alignItems: "center",
+              gap: "1rem",
             }}
           >
             <Typography
@@ -152,6 +166,7 @@ const Plans = () => {
                 cursor: "pointer",
                 fontSize: { sm: "16px", md: "16px" },
                 ml: { md: "10px", lg: "10px", sm: "10px" },
+                // mr: { md: "10px", lg: "10px", sm: "10px" },
               }}
             >
               {isArabic ? "خطة مخصصة" : "Custom Plan"}

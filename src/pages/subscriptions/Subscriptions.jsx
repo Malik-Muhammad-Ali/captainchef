@@ -7,18 +7,25 @@ import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
 import useAppStore from "../../store/store";
 
-
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
-  const {fetchCategories, categories, language} = useAppStore();
+  const { fetchCategories, categories, language } = useAppStore();
   const isRTL = language === "ar";
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchCategories();
-  },[])
+  }, []);
 
-
-  const getTextColor = ["#FFCA44","#352A6E","#0EA81D","#CE2729","#D2252B","#AE77BA","#2A70B6","#FD88BF"]
+  const getTextColor = [
+    "#FFCA44",
+    "#352A6E",
+    "#0EA81D",
+    "#CE2729",
+    "#D2252B",
+    "#AE77BA",
+    "#2A70B6",
+    "#FD88BF",
+  ];
 
   return (
     <Box
@@ -75,7 +82,7 @@ const Subscriptions = () => {
               fontFamily: "Open Sans, sans-serif",
             }}
           >
-            {language === "en" ? "Plan Categories" : "أقسام الخطط "}  
+            {language === "en" ? "Plan Categories" : "أقسام الخطط "}
           </Typography>
         </Box>
         <Box
@@ -83,7 +90,14 @@ const Subscriptions = () => {
             display: "flex",
             flexWrap: "wrap",
             gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
-            maxWidth: { xs: "300px", sm: "620px", md: "930px", lg: "1180px", xl: "2000px" },
+            maxWidth: {
+              xs: "300px",
+              sm: "620px",
+              md: "930px",
+              lg: "1180px",
+              xl: "2000px",
+            },
+            direction: isRTL ? "rtl" : "ltr",
           }}
         >
           {categories.map((data, index) => (
@@ -92,7 +106,11 @@ const Subscriptions = () => {
               id={data.id}
               language={language}
               color={getTextColor[index % getTextColor.length]}
-              title={language === "en" ? data.category_name_en : data.category_name_ar}
+              title={
+                language === "en"
+                  ? data.category_name_en
+                  : data.category_name_ar
+              }
               img={data.image}
             />
           ))}

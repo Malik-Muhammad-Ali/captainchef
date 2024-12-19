@@ -49,7 +49,7 @@ const CreateAccount = () => {
           backgroundColor: "white",
           cursor: "pointer",
         }}
-        onClick={() => navigate("/authentication")}
+        onClick={() => navigate(-1)}
       >
         <ArrowBackIosIcon
           sx={{ fontSize: "24px", color: "#D92531", ml: "7px" }}
@@ -403,11 +403,22 @@ const CreateAccount = () => {
               padding: "10px 16px",
               width: { xs: "100%", sm: "360px", md: "512px" },
               height: { xs: "56px", sm: "56px", md: "56px" },
+              marginBottom: '10px'
             }}
             onClick={() => handleRegistration()}
           >
             Register
           </Button>
+
+          <Box sx={{ display: "flex", gap: "6px", paddingBottom: '20px' }}>
+            <Typography>Already Have any Account?</Typography>
+            <Typography
+              sx={{ cursor: "Pointer", color: "#D92531", fontWeight: "Bold" }}
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Typography>
+          </Box>
         </Box>
       </motion.div>
     </Grid2>

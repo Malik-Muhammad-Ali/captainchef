@@ -14,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
 import useAppStore from "../../store/store";
-import Logo from '../../../public/logocaptainchef.png'
+import Logo from "../../../public/logocaptainchef.png";
 
 const Navbar = () => {
   const { authenticated, language, setLanguage } = useAppStore();
@@ -25,7 +25,7 @@ const Navbar = () => {
 
   //   Flag Change
   const handleChange = (event) => {
-    console.log(event.target.value)
+    console.log(event.target.value);
     setLanguage(event.target.value);
     if (event.target.value === "en") {
       setLanguage("en");
@@ -182,7 +182,7 @@ const Navbar = () => {
                   </Box>
                 </MenuItem>
                 <MenuItem value="ar">
-                  <Box display="flex" alignItems="center" gap={1}>
+                  <Box display="flex" alignItems="center" gap={2}>
                     <img
                       src="https://flagcdn.com/w40/sa.png"
                       alt="Arabic"
@@ -204,7 +204,7 @@ const Navbar = () => {
                 height: "56px",
                 borderRadius: "12px",
                 width: { xs: "56px", sm: "40px", md: "130px", lg: "197px" },
-                boxShadow: 'none'
+                boxShadow: "none",
               }}
             >
               Download App
@@ -413,7 +413,7 @@ const Navbar = () => {
                 </Box>
               </MenuItem>
               <MenuItem value="ar">
-                <Box display="flex" alignItems="center" gap={1}>
+                <Box display="flex" alignItems="center" gap={2}>
                   <img
                     src="https://flagcdn.com/w40/sa.png"
                     alt="Arabic"
@@ -433,7 +433,7 @@ const Navbar = () => {
               height: "56px",
               borderRadius: "12px",
               width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
-              boxShadow: 'none'
+              boxShadow: "none",
             }}
           >
             Download App

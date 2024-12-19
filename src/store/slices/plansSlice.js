@@ -8,7 +8,10 @@ const PlansSlice = (set) => ({
         try {
             const response = await axios.get(`https://appv2.captainchef.net/AppV2/public/get-plans?subscription_cat=${cat_id}`);
             const data = response.data.data;
-            console.log(response)
+            // const freePlans = response.data.free_plans;
+            // console.log(freePlans.id);
+            
+            // console.log(response)
             set({ plans: data });
         } catch (error) {
             set({ error: error.message });

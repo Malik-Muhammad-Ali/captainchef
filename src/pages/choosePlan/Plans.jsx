@@ -16,7 +16,7 @@ const Plans = () => {
   const { categoryId } = useParams(); // Get the category ID from the URL
   const [selectedPlan, setSelectedPlan] = useState("weekly");
   const [loading, setLoading] = useState(true); // Add a loading state
-  const { fetchPlans, plans } = useAppStore();
+  const { fetchPlans, plans, language } = useAppStore();
   // const matchedPlans = plans.filter((plan) => plan.id.toString() == id);
   // console.log(matchedPlans);
 
@@ -25,6 +25,7 @@ const Plans = () => {
     fetchPlans(categoryId);
     setLoading(false);
   }, [categoryId]);
+  const isArabic = language === "ar";
 
   return (
     <Box
@@ -36,6 +37,7 @@ const Plans = () => {
         flexDirection: "column",
         alignItems: "center",
         minHeight: '100vh',
+        direction: isArabic ? "rtl" : "ltr",
       }}
     >
       {/* Header Box */}
@@ -78,7 +80,7 @@ const Plans = () => {
           >
             <ArrowBackIosIcon
               sx={{
-                // color: "#000",
+                transform: isArabic ? "rotate(180deg)" : "none", // Rotates the arrow for RTL (Arabic)
                 paddingLeft: { xs: "5px", sm: "8px" },
                 fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
               }}
@@ -89,38 +91,51 @@ const Plans = () => {
           {/* Box for mobile screens only */}
           <Box
             sx={{
-              display: { xs: "flex", sm: "none" }, // Visible only on xs screens
+              display: { xs: "flex", sm: "none" },
               justifyContent: "space-between",
-              flexWrap: "wrap",
-              alignItems: "center",
-              width: "100%", // Full width for mobile
-              gap: "170px",
-              // px: "16px", // Optional padding for spacing
-              // pr: "14px",
+              p: "0 10px",
+              width: { lg: "900px", md: "720px", sm: "664px", xs: "330px" },
+              mt: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
             }}
           >
-            <Typography
+            <Box
               sx={{
-                fontSize: { xs: "15px" },
-                fontWeight: "600",
-                color: "#000",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                gap: {
+                  xs: "10px",
+                  sm: "30px",
+                  md: "30px",
+                },
               }}
             >
-              Choose Plan
-            </Typography>
-            <Box sx={{}}>
               <Typography
                 sx={{
+                  fontSize: { xs: "15px" },
+                  fontWeight: "600",
+                  color: "#000",
+                }}
+              >
+                {isArabic ? "اختر خطة" : "Choose Plan"}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { xs: "12px" },
                   color: "#D92531",
                   textDecoration: "underline",
                   cursor: "pointer",
-                  fontSize: { xs: "12px" },
-                  // ml: "20px",
-                  // justifySelf: "end",
-                  // alignSelf: "flex-end",
                 }}
               >
-                Custom Plan
+                {isArabic ? "خطة مخصصة" : "Custom Plan"}
               </Typography>
             </Box>
           </Box>
@@ -131,6 +146,7 @@ const Plans = () => {
               display: { xs: "none", sm: "flex" }, // Hidden on xs screens
               justifyContent: { xs: "center" },
               alignItems: "center",
+              gap: "1rem",
             }}
           >
             <Typography
@@ -140,7 +156,7 @@ const Plans = () => {
                 color: "#000",
               }}
             >
-              Choose Plan
+              {isArabic ? "اختر خطة" : "Choose Plan"}
             </Typography>
             <Typography
               sx={{
@@ -149,9 +165,10 @@ const Plans = () => {
                 cursor: "pointer",
                 fontSize: { sm: "16px", md: "16px" },
                 ml: { md: "10px", lg: "10px", sm: "10px" },
+                // mr: { md: "10px", lg: "10px", sm: "10px" },
               }}
             >
-              Custom Plan
+              {isArabic ? "خطة مخصصة" : "Custom Plan"}
             </Typography>
           </Box>
         </Box>
@@ -186,10 +203,10 @@ const Plans = () => {
               borderRadius: "12px",
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
-              transition: "background-color 0.3s ease",
+              // transition: "background-color 0.3s ease",
             }}
           >
-            Weekly
+            {isArabic ? "أسبوعي" : "Weekly"}
           </Box>
 
           {/* Monthly Option */}
@@ -210,10 +227,10 @@ const Plans = () => {
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
               // fontWeight: "bold",
-              transition: "background-color 0.3s ease",
+              // transition: "background-color 0.3s ease",
             }}
           >
-            Monthly
+            {isArabic ? "شهري" : "Monthly"}
           </Box>
         </Box>
       </Box>
@@ -248,12 +265,11 @@ const Plans = () => {
             },
             mt: "40px",
             textAlign: "left",
-            // border: "2px solid black",
-            width: { lg: "1270px", md: "", sm: "630px" },
+            width: { lg: "1270px", sm: "630px" },
           }}
         >
           {plans
-            .filter((plan) => plan.plan_type_range == selectedPlan) // Filter only valid plans
+            .filter((plan) => plan.plan_type_range === selectedPlan) // Filter only valid plans
             .map((plan) => (
               <Grid2
                 xs={12}
@@ -263,17 +279,21 @@ const Plans = () => {
                 id={plan.id}
                 sx={{
                   display: "flex",
-                  // border: "2px solid black",
-                  // alignItems: "center",
-                  // justifyContent: "center",
                 }}
               >
                 <PlanCard
                   plan={plan}
                   range={plan.plan_type_range}
+                  title={isArabic ? plan.title_ar : plan.title}
+                  heading={
+                    isArabic
+                      ? plan.subscription_cat_name_ar
+                      : plan.subscription_cat_name
+                  }
                   planID={plan.id}
                   days={plan.total_days}
-                  heading={plan.subscription_cat_name}
+                  freePlans={plan.free_plans || []} // Pass free_plans array or default to an empty array
+                  language={language}
                   delivery={plan.city}
                   items={plan.no_of_items.items.filter(
                     (item) => item.value > 0

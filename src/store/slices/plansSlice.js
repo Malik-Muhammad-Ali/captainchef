@@ -2,6 +2,7 @@ import axios from "axios";
 
 const PlansSlice = (set) => ({
     plans: [],
+    loading:(true),
     error: null,
     fetchPlans: async (cat_id) => {
         set({ plans: [], error: null }); // Reset state before fetching

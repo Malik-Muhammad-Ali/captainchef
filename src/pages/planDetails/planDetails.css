@@ -216,6 +216,13 @@
   cursor: pointer;
 }
 
+.noMealsMessage {
+  text-align: center;
+  font-size: 18px;
+  color: #d92531;
+  padding: 20px;
+}
+
 @media (min-width: 1131px) {
   .textAndIcon {
     font-size: 16px;

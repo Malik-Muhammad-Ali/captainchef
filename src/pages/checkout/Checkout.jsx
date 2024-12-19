@@ -91,7 +91,7 @@ const Checkout = () => {
             minWidth: { lg: "1170px", md: "900px", sm: "750px", xs: "380px" },
             display: "flex",
             justifyContent: "flex-start",
-            ml: { lg: "-30px", xs: "0" },
+            ml: { lg: "-100px", xs: "0" },
           }}
         >
           <Box
@@ -104,17 +104,21 @@ const Checkout = () => {
           >
             <IconButton
               sx={{
-                border: "2px solid #f5f5f5",
+                width: { xs: "48px", sm: "56px" },
+                height: { xs: "48px", sm: "56px" },
+                display: "flex",
+                alignItems: "center",
+                // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
+                justifyContent: "center",
                 borderRadius: "20%",
-                backgroundColor: "#ffffff",
-                width: { xs: "48px", sm: "45px" },
-                height: { xs: "48px", sm: "45px" },
+                backgroundColor: "#fff",
+                cursor: "pointer",
               }}
             >
               <ArrowBackIosIcon
                 sx={{
-                  color: "#000",
-                  paddingLeft: { xs: "6px", sm: "8px" },
+                  fontSize: "24px",
+                  ml: "7px",
                 }}
               />
             </IconButton>

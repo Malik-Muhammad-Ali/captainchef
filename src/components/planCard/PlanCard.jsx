@@ -22,7 +22,6 @@ const PlanCard = ({
   days,
   items,
   delivery,
-  range,
   heading,
   arCatName,
   language,

@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  Box,
-  Grid2,
-  IconButton,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Grid2, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
 import useAppStore from "../../store/store";
+import Loader from "../../components/loader/Loader";
 
 const Plans = () => {
   const { categoryId } = useParams(); // Get the category ID from the URL
@@ -36,7 +31,7 @@ const Plans = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        minHeight: '100vh',
+        minHeight: "100vh",
         direction: isArabic ? "rtl" : "ltr",
       }}
     >
@@ -71,18 +66,22 @@ const Plans = () => {
           {/* Icon */}
           <IconButton
             sx={{
+              width: { xs: "48px", sm: "56px" },
+              height: { xs: "48px", sm: "56px" },
+              display: "flex",
+              alignItems: "center",
+              // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
+              justifyContent: "center",
               borderRadius: "20%",
               backgroundColor: "#fff",
-              // boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
-              width: { xs: "40px", sm: "40px", md: "45px" },
-              height: { xs: "40px", sm: "40px", md: "45px" },
+              cursor: "pointer",
             }}
           >
             <ArrowBackIosIcon
               sx={{
                 transform: isArabic ? "rotate(180deg)" : "none", // Rotates the arrow for RTL (Arabic)
-                paddingLeft: { xs: "5px", sm: "8px" },
-                fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
+                fontSize: "24px",
+                ml: "7px",
               }}
             />
           </IconButton>
@@ -237,19 +236,7 @@ const Plans = () => {
 
       {/* Conditional Rendering: Show Loading or Content */}
       {loading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50vh",
-          }}
-        >
-          <CircularProgress color="#D92531" />
-          <Typography sx={{ marginLeft: 2, fontSize: "1.2rem" }}>
-            Loading Plans...
-          </Typography>
-        </Box>
+        <Loader />
       ) : (
         <Grid2
           container
@@ -268,39 +255,86 @@ const Plans = () => {
             width: { lg: "1270px", sm: "630px" },
           }}
         >
-          {plans
-            .filter((plan) => plan.plan_type_range === selectedPlan) // Filter only valid plans
-            .map((plan) => (
-              <Grid2
-                xs={12}
-                sm={6}
-                md={3}
-                key={plan.id}
-                id={plan.id}
+          {plans.filter((plan) => plan.plan_type_range === selectedPlan)
+            .length > 0 ? (
+            plans
+              .filter((plan) => plan.plan_type_range === selectedPlan)
+              .map((plan) => (
+                <Grid2
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  key={plan.id}
+                  id={plan.id}
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  <PlanCard
+                    plan={plan}
+                    range={plan.plan_type_range}
+                    title={isArabic ? plan.title_ar : plan.title}
+                    heading={
+                      isArabic
+                        ? plan.subscription_cat_name_ar
+                        : plan.subscription_cat_name
+                    }
+                    planID={plan.id}
+                    days={plan.total_days}
+                    freePlans={plan.free_plans || []} // Pass free_plans array or default to an empty array
+                    language={language}
+                    delivery={plan.city}
+                    items={plan.no_of_items.items.filter(
+                      (item) => item.value > 0
+                    )} // Only show items with value > 0
+                  />
+                </Grid2>
+              ))
+          ) : (
+            <Grid2
+              xs={12}
+              sx={{
+                textAlign: "center",
+                marginTop: "20px",
+                display: "flex",
+                width: "100%",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: "50vh",
+                // border: "2px solid black",
+              }}
+            >
+              <Typography
+                variant="h6"
                 sx={{
-                  display: "flex",
+                  fontSize: "1.5rem",
+                  color: "#d92531", // Vibrant red for the message
+                  fontWeight: "bold",
                 }}
               >
-                <PlanCard
-                  plan={plan}
-                  range={plan.plan_type_range}
-                  title={isArabic ? plan.title_ar : plan.title}
-                  heading={
-                    isArabic
-                      ? plan.subscription_cat_name_ar
-                      : plan.subscription_cat_name
-                  }
-                  planID={plan.id}
-                  days={plan.total_days}
-                  freePlans={plan.free_plans || []} // Pass free_plans array or default to an empty array
-                  language={language}
-                  delivery={plan.city}
-                  items={plan.no_of_items.items.filter(
-                    (item) => item.value > 0
-                  )} // Only show items with value > 0
-                />
-              </Grid2>
-            ))}
+                {isArabic
+                  ? selectedPlan === "weekly"
+                    ? "لا توجد خطط أسبوعية متاحة"
+                    : "لا توجد خطط شهرية متاحة"
+                  : selectedPlan === "weekly"
+                  ? "No Weekly Plans Available"
+                  : "No Monthly Plans Available"}
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: "1rem",
+                  color: "#555", // Subtle gray for additional information
+                  marginTop: "10px",
+                }}
+              >
+                {isArabic
+                  ? "يرجى التحقق مرة أخرى لاحقًا للحصول على الخطط المحدثة."
+                  : "Please check back later for updated plans."}
+              </Typography>
+            </Grid2>
+          )}
         </Grid2>
       )}
     </Box>

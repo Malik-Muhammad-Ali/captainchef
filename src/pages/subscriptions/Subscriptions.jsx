@@ -6,14 +6,18 @@ import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
 import CityModal from "../../components/cityModal/CityModal";
 import useAppStore from "../../store/store";
+import Loader from "../../components/loader/Loader";
 
 const Subscriptions = () => {
   const [openModal, setOpenModal] = useState(true);
   const { fetchCategories, categories, language } = useAppStore();
   const isRTL = language === "ar";
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
+    setLoading(true);
     fetchCategories();
+    setLoading(false);
   }, []);
 
   const getTextColor = [
@@ -85,36 +89,40 @@ const Subscriptions = () => {
             {language === "en" ? "Plan Categories" : "أقسام الخطط "}
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
-            maxWidth: {
-              xs: "300px",
-              sm: "620px",
-              md: "930px",
-              lg: "1180px",
-              xl: "2000px",
-            },
-            direction: isRTL ? "rtl" : "ltr",
-          }}
-        >
-          {categories.map((data, index) => (
-            <Cards2
-              key={data.id}
-              id={data.id}
-              language={language}
-              color={getTextColor[index % getTextColor.length]}
-              title={
-                language === "en"
-                  ? data.category_name_en
-                  : data.category_name_ar
-              }
-              img={data.image}
-            />
-          ))}
-        </Box>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
+              maxWidth: {
+                xs: "300px",
+                sm: "620px",
+                md: "930px",
+                lg: "1180px",
+                xl: "2000px",
+              },
+              direction: isRTL ? "rtl" : "ltr",
+            }}
+          >
+            {categories.map((data, index) => (
+              <Cards2
+                key={data.id}
+                id={data.id}
+                language={language}
+                color={getTextColor[index % getTextColor.length]}
+                title={
+                  language === "en"
+                    ? data.category_name_en
+                    : data.category_name_ar
+                }
+                img={data.image}
+              />
+            ))}
+          </Box>
+        )}
       </Box>
 
       <Box

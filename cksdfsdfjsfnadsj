@@ -1,0 +1,244 @@
+[33mcommit f3c080abb80b11cfb94f95fce0393be9a4a342dd[m[33m ([m[1;31morigin/testing[m[33m, [m[1;32mtesting[m[33m)[m
+Merge: d6ab977 80e2793
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Thu Dec 19 13:28:48 2024 +0500
+
+    Merge branch 'testing' of https://github.com/Malik-Muhammad-Ali/CaptainChef into testing
+
+[33mcommit d6ab977f30ff81b5f5a57e6d61bec6c444a847aa[m[33m ([m[1;36mHEAD -> [m[1;32mdevelopment[m[33m, [m[1;31morigin/development[m[33m)[m
+Merge: c3bf255 f0a0862
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Thu Dec 19 13:25:07 2024 +0500
+
+    login and registration
+
+[33mcommit c3bf25550bbaf715c4f95819cc8d6b54bf7a084c[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Thu Dec 19 13:06:14 2024 +0500
+
+    login and registration added
+
+[33mcommit f0a086203770a25bb60cf42ed1d447f4fd3a881a[m
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Wed Dec 18 20:05:49 2024 +0500
+
+    changed the styles of custom and choose plan for mobile
+
+[33mcommit 481388546e5a471de0886b69951c198556d63f90[m
+Merge: 3a628c9 426ad41
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Wed Dec 18 19:23:53 2024 +0500
+
+    Merge branch 'development' of https://github.com/Malik-Muhammad-Ali/CaptainChef into development
+
+[33mcommit 3a628c9f01905e21965b6c568d323809045bc695[m
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Wed Dec 18 19:02:20 2024 +0500
+
+    updated checkout | plans page in arabic | conditions for free plan banner
+
+[33mcommit 426ad4131cc73e525a234c230bd35aa45e2b4843[m
+Author: HuzaifaSidiqui <huzaifa.siddique5000@gmail.com>
+Date:   Wed Dec 18 18:34:48 2024 +0500
+
+    city modal api integration
+
+[33mcommit 80e2793ac03949ee7c0ea80aceff1f9e7aa3eec5[m
+Merge: 5c345f0 586bd19
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 20:11:33 2024 +0500
+
+    Merge pull request #13 from Malik-Muhammad-Ali/development
+    
+    category, plans, meals pages added
+
+[33mcommit 586bd19b4e8247c5b406527020cef1284a57c668[m
+Merge: ce841a6 c5675e2
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 20:06:03 2024 +0500
+
+    Merge branch 'development' of https://github.com/Malik-Muhammad-Ali/CaptainChef into development
+
+[33mcommit c5675e215cafd8bcc13a9ab1b43aa0f3b326ebd9[m
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Tue Dec 17 20:05:00 2024 +0500
+
+    made the cards to be on start and fetched the heading acc to the subs_cat
+
+[33mcommit ce841a6f2167f7bd2fa95638b1e05208d59e7eb9[m
+Merge: 6d7d6cf 507ae6d
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 19:59:43 2024 +0500
+
+    Merge branch 'development' of https://github.com/Malik-Muhammad-Ali/CaptainChef into development
+
+[33mcommit 6d7d6cf3c9929b232b3869c3c647611846e63476[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 19:56:17 2024 +0500
+
+    login api added for user not exist
+
+[33mcommit 507ae6d6ba1e775f1ae5b34c61b48e816b205f86[m
+Merge: 733704a c968653
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Tue Dec 17 16:59:20 2024 +0500
+
+    Merge branch 'development' of https://github.com/Malik-Muhammad-Ali/CaptainChef into development
+
+[33mcommit 733704a27b31c6c20e050a9af9773b291f4e93a7[m
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Tue Dec 17 16:56:01 2024 +0500
+
+    fetched the plans after matching the ID of subs_category
+
+[33mcommit c9686534607bb03437cc80ae80834bdb22c7c41a[m
+Author: HuzaifaSidiqui <huzaifa.siddique5000@gmail.com>
+Date:   Tue Dec 17 16:55:05 2024 +0500
+
+    features array
+
+[33mcommit 4a15e1568b8df073766df7470fd1fe2ba5d3cb67[m
+Merge: b869150 5c345f0
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 15:59:11 2024 +0500
+
+    Merge pull request #11 from Malik-Muhammad-Ali/testing
+    
+    Development and testing merged
+
+[33mcommit 5c345f0822ff59a6ae38ce48c88a366aecfbc82b[m
+Merge: d33a27e b869150
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 15:50:16 2024 +0500
+
+    Merge branch 'development' into testing
+
+[33mcommit b869150753cbcb5142ea58e1321d1c83bac097eb[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 15:48:20 2024 +0500
+
+    Changes added for plans and meals page
+
+[33mcommit 6447c18073a16fcc5b9eee4bec11dc79cbe61064[m
+Merge: 20912d8 4a9d524
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 15:43:22 2024 +0500
+
+    Merge branch 'development' of https://github.com/Malik-Muhammad-Ali/CaptainChef into development
+
+[33mcommit 20912d813d94abf894c22b70ccdac8dad8329559[m
+Merge: 9050fa1 204a059
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 15:42:50 2024 +0500
+
+    now fetching
+
+[33mcommit 4a9d524eac390b3734e1fda79a1d31514defc18a[m
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Tue Dec 17 14:50:02 2024 +0500
+
+    updated checkout with textfields and styles
+
+[33mcommit 9050fa1a0f5cd15f3d3d0809baeec3dbd69ea049[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Tue Dec 17 14:42:28 2024 +0500
+
+    test meals
+
+[33mcommit 204a059d4cdb6fa88188e8961864370777014357[m
+Author: abdullah222888 <abdullahsana691@gmail.com>
+Date:   Tue Dec 17 01:57:30 2024 +0500
+
+    fetched the plans with monthly/weekly switching and features section
+
+[33mcommit d33a27ea2406c07c8584b4563c78cbaa1200dcc6[m
+Merge: e5d946d 09e954d
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Mon Dec 16 19:31:36 2024 +0500
+
+    Merge branch 'development' into testing
+
+[33mcommit e5d946db2c8c13de1d557bf0bbd6378ae2bc66ef[m
+Author: HuzaifaSidiqui <huzaifa.siddique5000@gmail.com>
+Date:   Mon Dec 16 18:11:05 2024 +0500
+
+    language toggle and card colors
+
+[33mcommit dc2d9cfb6b9c4867c4918736ab1224bf17dbf054[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Mon Dec 16 19:22:14 2024 +0500
+
+    meals half functinality added
+
+[33mcommit 80fa3c6dca93620cd850ec8e1fdccf60f53374b1[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Mon Dec 16 19:22:06 2024 +0500
+
+    meals half functinality added"
+
+[33mcommit 09e954d4081637a9ec19f091fea7652feb51bc68[m
+Merge: 3ca9e04 8e4620c
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Mon Dec 16 19:24:48 2024 +0500
+
+    Merge branch 'development' of https://github.com/Malik-Muhammad-Ali/CaptainChef into development
+
+[33mcommit 3ca9e04b0c441ce25779dc60c3d6520675539dec[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Mon Dec 16 19:22:14 2024 +0500
+
+    meals half functinality added
+
+[33mcommit e83e6d8b8374e89f6f7b3442a69a6749a31440fb[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Mon Dec 16 19:22:06 2024 +0500
+
+    meals half functinality added"
+
+[33mcommit 8e4620c7286ae54f4ab00d54956a7a5c0b17b352[m
+Author: HuzaifaSidiqui <huzaifa.siddique5000@gmail.com>
+Date:   Mon Dec 16 18:11:05 2024 +0500
+
+    language toggle and card colors
+
+[33mcommit 067f044d8b1676db81fdf4db9abe7e9ebffe47d1[m
+Merge: c46f348 dfbbcff
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Sun Dec 15 19:30:03 2024 +0500
+
+    Merge pull request #5 from Malik-Muhammad-Ali/development
+    
+    Development
+
+[33mcommit dfbbcff428ad7f92caa90250eb4732a457bb1e87[m
+Author: HuzaifaSidiqui <huzaifa.siddique5000@gmail.com>
+Date:   Sun Dec 15 16:44:05 2024 +0500
+
+    updated url
+
+[33mcommit 5cdd3d9a6de17a5d4b080a906233992e2cafa855[m
+Author: HuzaifaSidiqui <huzaifa.siddique5000@gmail.com>
+Date:   Sun Dec 15 16:22:42 2024 +0500
+
+    get categories
+
+[33mcommit c46f34859ca3d14908fce723f53c8b2f59ec6931[m[33m ([m[1;32mmain[m[33m)[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Sat Dec 14 22:31:28 2024 +0500
+
+    Routing Set
+
+[33mcommit f2964a607c6c6125cb054d084f127b67376ed172[m[33m ([m[1;31morigin/dev-branch-2[m[33m, [m[1;31morigin/dev-branch-1[m[33m)[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Sat Dec 14 13:24:40 2024 +0500
+
+    axios added
+
+[33mcommit 95c5c39a4fbe52ebe7bce24c0803e0907d9c03b1[m
+Author: Muhammad Ali <muhammadali556656@gmail.com>
+Date:   Sat Dec 14 13:20:45 2024 +0500
+
+    first commit
+
+[33mcommit 6bb78bb604cf6fbb5d4ed0da7e6d75c42a27ae84[m
+Author: Hassaan-Bin-Kaleem <10

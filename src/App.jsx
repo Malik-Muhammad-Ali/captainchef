@@ -1,20 +1,15 @@
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-// React Router Dom
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Pages
 import Home from "./pages/home/Home";
 import Features from "./pages/features/Features";
 import Subscriptions from "./pages/subscriptions/Subscriptions";
-import Login from "./pages/login/Login";
-import CreateAccount from "./pages/createAccount/CreateAccount";
+import Login from "./pages/login/Login";import CreateAccount from "./pages/createAccount/CreateAccount";
 import ForgotPassword from "./pages/forgetPassword/ForgotPassword";
 import BarCode from "./pages/barcode/BarCode";
-
-// Components
-import Navbar from "./components/navbar/Navbar";
 import PlanDetails from "./pages/planDetails/PlanDetails";
 import Plans from "./pages/choosePlan/Plans";
 import DeliveryAddress from "./pages/deliveryAddress/DeliveryAddress";
@@ -24,6 +19,9 @@ import PickupAddress from "./pages/pickupAddress/PickupAddress";
 import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
 import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
 
+// Components
+import Navbar from "./components/navbar/Navbar";
+
 // Create a custom theme
 const theme = createTheme({
   typography: {
@@ -31,33 +29,239 @@ const theme = createTheme({
   },
 });
 
+// Animation Variants
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.2 },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: { duration: 0.3 },
+  },
+};
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Home />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/features"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Features />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/subscriptions"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Subscriptions />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/subscriptions/category/:categoryId"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Plans />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/subscriptions/category/:categoryId/plans/:planId"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <PlanDetails />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Login />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/createaccount"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <CreateAccount />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/deliveryaddress"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <DeliveryAddress />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/pickupaddress"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <PickupAddress />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/forgotpassword"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <ForgotPassword />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/regeneratepassword"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <RegeneratePassowrd />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Checkout />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/mysubscriptions"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <MySubscriptions />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/downloadapp"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <BarCode />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/otp"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <NotRegisterYet />
+            </motion.div>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/features" element={<Features />} />
-          <Route path="/subscriptions" element={<Subscriptions />} />
-          <Route path="/subscriptions/category/:categoryId" element={<Plans />} />
-          <Route
-            path="/subscriptions/category/:categoryId/plans/:planId"
-            element={<PlanDetails />}
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/createaccount" element={<CreateAccount />} />
-          <Route path="/deliveryaddress" element={<DeliveryAddress />} />
-          <Route path="/pickupaddress" element={<PickupAddress />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/regeneratepassword" element={<RegeneratePassowrd />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/mysubscriptions" element={<MySubscriptions />} />
-          <Route path="/downloadapp" element={<BarCode />} />
-          <Route path="/otp" element={<NotRegisterYet />} />
-        </Routes>
+        <AnimatedRoutes />
       </Router>
     </ThemeProvider>
   );
 }
+
 export default App;

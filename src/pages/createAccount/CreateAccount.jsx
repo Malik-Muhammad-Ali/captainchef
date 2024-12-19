@@ -1,16 +1,40 @@
 import { Box, Button, Grid2, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
+  const { registerUser } = useAppStore();
+  const [error, setError] = useState("");
+  const [createUser, setCreateUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNumber: "966",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleRegistration = async () => {
+    console.log(createUser);
+    const registrationResponse = await registerUser(createUser);
+    if (registrationResponse.status === false) {
+      setError(registrationResponse.message);
+    }
+    if (registrationResponse.status === true) {
+      navigate("/login");
+    }
+  };
+
   return (
     <Grid2
       sx={{
         backgroundColor: "#f5f5f5",
         padding: "40px",
+        minHeight: "100vh",
       }}
     >
       <Box
@@ -25,7 +49,7 @@ const CreateAccount = () => {
           backgroundColor: "white",
           cursor: "pointer",
         }}
-        onClick={() => navigate('/authentication')}
+        onClick={() => navigate("/authentication")}
       >
         <ArrowBackIosIcon
           sx={{ fontSize: "24px", color: "#D92531", ml: "7px" }}
@@ -66,7 +90,7 @@ const CreateAccount = () => {
           <Typography
             variant="h5"
             sx={{
-              marginTop: '40px',
+              marginTop: "40px",
               fontWeight: "600",
               fontSize: "30px",
             }}
@@ -88,11 +112,18 @@ const CreateAccount = () => {
             <br /> Chef Business
           </Typography>
 
-          {/* Phone Number TextField */}
+          {/* First Name TextField */}
           <TextField
             fullWidth
-            placeholder="Enter your name here"
-            label="Name"
+            placeholder="Enter Your Name Here"
+            value={createUser.firstName}
+            onChange={(e) =>
+              setCreateUser((prev) => ({
+                ...prev,
+                firstName: e.target.value,
+              }))
+            }
+            label="First Name"
             variant="outlined"
             InputProps={{
               sx: {
@@ -114,23 +145,77 @@ const CreateAccount = () => {
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
                 "& fieldset": {
-                  border: "2px solid #ccc",
+                  // border: "2px solid #ccc",
                 },
                 "&:hover fieldset": {
-                  border: "2px solid #888",
+                  // border: "2px solid #888",
                 },
                 "&.Mui-focused fieldset": {
-                  border: "2px solid #FF5722",
-                  boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
+                  // border: "2px solid #FF5722",
+                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
                 },
               },
             }}
           />
 
+          {/* Last Name */}
           <TextField
             fullWidth
-            placeholder="Enter your email here"
+            placeholder="Enter Your Last Name Here"
+            label="Last Name"
+            value={createUser.lastName}
+            onChange={(e) =>
+              setCreateUser((prev) => ({
+                ...prev,
+                lastName: e.target.value,
+              }))
+            }
+            variant="outlined"
+            InputProps={{
+              sx: {
+                '& input[type="text"]': {
+                  letterSpacing: "2px",
+                },
+              },
+            }}
+            InputLabelProps={{
+              shrink: true,
+              sx: {
+                color: "#444",
+                fontWeight: "500",
+              },
+            }}
+            sx={{
+              width: { xs: "100%", sm: "360px", md: "512px" },
+              marginBottom: "20px",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "12px",
+                "& fieldset": {
+                  // border: "2px solid #ccc",
+                },
+                "&:hover fieldset": {
+                  // border: "2px solid #888",
+                },
+                "&.Mui-focused fieldset": {
+                  // border: "2px solid #FF5722",
+                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
+                },
+              },
+            }}
+          />
+
+          {/* Email Textfield */}
+          <TextField
+            fullWidth
+            placeholder="Enter Your Email Here"
             label="Email"
+            value={createUser.email}
+            onChange={(e) =>
+              setCreateUser((prev) => ({
+                ...prev,
+                email: e.target.value,
+              }))
+            }
             variant="outlined"
             InputProps={{
               sx: {
@@ -152,24 +237,78 @@ const CreateAccount = () => {
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
                 "& fieldset": {
-                  border: "2px solid #ccc",
+                  // border: "2px solid #ccc",
                 },
                 "&:hover fieldset": {
-                  border: "2px solid #888",
+                  // border: "2px solid #888",
                 },
                 "&.Mui-focused fieldset": {
-                  border: "2px solid #FF5722",
-                  boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
+                  // border: "2px solid #FF5722",
+                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
                 },
               },
             }}
           />
 
+          {/* Mobile Number */}
           <TextField
             fullWidth
-            placeholder="Enter your password here"
+            placeholder="Enter Your Mobile Number Here. Start with 966"
+            label="Mobile Number"
+            value={createUser.mobileNumber}
+            onChange={(e) =>
+              setCreateUser((prev) => ({
+                ...prev,
+                mobileNumber: e.target.value,
+              }))
+            }
+            variant="outlined"
+            InputProps={{
+              sx: {
+                '& input[type="text"]': {
+                  letterSpacing: "2px",
+                },
+              },
+            }}
+            InputLabelProps={{
+              shrink: true,
+              sx: {
+                color: "#444",
+                fontWeight: "500",
+              },
+            }}
+            sx={{
+              width: { xs: "100%", sm: "360px", md: "512px" },
+              marginBottom: "20px",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "12px",
+                "& fieldset": {
+                  // border: "2px solid #ccc",
+                },
+                "&:hover fieldset": {
+                  // border: "2px solid #888",
+                },
+                "&.Mui-focused fieldset": {
+                  // border: "2px solid #FF5722",
+                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
+                },
+              },
+            }}
+          />
+
+          {/* Password Textfield */}
+          <TextField
+            fullWidth
+            placeholder="Enter Your Password Here"
             label="Password"
             variant="outlined"
+            value={createUser.password}
+            onChange={(e) =>
+              setCreateUser((prev) => ({
+                ...prev,
+                password: e.target.value,
+              }))
+            }
             InputProps={{
               sx: {
                 '& input[type="text"]': {
@@ -190,23 +329,31 @@ const CreateAccount = () => {
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
                 "& fieldset": {
-                  border: "2px solid #ccc",
+                  // border: "2px solid #ccc",
                 },
                 "&:hover fieldset": {
-                  border: "2px solid #888",
+                  // border: "2px solid #888",
                 },
                 "&.Mui-focused fieldset": {
-                  border: "2px solid #FF5722",
-                  boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
+                  // border: "2px solid #FF5722",
+                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
                 },
               },
             }}
           />
 
+          {/* Confirm Password Textfield */}
           <TextField
             fullWidth
-            placeholder="Re Enter your password here"
+            placeholder="Re Enter Your Password Here"
             label="Confirm Password"
+            value={createUser.confirmPassword}
+            onChange={(e) =>
+              setCreateUser((prev) => ({
+                ...prev,
+                confirmPassword: e.target.value,
+              }))
+            }
             variant="outlined"
             InputProps={{
               sx: {
@@ -228,18 +375,22 @@ const CreateAccount = () => {
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
                 "& fieldset": {
-                  border: "2px solid #ccc",
+                  // border: "2px solid #ccc",
                 },
                 "&:hover fieldset": {
-                  border: "2px solid #888",
+                  // border: "2px solid #888",
                 },
                 "&.Mui-focused fieldset": {
-                  border: "2px solid #FF5722",
-                  boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
+                  // border: "2px solid #FF5722",
+                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
                 },
               },
             }}
           />
+
+          <Typography sx={{ color: "#D92531", marginBottom: "12px" }}>
+            {error}
+          </Typography>
 
           {/* Submit Button */}
           <Button
@@ -253,7 +404,7 @@ const CreateAccount = () => {
               width: { xs: "100%", sm: "360px", md: "512px" },
               height: { xs: "56px", sm: "56px", md: "56px" },
             }}
-            onClick={() => navigate('/authentication')}
+            onClick={() => handleRegistration()}
           >
             Register
           </Button>

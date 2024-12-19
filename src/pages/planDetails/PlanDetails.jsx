@@ -104,7 +104,7 @@ const PlanDetails = () => {
       setModalOpen(true);
     } else {
       setPlanDetailUrl(location.pathname);
-      navigate("/authentication", { replace: true });
+      navigate("/login", { replace: true });
     }
   };
 

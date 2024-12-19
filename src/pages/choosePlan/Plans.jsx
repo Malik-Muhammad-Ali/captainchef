@@ -35,7 +35,7 @@ const Plans = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        // border: "2px solid red",
+        minHeight: '100vh',
       }}
     >
       {/* Header Box */}

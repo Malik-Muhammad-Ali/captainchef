@@ -7,28 +7,30 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CallIcon from "@mui/icons-material/Call";
+import LockIcon from "@mui/icons-material/Lock";
+import PersonIcon from "@mui/icons-material/Person";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
 
-const AuthenticationComponent = ({
-  setUserExisted,
-  setAuthenticatedComponent,
-}) => {
+const Login = () => {
   const navigate = useNavigate();
-  const { checkUser, user } = useAppStore();
-  const [number, setNumber] = React.useState("");
+  const { loginUser, user, authenticated, planDetailUrl } = useAppStore();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSubmit = async () => {
-    const isUserExist = await checkUser();
-    if (isUserExist === null) {
-      navigate("/otp");
-    } else if (isUserExist) {
-      setUserExisted(true);
-      setAuthenticatedComponent(false);
+    const user_info = await loginUser(email, password);
+    if (user_info) {
+      console.log("True Conidition");
+      setError(false);
+      navigate(planDetailUrl, { replace: true });
+    } else {
+      console.log("False Conidition");
+      setError(true);
     }
   };
 
@@ -39,7 +41,6 @@ const AuthenticationComponent = ({
           backgroundColor: "#f5f5f5",
           display: "flex",
           flexDirection: "column",
-          height: "100vh",
         }}
       >
         <IconButton
@@ -89,7 +90,7 @@ const AuthenticationComponent = ({
                 fontWeight: "600",
               }}
             >
-              Authentication
+              Login to your account
             </Typography>
 
             {/* Description */}
@@ -103,21 +104,23 @@ const AuthenticationComponent = ({
                 fontSize: "20px",
               }}
             >
-              Please Enter Your Mobile Number Before Further Move.
+              Please Enter Your Username and Password Before Further Move.
             </Typography>
 
-            {/* Phone Number TextField */}
+            {/* Email TextField */}
             <TextField
               fullWidth
-              placeholder="+9665--------"
-              label="Phone Number"
+              error={error ? true : false}
+              helperText={error ? "Please Enter a Valid Email" : ""}
+              placeholder=""
+              label="Email"
               variant="outlined"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <CallIcon sx={{ color: "#666" }} />
+                    <PersonIcon sx={{ color: "#666" }} />
                   </InputAdornment>
                 ),
                 sx: {
@@ -144,6 +147,58 @@ const AuthenticationComponent = ({
               }}
             />
 
+            {/* Password Textfield */}
+            <Box>
+              <TextField
+                fullWidth
+                error={error ? true : false}
+                helperText={error ? "Please Enter Correct Password" : ""}
+                placeholder=""
+                label="Password"
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon sx={{ color: "#666" }} />
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    '& input[type="text"]': {
+                      letterSpacing: "2px",
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                  sx: {
+                    fontWeight: "500",
+                  },
+                }}
+                sx={{
+                  width: { xs: "100%", sm: "360px", md: "512px" },
+                  marginBottom: "6px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    "&.Mui-focused fieldset": {
+                      border: "2px solid grey",
+                    },
+                  },
+                }}
+              />
+              <Typography
+                sx={{
+                  textAlign: "right",
+                  color: "#D92531",
+                  cursor: "Pointer",
+                  fontWeight: "Bold",
+                }}
+              >
+                Forget Password
+              </Typography>
+            </Box>
+
             {/* Submit Button */}
             <Button
               variant="contained"
@@ -153,6 +208,7 @@ const AuthenticationComponent = ({
                 fontWeight: "bold",
                 borderRadius: "8px",
                 padding: "10px 16px",
+                marginTop: "12px",
                 width: { xs: "100%", sm: "360px", md: "512px" },
                 height: { xs: "56px", sm: "56px", md: "56px" },
                 boxShadow: "none",
@@ -161,6 +217,15 @@ const AuthenticationComponent = ({
             >
               Submit
             </Button>
+            <Box sx={{ display: "flex", gap: "6px" }}>
+              <Typography>Don't Have any Account?</Typography>
+              <Typography
+                sx={{ cursor: "Pointer", color: "#D92531", fontWeight: "Bold" }}
+                onClick={() => navigate('/createaccount')}
+              >
+                Create Account
+              </Typography>
+            </Box>
           </Box>
         </motion.div>
       </Grid2>
@@ -168,4 +233,4 @@ const AuthenticationComponent = ({
   );
 };
 
-export default AuthenticationComponent;
+export default Login;

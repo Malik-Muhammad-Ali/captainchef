@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Features from "./pages/features/Features";
 import Subscriptions from "./pages/subscriptions/Subscriptions";
-import Authentication from "./pages/authentication/Authentication";
+import Login from "./pages/login/Login";
 import CreateAccount from "./pages/createAccount/CreateAccount";
 import ForgotPassword from "./pages/forgetPassword/ForgotPassword";
 import BarCode from "./pages/barcode/BarCode";
@@ -45,7 +45,7 @@ function App() {
             path="/subscriptions/category/:categoryId/plans/:planId"
             element={<PlanDetails />}
           />
-          <Route path="/authentication" element={<Authentication />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/createaccount" element={<CreateAccount />} />
           <Route path="/deliveryaddress" element={<DeliveryAddress />} />
           <Route path="/pickupaddress" element={<PickupAddress />} />

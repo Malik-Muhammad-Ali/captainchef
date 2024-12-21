@@ -3,12 +3,15 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 const PickupAddress = () => {
   const navigate = useNavigate();
+  const {language} = useAppStore();
   const arr = ["Home1", "Home2", "Office", "Playground"];
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
+  const isArabic = language == 'ar';
   const handleSelect = (index) => {
     setSelectedIndex(index);
   };
@@ -22,6 +25,7 @@ const PickupAddress = () => {
     }
   };
   return (
+    <>
     <Box
       sx={{
         display: "flex",
@@ -29,7 +33,9 @@ const PickupAddress = () => {
         alignItems: "center",
         gap: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         bgcolor: "#F8F8F8",
-        height: "100vh",
+        height: "calc(100vh - 170px)",
+        overflowY:"scroll",
+        direction: isArabic ? "rtl" : "ltr", 
       }}
     >
       <Box
@@ -37,7 +43,7 @@ const PickupAddress = () => {
           display: "flex",
           justifyContent: "space-between",
           p: "0 10px",
-          width: { lg: "900px", md: "720px", sm: "664px", xs: "311px" },
+          width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
           mt: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         }}
       >
@@ -78,7 +84,7 @@ const PickupAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            Pickup Address
+            {isArabic ? "عنوان الاستلام" : "Pickup Address"}
           </Typography>
         </Box>
         {/* <Box
@@ -95,7 +101,7 @@ const PickupAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            Add new
+            {isArabic?"إضافة جديد":"Add new"}
           </Typography>
         </Box> */}
       </Box>
@@ -115,7 +121,7 @@ const PickupAddress = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            width: { lg: "900px", md: "720px", sm: "664px", xs: "311px" },
+            width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
             bgcolor: "#F8F8F8",
             borderRadius: "16px",
           }}
@@ -135,7 +141,7 @@ const PickupAddress = () => {
                     : "1px solid #e0e0e0",
                 borderRadius: "12px",
                 bgcolor: selectedIndex === index ? "#FAE9EA" : "#FFFFFF",
-                width: { lg: "880px", md: "700px", sm: "644px", xs: "280px" },
+                width: { lg: "1080px", md: "900px", sm: "644px", xs: "280px" },
                 height: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
                 margin: "8px 0",
                 boxShadow: "none",
@@ -206,11 +212,12 @@ const PickupAddress = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent:{lg:"flex-end",md:"flex-end",sm:"flex-end",xs:"flex-start"},
                   marginTop: { xs: "8px", sm: "0" },
                   padding: "8px",
                   gap: "6x",
                   borderRadius: "8px",
-                  width: { sm: "37%", xs: "100%", md: "35%", lg: "25%" },
+                  width: { sm: "100%", xs: "100%", md: "100%", lg: "100%" },
                 }}
               >
                 <LocationOnOutlinedIcon />
@@ -255,6 +262,8 @@ const PickupAddress = () => {
             {error}
           </p>
         </Box>
+      </Box>
+    </Box>
         <Box
           sx={{
             bgcolor: "#F8F8F8",
@@ -262,6 +271,7 @@ const PickupAddress = () => {
             justifyContent: "center",
             alignItems: "flex-end",
             boxShadow: "none",
+            height:"50px"
           }}
         >
           <Button
@@ -275,11 +285,10 @@ const PickupAddress = () => {
             }}
             onClick={() => handleNavigation()}
           >
-            Next
+            {isArabic?"التالي":"Next"}
           </Button>
         </Box>
-      </Box>
-    </Box>
+    </>
   );
 };
 

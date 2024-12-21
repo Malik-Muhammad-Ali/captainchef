@@ -25,10 +25,14 @@ const PlanCard = ({
   freePlans,
   title,
 }) => {
-  const { setCurrentPlan } = useAppStore();
+  const { setCurrentPlan, city } = useAppStore();
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const isArabic = language === "ar";
+
+  const deliveryCharges =
+    plan?.city.find((currentCity) => currentCity.city === city)
+      ?.delivery_charges || plan?.city[0]?.delivery_charges;
 
   const iconsMap = {
     meals: (
@@ -449,7 +453,7 @@ const PlanCard = ({
                 variant="body2"
                 sx={{ fontSize: "0.7rem", textAlign: "center" }}
               >
-                SR
+                {deliveryCharges} SR
               </Typography>
             </Box>
 

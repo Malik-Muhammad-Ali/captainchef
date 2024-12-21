@@ -24,7 +24,8 @@ const useAppStore = create(
       partialize: (state) => ({
         user: state.user,
         currentPlan: state.currentPlan,
-        authenticated: state.authenticated
+        authenticated: state.authenticated,
+        city: state.city,
       }),
     }
   )

@@ -1,10 +1,13 @@
-import React from "react";
 import Typography from "@mui/material/Typography";
 import useAppStore from "../../store/store";
 import { Box } from "@mui/material";
 
 const PlanDetailsCard = () => {
-  const { currentPlan, language } = useAppStore();
+  const { currentPlan, language, city } = useAppStore();
+  console.log(currentPlan.city);
+  const deliveryCharges =
+    currentPlan?.city.find((currentCity) => currentCity.city === city)
+      ?.delivery_charges || currentPlan?.city[0]?.delivery_charges;
 
   const iconsMap = {
     meals: (
@@ -332,7 +335,7 @@ const PlanDetailsCard = () => {
                   variant="body2"
                   sx={{ fontSize: "0.8rem", textAlign: "center" }}
                 >
-                  {currentPlan?.estimate.total} SR
+                  {deliveryCharges} SR
                 </Typography>
               </Box>
 
@@ -364,19 +367,27 @@ const PlanDetailsCard = () => {
             </div>
             <div className="calInfo">
               <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#399272" }}>{currentPlan?.estimate.protein}g</Typography>
+                <Typography sx={{ color: "#399272" }}>
+                  {currentPlan?.estimate.protein}g
+                </Typography>
                 <Typography>Protein</Typography>
               </div>
               <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#F7BE67" }}>{currentPlan?.estimate.carbs}g</Typography>
+                <Typography sx={{ color: "#F7BE67" }}>
+                  {currentPlan?.estimate.carbs}g
+                </Typography>
                 <Typography>Crab</Typography>
               </div>
               <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#A4131E" }}>{currentPlan?.estimate.fats}g</Typography>
+                <Typography sx={{ color: "#A4131E" }}>
+                  {currentPlan?.estimate.fats}g
+                </Typography>
                 <Typography>Fat</Typography>
               </div>
               <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#FFDA7C" }}>{currentPlan?.estimate.calorie}g</Typography>
+                <Typography sx={{ color: "#FFDA7C" }}>
+                  {currentPlan?.estimate.calorie}g
+                </Typography>
                 <Typography>Calories</Typography>
               </div>
             </div>

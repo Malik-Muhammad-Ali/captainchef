@@ -3,6 +3,8 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 260px);
+  overflow-y: scroll;
 }
 .planDetails {
   display: flex;
@@ -174,6 +176,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  height: 50px;
 }
 .subscribeButton {
   background-color: #d92531;

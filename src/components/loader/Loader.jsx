@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
 import { CircularProgress, Box, Typography } from "@mui/material";
 
 const Loader = () => {
-  const [showLoader, setShowLoader] = useState(true);
+  // const [showLoader, setShowLoader] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoader(false); // Hide the loader after 2 seconds
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowLoader(false); // Hide the loader after 2 seconds
+  //   }, 2000);
 
-    return () => clearTimeout(timer); // Cleanup the timer
-  }, []);
+  //   return () => clearTimeout(timer); // Cleanup the timer
+  // }, []);
 
-  return showLoader ? (
+  return (
     <Box
       sx={{
         display: "flex",
@@ -42,7 +41,7 @@ const Loader = () => {
         Loading, please wait...
       </Typography>
     </Box>
-  ) : null; // Hide the loader completely
+  ); // Hide the loader completely
 };
 
 export default Loader;

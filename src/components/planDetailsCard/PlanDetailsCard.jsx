@@ -1,4 +1,3 @@
-import React from "react";
 import Typography from "@mui/material/Typography";
 import useAppStore from "../../store/store";
 import { Box } from "@mui/material";

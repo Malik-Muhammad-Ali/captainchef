@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckoutRightComponent from "../../components/checkoutRightComponent/CheckoutRightComponent";

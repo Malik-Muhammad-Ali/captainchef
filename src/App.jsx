@@ -1,6 +1,11 @@
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 // Pages
@@ -23,6 +28,7 @@ import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
 // Components
 import Navbar from "./components/navbar/Navbar";
 import CityModal from "./components/cityModal/CityModal";
+import MyCart from "./components/mycart/MyCart";
 
 // Create a custom theme
 const theme = createTheme({
@@ -247,6 +253,19 @@ const AnimatedRoutes = () => {
               exit="exit"
             >
               <NotRegisterYet />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <MyCart />
             </motion.div>
           }
         />

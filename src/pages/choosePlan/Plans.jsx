@@ -23,6 +23,7 @@ const Plans = () => {
     setLoading(false);
   }, [categoryId]);
   const isArabic = language === "ar";
+  console.log(plans[0])
 
   return (
     <Box
@@ -67,7 +68,7 @@ const Plans = () => {
           <IconButton
             sx={{
               width: { xs: "48px", sm: "56px" },
-              height: { xs: "48px", sm: "56px" },
+              // height: { xs: "48px", sm: "56px" },
               display: "flex",
               alignItems: "center",
               // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },

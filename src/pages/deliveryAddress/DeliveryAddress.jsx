@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const DeliveryAddress = () => {
   const navigate = useNavigate();
-  const {fetchAddress ,address , language} = useAppStore();
+  const { fetchAddress, address, language, user } = useAppStore();
   // const arr = ["Home1", "Home2", "Office", "Playground"];
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
@@ -25,9 +25,9 @@ const DeliveryAddress = () => {
       navigate("/checkout");
     }
   };
-  useEffect(()=>{
-    fetchAddress();
-  },[])
+  useEffect(() => {
+    fetchAddress(user.user_id);
+  }, []);
   return (
     <Box
       sx={{
@@ -36,7 +36,7 @@ const DeliveryAddress = () => {
         alignItems: "center",
         gap: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         bgcolor: "#F8F8F8",
-        height: "100vh",
+        minHeight: "100vh",
         direction: isArabic ? "rtl" : "ltr",
       }}
     >
@@ -86,10 +86,10 @@ const DeliveryAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            {isArabic?"عنوان التسليم":"Delivery Address"}
+            {isArabic ? "عنوان التسليم" : "Delivery Address"}
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -103,9 +103,9 @@ const DeliveryAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            {isArabic?"إضافة جديد":"Add new"}
+            {isArabic ? "إضافة جديد" : "Add new"}
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
 
       <Box
@@ -128,7 +128,7 @@ const DeliveryAddress = () => {
             borderRadius: "16px",
           }}
         >
-          {address.map((data, index) => (
+          {address?.map((data, index) => (
             <Box
               key={index}
               onClick={() => handleSelect(index)}
@@ -214,7 +214,12 @@ const DeliveryAddress = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent:{lg:"flex-end",md:"flex-end",sm:"flex-end",xs:"flex-start"},
+                  justifyContent: {
+                    lg: "flex-end",
+                    md: "flex-end",
+                    sm: "flex-end",
+                    xs: "flex-start",
+                  },
                   marginTop: { xs: "8px", sm: "0" },
                   padding: "8px",
                   gap: "6x",
@@ -264,29 +269,53 @@ const DeliveryAddress = () => {
             {error}
           </p>
         </Box>
-        <Box
-          sx={{
-            bgcolor: "#F8F8F8",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-            boxShadow: "none",
-          }}
-        >
-          <Button
-            variant="contained"
+
+        {!address && (
+          <Box
             sx={{
-              bgcolor: "#D92531",
-              width: { xs: "280px", md: "130px", sm: "130px" },
-              borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
-              height: "48px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#D92531",
+              fontSize: "30px",
+              fontWeight: "500",
+              marginBottom: "2rem",
+            }}
+          >
+            Home Delivery Feature Coming Soon!
+          </Box>
+        )}
+
+        {address && (
+          <Box
+            sx={{
+              bgcolor: "#F8F8F8",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-end",
               boxShadow: "none",
             }}
-            onClick={() => handleNavigation()}
           >
-            {isArabic?"التالي":"Next"}
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#D92531",
+                width: { xs: "280px", md: "130px", sm: "130px" },
+                borderRadius: {
+                  xs: "12px",
+                  sm: "16px",
+                  md: "16px",
+                  lg: "16px",
+                },
+                height: "48px",
+                boxShadow: "none",
+              }}
+              onClick={() => handleNavigation()}
+            >
+              {isArabic ? "التالي" : "Next"}
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

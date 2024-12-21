@@ -140,6 +140,7 @@
   background-color: white;
   border-radius: 16px;
   align-items: center;
+  justify-content: space-between;
 }
 .infoTagImg {
   position: absolute;

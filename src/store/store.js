@@ -23,6 +23,8 @@ const useAppStore = create(
       name: "app-storage",
       partialize: (state) => ({
         user: state.user,
+        currentPlan: state.currentPlan,
+        authenticated: state.authenticated
       }),
     }
   )

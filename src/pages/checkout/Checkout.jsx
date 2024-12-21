@@ -7,15 +7,29 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckoutRightComponent from "../../components/checkoutRightComponent/CheckoutRightComponent";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import useAppStore from "../../store/store";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [couponData, setCouponData] = useState();
+  const [couponError, setCouponError] = useState();
+  const [code, setCode] = useState("");
+  const { user, city, authenticated } = useAppStore();
+
+  useEffect(() => {
+    if (!authenticated) {
+      navigate("/login");
+    }
+  }, [authenticated, navigate]);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -34,6 +48,29 @@ const Checkout = () => {
 
   const handleSelection = (paymentMethod) => {
     setSelectedPayment(paymentMethod);
+  };
+
+  const handleCoupon = async () => {
+    const dataSend = {
+      contact_id: user?.contact_id,
+      code: code,
+    };
+    try {
+      const response = await axios.post(
+        "https://appv2.captainchef.net/AppV2/public/connector/api/coupon/apply",
+        dataSend
+      );
+      // console.log(response.data)
+      if (response.data.status === "success") {
+        setCouponError();
+        setCouponData(response.data);
+      } else {
+        setCouponData();
+        setCouponError("Enter a Valid Coupon Code");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const paymentOptions = [
@@ -73,6 +110,7 @@ const Checkout = () => {
 `,
     },
   ];
+
   return (
     <>
       <Box
@@ -108,7 +146,6 @@ const Checkout = () => {
                 height: { xs: "48px", sm: "56px" },
                 display: "flex",
                 alignItems: "center",
-                // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
                 justifyContent: "center",
                 borderRadius: "20%",
                 backgroundColor: "#fff",
@@ -200,7 +237,7 @@ const Checkout = () => {
                 <TextField
                   label="Name"
                   margin="normal"
-                  value={"Hussain Gaggal"}
+                  value={user?.name}
                   variant="standard"
                   InputProps={{
                     disableUnderline: true,
@@ -231,21 +268,20 @@ const Checkout = () => {
                       xs: "313px",
                     },
                     height: { lg: "64px", md: "64px", sm: "56px", xs: "63px" },
-                    backgroundColor: "#F8F8F8", // Subtle grey background
-                    borderRadius: "12px", // Rounded edges
-                    paddingLeft: "14px", // Spacing inside the input
-                    paddingRight: "10px", // Spacing inside the input
-                    position: "relative", // To keep the label aligned
-                    fontSize: "50px", // Text font size
+                    backgroundColor: "#F8F8F8",
+                    borderRadius: "12px",
+                    paddingLeft: "14px",
+                    paddingRight: "10px",
+                    position: "relative",
+                    fontSize: "50px",
                   }}
                 />
 
                 <TextField
                   label="Phone"
-                  value={"+966501729924"}
+                  value={user?.mobile}
                   margin="normal"
                   variant="standard"
-                  // type="number"
                   InputProps={{
                     disableUnderline: true,
                     readOnly: "true",
@@ -295,7 +331,7 @@ const Checkout = () => {
                   label="City"
                   margin="normal"
                   variant="standard"
-                  value={"Riyadh"}
+                  value={city}
                   InputProps={{
                     disableUnderline: true,
                     readOnly: true, // Makes the field read-only
@@ -445,7 +481,7 @@ const Checkout = () => {
             }}
           >
             {/*paper 1 of items list*/}
-            <CheckoutRightComponent />
+            <CheckoutRightComponent couponData={couponData} />
 
             {/*paper 2 of 2nd container free plan*/}
 
@@ -600,6 +636,10 @@ const Checkout = () => {
                     label="Apply Coupon"
                     margin="normal"
                     variant="standard"
+                    value={code}
+                    error={couponError ? true : false}
+                    helperText={couponError}
+                    onChange={(e) => setCode(e.target.value)}
                     InputProps={{
                       disableUnderline: true, // Removes underline/border
                     }}
@@ -632,6 +672,7 @@ const Checkout = () => {
                         sm: "56px",
                         xs: "63px",
                       },
+                      border: couponError ? "1px solid red" : "none",
                       backgroundColor: "#F8F8F8", // Subtle grey background
                       borderRadius: "12px", // Smooth rounded edges
                       paddingLeft: "14px", // Spacing inside the input field
@@ -649,7 +690,7 @@ const Checkout = () => {
                       width: { lg: "193px", md: "193px", sm: "80px", xs: "" },
                       height: "60px",
                       marginLeft: "8px",
-                      border: "0.5px solid red",
+                      border: code ? "0.5px solid red" : "none",
                       backgroundColor: "white",
                       color: "#D92531",
                       textTransform: "none",
@@ -657,6 +698,8 @@ const Checkout = () => {
                       fontWeight: "bold",
                       borderRadius: "10px",
                     }}
+                    onClick={() => handleCoupon()}
+                    disabled={!code} // Disable button if no code is entered
                   >
                     Apply
                   </Button>

@@ -81,7 +81,7 @@ const PickupAddress = () => {
             Pickup Address
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -97,7 +97,7 @@ const PickupAddress = () => {
           >
             Add new
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
 
       <Box

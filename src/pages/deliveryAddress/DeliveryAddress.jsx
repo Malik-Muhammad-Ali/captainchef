@@ -3,12 +3,16 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
+import { useEffect } from "react";
 
 const DeliveryAddress = () => {
   const navigate = useNavigate();
-  const arr = ["Home1", "Home2", "Office", "Playground"];
+  const {fetchAddress ,address , language} = useAppStore();
+  // const arr = ["Home1", "Home2", "Office", "Playground"];
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
+  const isArabic = language == "ar";
   const handleSelect = (index) => {
     setSelectedIndex(index);
   };
@@ -21,6 +25,9 @@ const DeliveryAddress = () => {
       navigate("/checkout");
     }
   };
+  useEffect(()=>{
+    fetchAddress();
+  },[])
   return (
     <Box
       sx={{
@@ -30,6 +37,7 @@ const DeliveryAddress = () => {
         gap: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         bgcolor: "#F8F8F8",
         height: "100vh",
+        direction: isArabic ? "rtl" : "ltr",
       }}
     >
       <Box
@@ -37,7 +45,7 @@ const DeliveryAddress = () => {
           display: "flex",
           justifyContent: "space-between",
           p: "0 10px",
-          width: { lg: "900px", md: "720px", sm: "664px", xs: "311px" },
+          width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
           mt: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         }}
       >
@@ -78,7 +86,7 @@ const DeliveryAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            Delivery Address
+            {isArabic?"عنوان التسليم":"Delivery Address"}
           </Typography>
         </Box>
         <Box
@@ -95,7 +103,7 @@ const DeliveryAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            Add new
+            {isArabic?"إضافة جديد":"Add new"}
           </Typography>
         </Box>
       </Box>
@@ -115,12 +123,12 @@ const DeliveryAddress = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            width: { lg: "900px", md: "720px", sm: "664px", xs: "311px" },
+            width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
             bgcolor: "#F8F8F8",
             borderRadius: "16px",
           }}
         >
-          {arr.map((key, index) => (
+          {address.map((data, index) => (
             <Box
               key={index}
               onClick={() => handleSelect(index)}
@@ -135,7 +143,7 @@ const DeliveryAddress = () => {
                     : "1px solid #e0e0e0",
                 borderRadius: "12px",
                 bgcolor: selectedIndex === index ? "#FAE9EA" : "#FFFFFF",
-                width: { lg: "880px", md: "700px", sm: "644px", xs: "280px" },
+                width: { lg: "1080px", md: "900px", sm: "644px", xs: "280px" },
                 height: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
                 margin: "8px 0",
                 boxShadow: "none",
@@ -178,7 +186,7 @@ const DeliveryAddress = () => {
                       fontFamily: "work sans",
                     }}
                   >
-                    {key}
+                    {data.address_type}
                   </Typography>
                 </Box>
                 {/* {isMobile && (
@@ -206,11 +214,12 @@ const DeliveryAddress = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent:{lg:"flex-end",md:"flex-end",sm:"flex-end",xs:"flex-start"},
                   marginTop: { xs: "8px", sm: "0" },
                   padding: "8px",
                   gap: "6x",
                   borderRadius: "8px",
-                  width: { sm: "37%", xs: "100%", md: "35%", lg: "25%" },
+                  width: { sm: "100%", xs: "100%", md: "100%", lg: "100%" },
                 }}
               >
                 <LocationOnOutlinedIcon />
@@ -219,7 +228,7 @@ const DeliveryAddress = () => {
                   fontWeight="400px"
                   fontFamily="work sans"
                 >
-                  Short address here
+                  {data.address}
                 </Typography>
               </Box>
               {/* {isDesktopOrTablet && (
@@ -275,7 +284,7 @@ const DeliveryAddress = () => {
             }}
             onClick={() => handleNavigation()}
           >
-            Next
+            {isArabic?"التالي":"Next"}
           </Button>
         </Box>
       </Box>

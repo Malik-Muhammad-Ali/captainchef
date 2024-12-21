@@ -18,6 +18,8 @@ const PlanCard = ({
   plan,
   planID,
   days,
+  items,
+  delivery,
   heading,
   language,
   freePlans,

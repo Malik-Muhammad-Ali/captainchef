@@ -149,7 +149,7 @@ const CityModal = () => {
               "&:hover": { bgcolor: "#D92550" },
             }}
           >
-            Next
+            {isArabic?"التالي":"Next"}
           </Button>
         </Box>
       </motion.div>

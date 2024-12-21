@@ -6,6 +6,7 @@ import languageSlice from "./slices/languageSlice";
 import mealsSlice from "./slices/mealsSlice";
 import PlansSlice from "./slices/plansSlice";
 import { persist } from "zustand/middleware";
+import deliveryAddressSlice from './slices/deliveryAddressSlice';
 
 const useAppStore = create(
   persist(
@@ -16,6 +17,7 @@ const useAppStore = create(
       ...languageSlice(set, get),
       ...mealsSlice(set, get),
       ...PlansSlice(set, get),
+    ...deliveryAddressSlice(set),
     }),
     {
       name: "app-storage",

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Modal, Typography, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Modal, Typography, useMediaQuery } from '@mui/material';
 import { motion } from "framer-motion";
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DataChart from './DataChart';
 import Rating from './Rating';
 
@@ -70,17 +69,36 @@ const MealInfo = ({mealInfoModalOpen, setMealInfoModalOpen}) => {
           display:"flex",
           justifyContent:"center",
           alignItems:"center",
-          "&:hover":{
-            bgcolor:"#D6D6D6"
-          } 
+          // "&:hover":{
+          //   bgcolor:"#D6D6D6"
+          // } 
         }}>
-        <CancelOutlinedIcon onClick={handleSubmit} sx={{
+        {/* <CancelOutlinedIcon onClick={handleSubmit} sx={{
           fontSize:"32px",
           color:"#0A0A0C",
           opacity: 0.7,
           cursor:"pointer",
                    
-        }}/>
+        }}/> */}
+        <IconButton
+        onClick={handleSubmit}
+            sx={{
+              // backgroundColor: "#FAE9EA",
+              // color: "#D92531",
+              padding: "4px",
+              borderRadius: "50%",
+            }}
+          >
+            <img
+                  src="/cross.png"
+                  alt="trash-icon"
+                  style={{
+                    width: "100%",
+                    // maxWidth: "24px",
+                    objectFit: "contain",
+                  }}
+                />
+          </IconButton>
         </Box>
           <Box
             sx={{

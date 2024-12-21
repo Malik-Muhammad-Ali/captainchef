@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  Box,
-  Grid2,
-  IconButton,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Grid2, IconButton, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
 import useAppStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/loader/Loader";
 
 const Plans = () => {
   const { categoryId } = useParams();
@@ -71,6 +66,12 @@ const Plans = () => {
           {/* Icon */}
           <IconButton
             sx={{
+              width: { xs: "48px", sm: "56px" },
+              height: { xs: "48px", sm: "56px" },
+              display: "flex",
+              alignItems: "center",
+              // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
+              justifyContent: "center",
               borderRadius: "20%",
               backgroundColor: "#fff",
               width: { xs: "40px", sm: "40px", md: "45px" },
@@ -81,8 +82,8 @@ const Plans = () => {
             <ArrowBackIosIcon
               sx={{
                 transform: isArabic ? "rotate(180deg)" : "none",
-                paddingLeft: { xs: "5px", sm: "8px" },
-                fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
+                fontSize: "24px",
+                ml: "7px",
               }}
             />
           </IconButton>
@@ -234,19 +235,7 @@ const Plans = () => {
 
       {/* Conditional Rendering: Show Loading or Content */}
       {loading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50vh",
-          }}
-        >
-          <CircularProgress color="#D92531" />
-          <Typography sx={{ marginLeft: 2, fontSize: "1.2rem" }}>
-            Loading Plans...
-          </Typography>
-        </Box>
+        <Loader />
       ) : (
         <Grid2
           container

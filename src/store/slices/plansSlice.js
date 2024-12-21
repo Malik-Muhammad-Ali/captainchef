@@ -4,6 +4,7 @@ const PlansSlice = (set) => ({
     plans: [],
     currentPlan: null,
     setCurrentPlan: (plan) => set({ currentPlan: plan }),
+    loading:(true),
     error: null,
     fetchPlans: async (cat_id) => {
         set({ plans: [], error: null });

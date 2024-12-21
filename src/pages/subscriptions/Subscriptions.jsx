@@ -4,16 +4,16 @@ import Msgbox from "../../components/msgBox/MsgBox";
 import CircularAvt from "../../components/circularAvt/CircularAvt";
 import Cards2 from "../../components/plansCategoryCard/PlansCategoryCard";
 import Carousel from "../../components/carosel/Carosel";
-import CityModal from "../../components/cityModal/CityModal";
 import useAppStore from "../../store/store";
 
 const Subscriptions = () => {
-  const [openModal, setOpenModal] = useState(true);
   const { fetchCategories, categories, language } = useAppStore();
   const isRTL = language === "ar";
 
   useEffect(() => {
-    fetchCategories();
+    if (categories.length === 0) {
+      fetchCategories();
+    }
   }, []);
 
   const getTextColor = [
@@ -32,7 +32,6 @@ const Subscriptions = () => {
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        // gap:"16px",
         marginBottom: { lg: "180px", md: "170px", sm: "160px", xs: "150px" },
         flexDirection: "column",
         alignItems: "center",
@@ -132,7 +131,6 @@ const Subscriptions = () => {
         <Msgbox />
         <CircularAvt />
       </Box>
-      <CityModal />
     </Box>
   );
 };

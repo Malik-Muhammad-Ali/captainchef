@@ -11,18 +11,20 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlanCard from "../../components/planCard/PlanCard";
 import useAppStore from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 const Plans = () => {
-  const { categoryId } = useParams(); // Get the category ID from the URL
+  const { categoryId } = useParams();
+  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState("weekly");
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
   const { fetchPlans, plans, language } = useAppStore();
-  // const matchedPlans = plans.filter((plan) => plan.id.toString() == id);
-  // console.log(matchedPlans);
 
   useEffect(() => {
     setLoading(true);
-    fetchPlans(categoryId);
+    if (plans.length === 0) {
+      fetchPlans(categoryId);
+    }
     setLoading(false);
   }, [categoryId]);
   const isArabic = language === "ar";
@@ -36,7 +38,7 @@ const Plans = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        minHeight: '100vh',
+        minHeight: "100vh",
         direction: isArabic ? "rtl" : "ltr",
       }}
     >
@@ -49,8 +51,6 @@ const Plans = () => {
           alignItems: "center",
           borderRadius: "10px",
           width: { xs: "350px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
-          // ml: { lg: "0", md: "30px", sm: "0", xs: "0", xl: "100px" },
-          // border: "2px solid green",
         }}
       >
         {/* First Child Box */}
@@ -73,14 +73,14 @@ const Plans = () => {
             sx={{
               borderRadius: "20%",
               backgroundColor: "#fff",
-              // boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
               width: { xs: "40px", sm: "40px", md: "45px" },
               height: { xs: "40px", sm: "40px", md: "45px" },
             }}
+            onClick={() => navigate(-1)}
           >
             <ArrowBackIosIcon
               sx={{
-                transform: isArabic ? "rotate(180deg)" : "none", // Rotates the arrow for RTL (Arabic)
+                transform: isArabic ? "rotate(180deg)" : "none",
                 paddingLeft: { xs: "5px", sm: "8px" },
                 fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
               }}
@@ -143,7 +143,7 @@ const Plans = () => {
           {/* Box for larger screens */}
           <Box
             sx={{
-              display: { xs: "none", sm: "flex" }, // Hidden on xs screens
+              display: { xs: "none", sm: "flex" },
               justifyContent: { xs: "center" },
               alignItems: "center",
               gap: "1rem",
@@ -165,7 +165,6 @@ const Plans = () => {
                 cursor: "pointer",
                 fontSize: { sm: "16px", md: "16px" },
                 ml: { md: "10px", lg: "10px", sm: "10px" },
-                // mr: { md: "10px", lg: "10px", sm: "10px" },
               }}
             >
               {isArabic ? "خطة مخصصة" : "Custom Plan"}
@@ -226,8 +225,6 @@ const Plans = () => {
               borderRadius: "12px",
               cursor: "pointer",
               fontSize: { xs: "12px", sm: "14px" },
-              // fontWeight: "bold",
-              // transition: "background-color 0.3s ease",
             }}
           >
             {isArabic ? "شهري" : "Monthly"}
@@ -269,7 +266,7 @@ const Plans = () => {
           }}
         >
           {plans
-            .filter((plan) => plan.plan_type_range === selectedPlan) // Filter only valid plans
+            .filter((plan) => plan.plan_type_range === selectedPlan)
             .map((plan) => (
               <Grid2
                 xs={12}

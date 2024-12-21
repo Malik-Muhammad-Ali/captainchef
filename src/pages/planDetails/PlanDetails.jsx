@@ -30,8 +30,10 @@ const PlanDetails = () => {
     mealsByDay,
     setMealsByDay,
     language,
+    currentPlan,
   } = useAppStore();
   const [selectedIndex, setSelectedIndex] = useState(null);
+  console.log(currentPlan);
 
   useEffect(() => {
     fetchMeals(categoryId);
@@ -128,7 +130,7 @@ const PlanDetails = () => {
         </div>
 
         <Typography variant="h5" sx={{ fontFamily: "Poppins, sans-serif" }}>
-          {language === 'en' ? "Plan Details" : "تفاصيل الخطة"}
+          {language === "en" ? "Plan Details" : "تفاصيل الخطة"}
         </Typography>
       </div>
 
@@ -139,7 +141,7 @@ const PlanDetails = () => {
           {/* Free Plan */}
           <div className="freePlan">
             <div className="freePlanUpper">
-              <p>{language === 'en' ? "Free Plan" : "خطة مجانية"}</p>
+              <p>{language === "en" ? "Free Plan" : "خطة مجانية"}</p>
               <div style={{ display: "flex", gap: "10px" }}>
                 <p>
                   <strike style={{ color: "#515151", fontFamily: "Poppins" }}>
@@ -349,7 +351,7 @@ const PlanDetails = () => {
           <div className="rightCardLower">
             {/* Week Days */}
             <div>
-              <p>{language === 'en' ? "Week Days" : "أيام الأسبوع"}</p>
+              <p>{language === "en" ? "Week Days" : "أيام الأسبوع"}</p>
               <div className="weekDays">
                 {weekdays.map((item, index) => (
                   <div
@@ -409,7 +411,7 @@ const PlanDetails = () => {
             </div>
             {/* Food Type */}
             <div>
-              <p>{language === 'en' ? "Food Type" : "نوع الغذاء"}</p>
+              <p>{language === "en" ? "Food Type" : "نوع الغذاء"}</p>
               <div className="foodType">
                 <div>Snacks (0/1)</div>
                 <div>Juice (0/1)</div>
@@ -421,7 +423,7 @@ const PlanDetails = () => {
       </div>
 
       <div className="meals">
-        <p>{language === 'en' ? "Select Meals" : "اختر الوجبات"}</p>
+        <p>{language === "en" ? "Select Meals" : "اختر الوجبات"}</p>
         <div className="mealCardContainer">
           {mealsByDay.map((meal, index) => (
             <div key={index} className="mealCard">
@@ -496,7 +498,9 @@ const PlanDetails = () => {
                 </svg>
 
                 {/* Recommended Tag */}
-                <div className="recommended">{language === 'en' ? "Recommended" : "مُستَحسَن"}</div>
+                <div className="recommended">
+                  {language === "en" ? "Recommended" : "مُستَحسَن"}
+                </div>
               </div>
               <CardContent sx={{ padding: "0px", textAlign: "center" }}>
                 <Typography
@@ -507,7 +511,7 @@ const PlanDetails = () => {
                     mb: 1,
                   }}
                 >
-                  {language === 'en' ? meal.name : meal.name_arabic}
+                  {language === "en" ? meal.name : meal.name_arabic}
                 </Typography>
                 <Box display="flex" justifyContent="center" gap={2}>
                   {/* Box 1: 1080 KCal */}
@@ -590,7 +594,11 @@ const PlanDetails = () => {
         className="subscribeButtonContainer"
         onClick={() => handleNavigation()}
       >
-        <div className="subscribeButton">{language === 'en' ? "Subscribe Now, Schedule Later" : "اشترك الآن، حدد موعدًا لاحقًا"}</div>
+        <div className="subscribeButton">
+          {language === "en"
+            ? "Subscribe Now, Schedule Later"
+            : "اشترك الآن، حدد موعدًا لاحقًا"}
+        </div>
       </div>
       <OrderModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       <MealInfo

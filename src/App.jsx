@@ -23,6 +23,7 @@ import Checkout from "./pages/checkout/Checkout";
 import PickupAddress from "./pages/pickupAddress/PickupAddress";
 import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
 import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
+import CityModal from "./components/cityModal/CityModal";
 
 // Create a custom theme
 const theme = createTheme({
@@ -36,6 +37,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Navbar />
+        <CityModal />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/features" element={<Features />} />

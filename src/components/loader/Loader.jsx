@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CircularProgress, Box, Typography } from "@mui/material";
 
 const Loader = () => {

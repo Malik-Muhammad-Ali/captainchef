@@ -218,9 +218,19 @@
 
 .noMealsMessage {
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   font-size: 18px;
   color: #d92531;
   padding: 20px;
+  width: 100%;
+}
+.noMealsMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff0000;
+  margin: 20px 0;
 }
 
 @media (min-width: 1131px) {

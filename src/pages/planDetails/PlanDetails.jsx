@@ -105,9 +105,7 @@ const PlanDetails = () => {
   };
 
   const handleSelect = () => {
-    if (!authenticated) {
-      setSubscribeFirstModalOpen(true);
-    }
+    setSubscribeFirstModalOpen(true);
   };
 
   const handleNavigation = () => {

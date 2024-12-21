@@ -7,7 +7,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/home/Home";
 import Features from "./pages/features/Features";
 import Subscriptions from "./pages/subscriptions/Subscriptions";
-import Login from "./pages/login/Login";import CreateAccount from "./pages/createAccount/CreateAccount";
+import Login from "./pages/login/Login";
+import CreateAccount from "./pages/createAccount/CreateAccount";
 import ForgotPassword from "./pages/forgetPassword/ForgotPassword";
 import BarCode from "./pages/barcode/BarCode";
 import PlanDetails from "./pages/planDetails/PlanDetails";
@@ -18,10 +19,10 @@ import Checkout from "./pages/checkout/Checkout";
 import PickupAddress from "./pages/pickupAddress/PickupAddress";
 import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
 import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
-import CityModal from "./components/cityModal/CityModal";
 
 // Components
 import Navbar from "./components/navbar/Navbar";
+import CityModal from "./components/cityModal/CityModal";
 
 // Create a custom theme
 const theme = createTheme({

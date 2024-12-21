@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 
 const PlanDetailsCard = () => {
   const { currentPlan, language } = useAppStore();
+
   const iconsMap = {
     meals: (
       <svg
@@ -181,64 +182,9 @@ const PlanDetailsCard = () => {
                 }}
               >
                 <Box sx={{ width: "20px", height: "20px" }}>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17 3L17 7"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M7 3L7 7"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M3 10C3 8.11438 3 7.17157 3.58579 6.58579C4.17157 6 5.11438 6 7 6H17C18.8856 6 19.8284 6 20.4142 6.58579C21 7.17157 21 8.11438 21 10V11H3V10Z"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                    />
-                    <rect
-                      x="3"
-                      y="6"
-                      width="18"
-                      height="15"
-                      rx="2"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                    />
-                    <path
-                      d="M6 15H10"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M14 15H18"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M6 18H10"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M14 18H18"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <span role="img" aria-label="delivery">
+                    🚚
+                  </span>
                 </Box>
                 <Typography
                   variant="body2"
@@ -257,64 +203,9 @@ const PlanDetailsCard = () => {
                 }}
               >
                 <Box sx={{ width: "20px", height: "20px" }}>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17 3L17 7"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M7 3L7 7"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M3 10C3 8.11438 3 7.17157 3.58579 6.58579C4.17157 6 5.11438 6 7 6H17C18.8856 6 19.8284 6 20.4142 6.58579C21 7.17157 21 8.11438 21 10V11H3V10Z"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                    />
-                    <rect
-                      x="3"
-                      y="6"
-                      width="18"
-                      height="15"
-                      rx="2"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                    />
-                    <path
-                      d="M6 15H10"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M14 15H18"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M6 18H10"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M14 18H18"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <span role="img" aria-label="delivery">
+                    🚚
+                  </span>
                 </Box>
                 <Typography
                   variant="body2"
@@ -333,64 +224,9 @@ const PlanDetailsCard = () => {
                 }}
               >
                 <Box sx={{ width: "20px", height: "20px" }}>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17 3L17 7"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M7 3L7 7"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M3 10C3 8.11438 3 7.17157 3.58579 6.58579C4.17157 6 5.11438 6 7 6H17C18.8856 6 19.8284 6 20.4142 6.58579C21 7.17157 21 8.11438 21 10V11H3V10Z"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                    />
-                    <rect
-                      x="3"
-                      y="6"
-                      width="18"
-                      height="15"
-                      rx="2"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                    />
-                    <path
-                      d="M6 15H10"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M14 15H18"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M6 18H10"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M14 18H18"
-                      stroke="#1F1F1F"
-                      strokeWidth="0.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <span role="img" aria-label="delivery">
+                    🚚
+                  </span>
                 </Box>
                 <Typography
                   variant="body2"
@@ -399,6 +235,26 @@ const PlanDetailsCard = () => {
                   {currentPlan.estimate.total} KCal
                 </Typography>
               </Box>
+
+              {updatedItems
+                .filter((item) => item.value > 0)
+                .map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <Box sx={{ width: "20px", height: "20px" }}>
+                      {item.icon}
+                    </Box>
+                    <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
+                      {item.value} {item.name}
+                    </Typography>
+                  </Box>
+                ))}
             </Box>
           </div>
           {/* Lower */}

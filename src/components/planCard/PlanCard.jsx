@@ -136,7 +136,7 @@ const PlanCard = ({
   const handleSubmit = () => {
     setCurrentPlan(plan);
     navigate(`/subscriptions/category/${categoryId}/plans/${planID}`);
-  }
+  };
 
   return (
     <Grid2
@@ -454,21 +454,23 @@ const PlanCard = ({
             </Box>
 
             {/* Dynamically render filtered items */}
-            {updatedItems.filter(item => item.value > 0).map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <Box sx={{ width: "20px", height: "20px" }}>{item.icon}</Box>
-                <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                  {item.value} {item.name}
-                </Typography>
-              </Box>
-            ))}
+            {updatedItems
+              .filter((item) => item.value > 0)
+              .map((item, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <Box sx={{ width: "20px", height: "20px" }}>{item.icon}</Box>
+                  <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
+                    {item.value} {item.name}
+                  </Typography>
+                </Box>
+              ))}
           </Box>
 
           {/* Button Section */}

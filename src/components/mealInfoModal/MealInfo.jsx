@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Modal, Typography, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Modal, Typography, useMediaQuery } from '@mui/material';
 import { motion } from "framer-motion";
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DataChart from './DataChart';
 import Rating from './Rating';
 
@@ -70,17 +69,30 @@ const MealInfo = ({mealInfoModalOpen, setMealInfoModalOpen}) => {
           display:"flex",
           justifyContent:"center",
           alignItems:"center",
-          "&:hover":{
-            bgcolor:"#D6D6D6"
-          } 
         }}>
-        <CancelOutlinedIcon onClick={handleSubmit} sx={{
+        {/* <CancelOutlinedIcon onClick={handleSubmit} sx={{
           fontSize:"32px",
           color:"#0A0A0C",
           opacity: 0.7,
           cursor:"pointer",
                    
-        }}/>
+        }}/> */}
+        <IconButton
+        onClick={handleSubmit}
+            sx={{
+              // backgroundColor: "#FAE9EA",
+              // color: "#D92531",
+              padding: "4px",
+              borderRadius: "50%",
+            }}
+          >
+            <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="28.207" cy="28.2461" r="13.5" stroke="#0A0A0C"/>
+<path d="M34.207 22.2461L22.207 34.2461" stroke="#0A0A0C" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M22.207 22.2461L34.207 34.2461" stroke="#0A0A0C" stroke-linecap="square" stroke-linejoin="round"/>
+</svg>
+
+          </IconButton>
         </Box>
           <Box
             sx={{

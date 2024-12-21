@@ -3,12 +3,16 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
+import { useEffect } from "react";
 
 const DeliveryAddress = () => {
   const navigate = useNavigate();
-  const arr = ["Home1", "Home2", "Office", "Playground"];
+  const { fetchAddress, address, language, user } = useAppStore();
+  // const arr = ["Home1", "Home2", "Office", "Playground"];
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
+  const isArabic = language == "ar";
   const handleSelect = (index) => {
     setSelectedIndex(index);
   };
@@ -21,6 +25,9 @@ const DeliveryAddress = () => {
       navigate("/checkout");
     }
   };
+  useEffect(() => {
+    fetchAddress(user.user_id);
+  }, []);
   return (
     <Box
       sx={{
@@ -29,7 +36,9 @@ const DeliveryAddress = () => {
         alignItems: "center",
         gap: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         bgcolor: "#F8F8F8",
-        height: "100vh",
+        height: "calc(100vh - 170px)",
+        overflowY:"scroll",
+        direction: isArabic ? "rtl" : "ltr",
       }}
     >
       <Box
@@ -37,7 +46,7 @@ const DeliveryAddress = () => {
           display: "flex",
           justifyContent: "space-between",
           p: "0 10px",
-          width: { lg: "900px", md: "720px", sm: "664px", xs: "311px" },
+          width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
           mt: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         }}
       >
@@ -78,10 +87,10 @@ const DeliveryAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            Delivery Address
+            {isArabic ? "عنوان التسليم" : "Delivery Address"}
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -95,9 +104,9 @@ const DeliveryAddress = () => {
               fontFamily: "Work Sans",
             }}
           >
-            Add new
+            {isArabic ? "إضافة جديد" : "Add new"}
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
 
       <Box
@@ -115,135 +124,12 @@ const DeliveryAddress = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            width: { lg: "900px", md: "720px", sm: "664px", xs: "311px" },
+            width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
             bgcolor: "#F8F8F8",
             borderRadius: "16px",
           }}
         >
-          {arr.map((key, index) => (
-            <Box
-              key={index}
-              onClick={() => handleSelect(index)}
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", sm: "row" },
-                alignItems: { xs: "flex-start", sm: "center" },
-                padding: "8px 16px",
-                border:
-                  selectedIndex === index
-                    ? "2px solid #D92531"
-                    : "1px solid #e0e0e0",
-                borderRadius: "12px",
-                bgcolor: selectedIndex === index ? "#FAE9EA" : "#FFFFFF",
-                width: { lg: "880px", md: "700px", sm: "644px", xs: "280px" },
-                height: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
-                margin: "8px 0",
-                boxShadow: "none",
-                cursor: "pointer",
-              }}
-            >
-              <Box
-                checked={selectedIndex === index}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Radio
-                    checked={selectedIndex === index}
-                    onChange={() => handleSelect(index)}
-                    sx={{
-                      color: selectedIndex === index ? "#D92531" : "#e0e0e0",
-                      "&.Mui-checked": {
-                        color: "#D92531",
-                        bgcolor: "#FAE9EA",
-                      },
-                      padding: 0,
-                      marginRight: "8px",
-                    }}
-                  />
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: { md: "18px", xs: "16px" },
-                      fontWeight: "400px",
-                      fontFamily: "work sans",
-                    }}
-                  >
-                    {key}
-                  </Typography>
-                </Box>
-                {/* {isMobile && (
-          <IconButton
-            sx={{
-              // backgroundColor: "#FAE9EA",
-              // color: "#D92531",
-              padding: "4px",
-              borderRadius: "50%",
-            }}
-          >
-            <img
-                  src="/Trash_light.png"
-                  alt="trash-icon"
-                  style={{
-                    width: "100%",
-                    maxWidth: "24px",
-                    objectFit: "contain",
-                  }}
-                />
-          </IconButton>
-        )} */}
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: { xs: "8px", sm: "0" },
-                  padding: "8px",
-                  gap: "6x",
-                  borderRadius: "8px",
-                  width: { sm: "37%", xs: "100%", md: "35%", lg: "25%" },
-                }}
-              >
-                <LocationOnOutlinedIcon />
-                <Typography
-                  fontSize="14px"
-                  fontWeight="400px"
-                  fontFamily="work sans"
-                >
-                  Short address here
-                </Typography>
-              </Box>
-              {/* {isDesktopOrTablet && (
-          <IconButton
-            sx={{
-              // backgroundColor: "#FAE9EA",
-              color: "#D92531",
-              padding: "4px",
-              borderRadius: "50%",
-            }}
-          >
-            <img
-                  src="/Trash_light.png"
-                  alt="trash-icon"
-                  style={{
-                    width: "100%",
-                    maxWidth: "24px",
-                    objectFit: "contain",
-                  }}
-                />
-          </IconButton>
-        )} */}
-            </Box>
-          ))}
+          
           <p
             style={{
               textAlign: "center",
@@ -255,32 +141,34 @@ const DeliveryAddress = () => {
             {error}
           </p>
         </Box>
-        <Box
-          sx={{
-            bgcolor: "#F8F8F8",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-            boxShadow: "none",
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              bgcolor: "#D92531",
-              width: { xs: "280px", md: "130px", sm: "130px" },
-              borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
-              height: "48px",
-              boxShadow: "none",
-            }}
-            onClick={() => handleNavigation()}
-          >
-            Next
-          </Button>
-        </Box>
-      </Box>
+
     </Box>
-  );
+    <Box sx={{
+        bgcolor: "#F8F8F8",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        boxShadow: "none",
+        width:"100%",
+        height:"50px"
+      }}
+      >
+      <Button
+        variant="contained"
+        sx={{
+          bgcolor: "#D92531",
+          width: { xs: "280px", md: "130px", sm: "130px" },
+          borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
+          height: "48px",
+          boxShadow: "none",
+        }}
+        onClick={() => handleNavigation()}
+        >
+          {isArabic?"التالي":"Next"}
+      </Button>
+    </Box>
+  </Box>
+);
 };
 
 export default DeliveryAddress;

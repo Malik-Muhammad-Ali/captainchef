@@ -24,6 +24,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     const user_info = await loginUser(email, password);
+    console.log(user_info)
     if (user_info) {
       console.log("True Conidition");
       setError(false);

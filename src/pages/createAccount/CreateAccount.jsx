@@ -1,5 +1,12 @@
-import { Box, Button, Grid2, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Grid2,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -43,17 +50,34 @@ const CreateAccount = () => {
           height: { xs: "48px", sm: "56px" },
           display: "flex",
           alignItems: "center",
-          mb: { xs: "40px", md: "30px", sm: "", lg: "" },
+          // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
           justifyContent: "center",
           borderRadius: "20%",
           backgroundColor: "white",
           cursor: "pointer",
         }}
-        onClick={() => navigate(-1)}
       >
-        <ArrowBackIosIcon
-          sx={{ fontSize: "24px", color: "#D92531", ml: "7px" }}
-        />
+        <IconButton
+          sx={{
+            width: { xs: "48px", sm: "56px" },
+            height: { xs: "48px", sm: "56px" },
+            display: "flex",
+            alignItems: "center",
+            // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
+            justifyContent: "center",
+            borderRadius: "20%",
+            backgroundColor: "#fff",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate(-1)}
+        >
+          <ArrowBackIosIcon
+            sx={{
+              fontSize: "24px",
+              ml: "7px",
+            }}
+          />
+        </IconButton>
       </Box>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -67,7 +91,7 @@ const CreateAccount = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            height: "100vh",
+            // height: "100vh",
             padding: "16px",
             backgroundColor: "#f5f5f5",
             // mt: { xs: "80px", sm: "40px", md: "0", lg: "0" },
@@ -403,14 +427,14 @@ const CreateAccount = () => {
               padding: "10px 16px",
               width: { xs: "100%", sm: "360px", md: "512px" },
               height: { xs: "56px", sm: "56px", md: "56px" },
-              marginBottom: '10px'
+              marginBottom: "10px",
             }}
             onClick={() => handleRegistration()}
           >
             Register
           </Button>
 
-          <Box sx={{ display: "flex", gap: "6px", paddingBottom: '20px' }}>
+          <Box sx={{ display: "flex", gap: "6px", paddingBottom: "20px" }}>
             <Typography>Already Have any Account?</Typography>
             <Typography
               sx={{ cursor: "Pointer", color: "#D92531", fontWeight: "Bold" }}

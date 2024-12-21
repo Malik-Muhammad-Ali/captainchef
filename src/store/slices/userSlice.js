@@ -9,10 +9,12 @@ const userSlice = (set) => ({
       `https://appv2.captainchef.net/AppV2/public/contacts/login?username=${email}&password=${password}`
     );
     console.log("Api Hit");
-    set(() => ({
-      user: response.data.user_info,
-      authenticated: true,
-    }));
+    if (response.data.status === "success") {
+      set(() => ({
+        user: response.data.user_info,
+        authenticated: true,
+      }));
+    }
     return response.data.user_info;
   },
   logout: () =>

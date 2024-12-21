@@ -8,11 +8,13 @@ import {
   Radio,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
+import useAppStore from '../../store/store'
+import { nav } from "framer-motion/client";
 
 const MySubscriptions = () => {
   const navigate = useNavigate();
@@ -20,6 +22,13 @@ const MySubscriptions = () => {
   const [isPlanStatusExpanded, setIsPlanStatusExpanded] = useState(true);
   const [selectedPlanType, setSelectedPlanType] = useState("");
   const [selectedPlanStatus, setSelectedPlanStatus] = useState("");
+  const { user, authenticated } = useAppStore();
+
+  useEffect(() => {
+    if(!authenticated){
+      navigate('/subscriptions');
+    }
+  }, [authenticated])
 
   // Status Options
   const planStatusOptions = {

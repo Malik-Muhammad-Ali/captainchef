@@ -3,6 +3,8 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 260px);
+  overflow-y: scroll;
 }
 .planDetails {
   display: flex;
@@ -140,6 +142,7 @@
   background-color: white;
   border-radius: 16px;
   align-items: center;
+  justify-content: space-between;
 }
 .infoTagImg {
   position: absolute;
@@ -173,6 +176,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  height: 50px;
 }
 .subscribeButton {
   background-color: #d92531;
@@ -214,6 +218,13 @@
   font-family: "Poppins";
   font-weight: 400;
   cursor: pointer;
+}
+
+.noMealsMessage {
+  text-align: center;
+  font-size: 18px;
+  color: #d92531;
+  padding: 20px;
 }
 
 @media (min-width: 1131px) {

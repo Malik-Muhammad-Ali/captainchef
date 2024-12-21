@@ -119,6 +119,7 @@ const PlanDetails = () => {
   };
 
   return (
+    <>
     <div className="container">
       {/* Icon and Text */}
       <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
@@ -487,7 +488,7 @@ const PlanDetails = () => {
                       style={{ borderRadius: "50%", width: "90%" }}
                     />
                     {/* Info Tag */}
-                    {/* <svg
+                     <svg
                     onClick={() => setMealInfoModalOpen(true)}
                     className="infoTagImg"
                     width="30"
@@ -503,10 +504,10 @@ const PlanDetails = () => {
                       stroke="#656565"
                     />
                     <path d="M21.4082 32.6663V16.333" stroke="#656565" />
-                  </svg> */}
+                  </svg> 
 
                     {/* Free Tag */}
-                    {/* <svg
+                     <svg
                     className="spicyTagImg"
                     width="26"
                     height="26"
@@ -546,7 +547,7 @@ const PlanDetails = () => {
                         />
                       </clipPath>
                     </defs>
-                  </svg> */}
+                  </svg> 
 
                     {/* Recommended Tag */}
                     <div className="recommended">
@@ -643,16 +644,6 @@ const PlanDetails = () => {
         </div>
       )}
 
-      <div
-        className="subscribeButtonContainer"
-        onClick={() => handleNavigation()}
-      >
-        <div className="subscribeButton">
-          {language === "en"
-            ? "Subscribe Now, Schedule Later"
-            : "اشترك الآن، حدد موعدًا لاحقًا"}
-        </div>
-      </div>
       <OrderModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       <MealInfo
         mealInfoModalOpen={mealInfoModalOpen}
@@ -663,6 +654,17 @@ const PlanDetails = () => {
         setSubscribeFirstModalOpen={setSubscribeFirstModalOpen}
       />
     </div>
+      <div
+        className="subscribeButtonContainer"
+        onClick={() => handleNavigation()}
+      >
+        <div className="subscribeButton">
+          {language === "en"
+            ? "Subscribe Now, Schedule Later"
+            : "اشترك الآن، حدد موعدًا لاحقًا"}
+        </div>
+      </div>
+    </>
   );
 };
 

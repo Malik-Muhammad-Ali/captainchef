@@ -69,9 +69,6 @@ const MealInfo = ({mealInfoModalOpen, setMealInfoModalOpen}) => {
           display:"flex",
           justifyContent:"center",
           alignItems:"center",
-          // "&:hover":{
-          //   bgcolor:"#D6D6D6"
-          // } 
         }}>
         {/* <CancelOutlinedIcon onClick={handleSubmit} sx={{
           fontSize:"32px",
@@ -89,15 +86,12 @@ const MealInfo = ({mealInfoModalOpen, setMealInfoModalOpen}) => {
               borderRadius: "50%",
             }}
           >
-            <img
-                  src="/cross.png"
-                  alt="trash-icon"
-                  style={{
-                    width: "100%",
-                    // maxWidth: "24px",
-                    objectFit: "contain",
-                  }}
-                />
+            <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="28.207" cy="28.2461" r="13.5" stroke="#0A0A0C"/>
+<path d="M34.207 22.2461L22.207 34.2461" stroke="#0A0A0C" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M22.207 22.2461L34.207 34.2461" stroke="#0A0A0C" stroke-linecap="square" stroke-linejoin="round"/>
+</svg>
+
           </IconButton>
         </Box>
           <Box

@@ -32,13 +32,16 @@ const Subscriptions = () => {
   ];
 
   return (
+    <>
     <Box
       sx={{
         display: "flex",
-        flexWrap: "wrap",
-        marginBottom: { lg: "180px", md: "170px", sm: "160px", xs: "150px" },
+        // flexWrap: "wrap",
+        marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "150px" },
         flexDirection: "column",
         alignItems: "center",
+        height: "calc(100vh - 200px)",
+        overflowY:"scroll",
       }}
     >
       <Carousel />
@@ -104,6 +107,7 @@ const Subscriptions = () => {
                 xl: "2000px",
               },
               direction: isRTL ? "rtl" : "ltr",
+              mb:{lg:"50px",md:"50px",sm:"30px",xs:"20px"}
             }}
           >
             {categories.map((data, index) => (
@@ -127,19 +131,21 @@ const Subscriptions = () => {
       <Box
         sx={{
           position: "fixed",
-          bottom: 20,
+          bottom: 55,
           right: 20,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           gap: { lg: "30px", md: "30px", sm: "18px", xs: "17px" },
           zIndex: 1000,
+          height:"50px"
         }}
       >
         <Msgbox />
         <CircularAvt />
       </Box>
     </Box>
+    </>
   );
 };
 

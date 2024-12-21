@@ -15,7 +15,7 @@ const CircularAvt = () => {
         height: {
           xs: "80px",
           sm: "156px",
-          md: "156px",
+          md: "50px",
         },
         display: "flex",
         justifyContent: "center",

@@ -24,11 +24,11 @@ import Checkout from "./pages/checkout/Checkout";
 import PickupAddress from "./pages/pickupAddress/PickupAddress";
 import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
 import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
+import MyCart from "./components/mycart/MyCart";
 
 // Components
 import Navbar from "./components/navbar/Navbar";
 import CityModal from "./components/cityModal/CityModal";
-import MyCart from "./components/mycart/MyCart";
 
 // Create a custom theme
 const theme = createTheme({
@@ -201,6 +201,19 @@ const AnimatedRoutes = () => {
               exit="exit"
             >
               <RegeneratePassowrd />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <MyCart />
             </motion.div>
           }
         />

@@ -7,12 +7,48 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import useAppStore from "../../store/store";
+import axios from "axios";
+import Loader from "../loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 const MyCart = () => {
-  const { language } = useAppStore();
+  const { language, user, authenticated } = useAppStore();
   const isArabic = language == "ar";
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await axios.get("https://appv2.captainchef.net/AppV2/public/api/ver2/get-cart", {
+        params: {
+          user_id: user.id,
+        },
+      });
+      console.log(response.data.data[0].plan);
+      setCartItems(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    if (!user || !authenticated) {
+      navigate('/login')
+      return;
+    }
+    setLoading(true);
+    fetchCartItems();
+    setLoading(false);
+  }, [])
+
+  if (loading) {
+    return <Loader />;
+  }
+
 
   return (
     <>
@@ -49,9 +85,7 @@ const MyCart = () => {
         <Grid2
           sx={{
             display: "flex",
-            // flexGrow: 1,
             padding: "12px",
-            // flexDirection: "column",
           }}
         >
           <Paper
@@ -67,8 +101,8 @@ const MyCart = () => {
             {/* Headings */}
             <Box
               sx={{
-                display: "grid", // Use grid for aligning items under headings
-                gridTemplateColumns: "repeat(4, 1fr)", // 4 equal columns
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
                 gap: 2,
                 padding: "15px 20px",
                 borderRadius: "8px",
@@ -91,12 +125,12 @@ const MyCart = () => {
             </Box>
 
             {/* Product Rows */}
-            {["Diteplan", "Diteplan", "Diteplan"].map((product, index) => (
+            {cartItems?.map((item, index) => (
               <Box
                 key={index}
                 sx={{
-                  display: "grid", // Grid layout to align content below each heading
-                  gridTemplateColumns: "repeat(4, 1fr)", // Matching the 4 columns from the heading section
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
                   alignItems: "center",
                   padding: "15px 20px",
                   backgroundColor: "#ffffff",
@@ -106,13 +140,14 @@ const MyCart = () => {
                 }}
               >
                 <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                  {product}
+                  {item.plan.title}
                 </Typography>
                 <Typography
                   variant="body1"
                   sx={{ fontWeight: "bold", color: "#EACB78" }}
                 >
-                  {isArabic ? "١١٩٣٫٠٠ ريال" : "1193.00 SR"}
+                  {/* {isArabic ? "١١٩٣٫٠٠ ريال" : "1193.00 SR"} */}
+                  {item.plan.basic_amount} SR
                 </Typography>
                 <Typography
                   variant="body1"

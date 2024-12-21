@@ -3,7 +3,7 @@ import axios from "axios";
 const userSlice = (set) => ({
   user: null,
   authenticated: false,
-  planDetailUrl: null,
+  planDetailUrl: '/subscriptions',
   loginUser: async (email, password) => {
     const response = await axios.post(
       `https://appv2.captainchef.net/AppV2/public/contacts/login?username=${email}&password=${password}`

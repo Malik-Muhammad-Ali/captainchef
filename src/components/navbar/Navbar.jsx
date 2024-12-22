@@ -231,7 +231,7 @@ const Navbar = () => {
             )}
             {authenticated && (
               <Box
-                onClick={() => Navigate("/cart")}
+                onClick={() => navigate("/cart")}
                 sx={{
                   width: "56px",
                   height: "56px",

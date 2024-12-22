@@ -9,7 +9,6 @@ import { useEffect } from "react";
 const DeliveryAddress = () => {
   const navigate = useNavigate();
   const { fetchAddress, address, language, user } = useAppStore();
-  // const arr = ["Home1", "Home2", "Office", "Playground"];
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
   const isArabic = language == "ar";
@@ -90,7 +89,7 @@ const DeliveryAddress = () => {
             {isArabic ? "عنوان التسليم" : "Delivery Address"}
           </Typography>
         </Box>
-        {/* <Box
+        <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -103,10 +102,11 @@ const DeliveryAddress = () => {
               cursor: "pointer",
               fontFamily: "Work Sans",
             }}
+            onClick={() => navigate("/addDeliveryAddress")}
           >
             {isArabic ? "إضافة جديد" : "Add new"}
           </Typography>
-        </Box> */}
+        </Box>
       </Box>
 
       <Box

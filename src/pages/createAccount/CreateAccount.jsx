@@ -26,10 +26,41 @@ const CreateAccount = () => {
   });
 
   const handleRegistration = async () => {
-    console.log(createUser);
+    let errors = {};
+
+    // Validation for each field
+    if (!createUser.firstName.trim()) {
+      errors.firstName = "First name is required";
+    }
+    if (!createUser.lastName.trim()) {
+      errors.lastName = "Last name is required";
+    }
+    if (!createUser.email.trim()) {
+      errors.email = "Email a valid email";
+    }
+    if (!createUser.mobileNumber.startsWith("9665")) {
+      errors.mobileNumber = "Enter a valid number";
+    }
+    if (!createUser.password.trim()) {
+      errors.password = "Password is required";
+    }
+    if (createUser.password !== createUser.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+    if (createUser.confirmPassword !== createUser.confirmPassword) {
+      errors.confirmPassword = "Confirm Password is required";
+    }
+
+    // If there are errors, set them and return
+    if (Object.keys(errors).length > 0) {
+      setError(errors);
+      return;
+    }
+
+    // Proceed with registration
     const registrationResponse = await registerUser(createUser);
     if (registrationResponse.status === false) {
-      setError(registrationResponse.message);
+      setError({ general: registrationResponse.message });
     }
     if (registrationResponse.status === true) {
       navigate("/login");
@@ -147,6 +178,8 @@ const CreateAccount = () => {
                 firstName: e.target.value,
               }))
             }
+            error={!!error.firstName}
+            helperText={error.firstName}
             label="First Name"
             variant="outlined"
             InputProps={{
@@ -194,6 +227,8 @@ const CreateAccount = () => {
                 lastName: e.target.value,
               }))
             }
+            error={!!error.lastName}
+            helperText={error.lastName}
             variant="outlined"
             InputProps={{
               sx: {
@@ -240,6 +275,8 @@ const CreateAccount = () => {
                 email: e.target.value,
               }))
             }
+            error={!!error.email}
+            helperText={error.email}
             variant="outlined"
             InputProps={{
               sx: {
@@ -286,6 +323,8 @@ const CreateAccount = () => {
                 mobileNumber: e.target.value,
               }))
             }
+            error={!!error.mobileNumber}
+            helperText={error.mobileNumber}
             variant="outlined"
             InputProps={{
               sx: {
@@ -333,6 +372,8 @@ const CreateAccount = () => {
                 password: e.target.value,
               }))
             }
+            error={!!error.password}
+            helperText={error.password}
             InputProps={{
               sx: {
                 '& input[type="text"]': {
@@ -378,6 +419,8 @@ const CreateAccount = () => {
                 confirmPassword: e.target.value,
               }))
             }
+            error={!!error.confirmPassword}
+            helperText={error.confirmPassword}
             variant="outlined"
             InputProps={{
               sx: {
@@ -412,9 +455,9 @@ const CreateAccount = () => {
             }}
           />
 
-          <Typography sx={{ color: "#D92531", marginBottom: "12px" }}>
+          {/* <Typography sx={{ color: "#D92531", marginBottom: "12px" }}>
             {error}
-          </Typography>
+          </Typography> */}
 
           {/* Submit Button */}
           <Button

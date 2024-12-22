@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 
 const PlanDetailsCard = () => {
   const { currentPlan, language, city } = useAppStore();
-  console.log(currentPlan.city);
+  console.log(currentPlan?.city);
   const deliveryCharges =
     currentPlan?.city.find((currentCity) => currentCity.city === city)
       ?.delivery_charges || currentPlan?.city[0]?.delivery_charges;

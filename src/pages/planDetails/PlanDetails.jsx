@@ -306,7 +306,7 @@ const PlanDetails = () => {
                       <strike
                         style={{ color: "#515151", fontFamily: "Poppins" }}
                       >
-                        {currentPlan.free_plans[0].basic_amount} SR
+                        {currentPlan?.free_plans[0]?.basic_amount} SR
                       </strike>
                     </p>
                     <p
@@ -461,7 +461,7 @@ const PlanDetails = () => {
                             fontSize: isSmallScreen ? "6px" : "12px",
                           }}
                         >
-                          {item.selectedMeals}/{currentPlan.no_of_items.total}
+                          {item.selectedMeals}/{currentPlan?.no_of_items.total}
                         </Typography>
                       </div>
                       <div

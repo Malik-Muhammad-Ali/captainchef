@@ -15,11 +15,12 @@ import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
 import useAppStore from "../../store/store";
 import Logo from "../../../public/logocaptainchef.png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { authenticated, language, setLanguage } = useAppStore();
   const location = useLocation();
-  // const [language, setLanguage] = useState("");
   const [flag, setFlag] = useState("https://flagcdn.com/w40/us.png");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -206,6 +207,7 @@ const Navbar = () => {
                 width: { xs: "56px", sm: "40px", md: "130px", lg: "197px" },
                 boxShadow: "none",
               }}
+              onClick={() => navigate('/downloadapp')}
             >
               Download App
             </Button>
@@ -238,6 +240,7 @@ const Navbar = () => {
               borderRadius: "12px",
               width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
             }}
+            onClick={() => navigate('/downloadapp')}
           >
             Download App
           </Button>

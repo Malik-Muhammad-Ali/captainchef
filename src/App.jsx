@@ -29,6 +29,7 @@ import MyCart from "./components/mycart/MyCart";
 // Components
 import Navbar from "./components/navbar/Navbar";
 import CityModal from "./components/cityModal/CityModal";
+import AddDeliveryAddress from "./pages/deliveryAddress/AddDeliveryAddress";
 
 // Create a custom theme
 const theme = createTheme({
@@ -279,6 +280,19 @@ const AnimatedRoutes = () => {
               exit="exit"
             >
               <MyCart />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/addDeliveryAddress"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <AddDeliveryAddress />
             </motion.div>
           }
         />

@@ -138,8 +138,6 @@ const Subscriptions = () => {
               ))}
             </Box>
           )}
-        </Box>
-
         <Box
           sx={{
             position: "fixed",
@@ -157,6 +155,8 @@ const Subscriptions = () => {
           <CircularAvt />
         </Box>
       </Box>
+        </Box>
+
     </>
   );
 };

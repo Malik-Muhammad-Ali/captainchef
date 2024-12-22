@@ -21,7 +21,7 @@ const PickupAddress = () => {
       setError("Please select an address");
     } else {
       setError(null);
-      navigate("/checkout");
+      navigate("/cart");
     }
   };
   return (

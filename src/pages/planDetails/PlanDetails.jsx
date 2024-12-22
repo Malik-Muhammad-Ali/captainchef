@@ -280,9 +280,11 @@ const PlanDetails = () => {
           >
             <ArrowBackIosIcon
               style={{
-                marginLeft: "8px",
                 fontSize: "24px",
-                transform: isArabic ? "rotate(180deg)" : "rotate(0deg)",
+                ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+                transform:
+                  language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease-in-out",
               }}
             />
           </IconButton>

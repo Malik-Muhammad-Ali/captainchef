@@ -19,33 +19,34 @@ import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [couponData, setCouponData] = useState();
   const [couponError, setCouponError] = useState();
   const [code, setCode] = useState("");
   const { user, city, authenticated } = useAppStore();
+  const [freePlan, setFreePlan] = useState(true);
 
   useEffect(() => {
     if (!authenticated) {
       navigate("/login");
     }
-  }, [authenticated, navigate]);
+  }, [authenticated]);
 
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  const [isCollapsed1, setIsCollapsed1] = useState(false);
 
+  const [isCollapsed1, setIsCollapsed1] = useState(false);
   const toggleCollapse1 = () => {
     setIsCollapsed1(!isCollapsed1);
   };
-  const [collapsedComments, setCollapsedComments] = useState(false);
 
+  const [collapsedComments, setCollapsedComments] = useState(false);
   const toggleComments = () => {
     setCollapsedComments(!collapsedComments);
   };
-  const [selectedPayment, setSelectedPayment] = useState(null);
 
+  const [selectedPayment, setSelectedPayment] = useState(null);
   const handleSelection = (paymentMethod) => {
     setSelectedPayment(paymentMethod);
   };
@@ -60,10 +61,10 @@ const Checkout = () => {
         "https://appv2.captainchef.net/AppV2/public/connector/api/coupon/apply",
         dataSend
       );
-      // console.log(response.data)
       if (response.data.status === "success") {
         setCouponError();
         setCouponData(response.data);
+        setFreePlan(false);
       } else {
         setCouponData();
         setCouponError("Enter a Valid Coupon Code");
@@ -485,91 +486,93 @@ const Checkout = () => {
 
             {/*paper 2 of 2nd container free plan*/}
 
-            <Paper
-              elevation={0}
-              sx={{
-                padding: "16px",
-                width: { lg: "560px", md: "480px", sm: "331px", xs: "345px" },
-                height: isCollapsed ? "auto" : "164px", // Adjust height dynamically
-                margin: "0 auto",
-                borderRadius: "24px",
-                gap: "40px",
-                border: "1px solid green",
-                top: "24px",
-                right: "32px",
-                bottom: "40px",
-                left: "32px",
-                background: "#CCFFDB",
-              }}
-            >
-              <Box
+            {freePlan && (
+              <Paper
+                elevation={0}
                 sx={{
-                  height: "48px",
-                  display: "flex",
-                  justifyContent: "space-between",
+                  padding: "16px",
+                  width: { lg: "560px", md: "480px", sm: "331px", xs: "345px" },
+                  height: isCollapsed ? "auto" : "164px", // Adjust height dynamically
+                  margin: "0 auto",
+                  borderRadius: "24px",
+                  gap: "40px",
+                  border: "1px solid green",
+                  top: "24px",
+                  right: "32px",
+                  bottom: "40px",
+                  left: "32px",
+                  background: "#CCFFDB",
                 }}
               >
-                <Typography
-                  sx={{
-                    height: "48px",
-                    fontSize: "20px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Free Plan
-                </Typography>
                 <Box
                   sx={{
-                    width: "48px",
                     height: "48px",
-                    cursor: "pointer", // Add cursor pointer for better UX
-                  }}
-                  onClick={toggleCollapse} // Add toggle logic
-                >
-                  {isCollapsed ? (
-                    <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
-                  ) : (
-                    <KeyboardArrowUpIcon sx={{ fontSize: "35px" }} />
-                  )}
-                </Box>
-              </Box>
-              {!isCollapsed && ( // Conditionally render this content
-                <Box
-                  sx={{
                     display: "flex",
-                    alignItems: "center",
-                    mt: "30px",
-                    width: "100%",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Typography
-                    variant="body1"
                     sx={{
-                      marginRight: "8px",
-                      color: "#333",
+                      height: "48px",
+                      fontSize: "20px",
+                      fontWeight: "600",
                     }}
                   >
-                    Gift free plan Amount
+                    Free Plan
                   </Typography>
                   <Box
                     sx={{
-                      flexGrow: 1,
-                      height: "1px",
-                      backgroundColor: "#e0e0e0",
+                      width: "48px",
+                      height: "48px",
+                      cursor: "pointer", // Add cursor pointer for better UX
                     }}
-                  />
-                  <Typography
-                    variant="body1"
+                    onClick={toggleCollapse} // Add toggle logic
+                  >
+                    {isCollapsed ? (
+                      <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
+                    ) : (
+                      <KeyboardArrowUpIcon sx={{ fontSize: "35px" }} />
+                    )}
+                  </Box>
+                </Box>
+                {!isCollapsed && ( // Conditionally render this content
+                  <Box
                     sx={{
-                      marginLeft: "8px",
-                      color: "#333",
+                      display: "flex",
+                      alignItems: "center",
+                      mt: "30px",
+                      width: "100%",
                     }}
                   >
-                    0 SAR
-                  </Typography>
-                </Box>
-              )}
-            </Paper>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        marginRight: "8px",
+                        color: "#333",
+                      }}
+                    >
+                      Gift free plan Amount
+                    </Typography>
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        height: "1px",
+                        backgroundColor: "#e0e0e0",
+                      }}
+                    />
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        marginLeft: "8px",
+                        color: "#333",
+                      }}
+                    >
+                      0 SAR
+                    </Typography>
+                  </Box>
+                )}
+              </Paper>
+            )}
 
             {/*paper 3 of apply couon*/}
 

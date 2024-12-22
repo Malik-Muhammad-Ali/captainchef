@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import useAppStore from "../../store/store";
 
 const CheckoutRightComponent = ({ couponData }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { cartData, city, cities } = useAppStore();
 
   const discountType = couponData?.data?.discount_type || "";
   const discount = couponData?.data?.discount || 0;
@@ -14,26 +16,40 @@ const CheckoutRightComponent = ({ couponData }) => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const cart = [
-    {
-      planName: "2 Meals",
-      planPrice: 500,
-      deliveryCharges: 250,
-    },
-    {
-      planName: "3 Meals",
-      planPrice: 700,
-      deliveryCharges: 350,
-    },
-  ];
+  // Find the user's city in the cities array
+  const userCity = cities.find(
+    (cityName) => cityName.city_name.toLowerCase() === city.toLowerCase()
+  );
+  const calDeliveryCharges = cartData.map((item) => {
+    if(item.plan && item.plan.city){
+      const planCityIds = item.plan.city.split(",").map(id => parseInt(id));
+      console.log(planCityIds)
+      if(planCityIds.includes(userCity?.id)){
+        return userCity?.delivery_charges
+      }
+    }
+
+    return cities[0]?.delivery_charges
+  })
+
+  const cart = cartData.map((item, index) => ({
+    planName: item.plan.title,
+    planPrice:
+      item.plan.discount_offer_only === "yes"
+        ? parseFloat(item.plan.discounted_amount)
+        : parseFloat(item.plan.basic_amount),
+    deliveryCharges: parseFloat(calDeliveryCharges[index]) || parseFloat(cities[0]?.delivery_charges),
+  }));
+
+  console.log(cart)
 
   // Calculate the discounted price for each plan
   const discountedCart = cart.map((item) => {
     let discountedPrice = item.planPrice;
     if (discountType === "percent") {
       discountedPrice = item.planPrice - (item.planPrice * discount) / 100;
-    } else if (discountType === "flat") {
-      discountedPrice = item.planPrice - discount;
+    } else if (discountType === "fixed") {
+      discountedPrice = item.planPrice - parseFloat(item.plan.discounted_amount);
     }
     return {
       ...item,
@@ -43,7 +59,11 @@ const CheckoutRightComponent = ({ couponData }) => {
 
   // Calculate the total price with discounts applied
   const totalPrice = discountedCart.reduce(
-    (total, item) => total + item.discountedPrice + item.deliveryCharges,
+    (total, item, index) => {
+      // If removeDelivery is 'yes', we set delivery charges to 0
+      const deliveryCharge = removeDelivery === "yes" ? 0 : item.deliveryCharges;
+      return total + item.discountedPrice + deliveryCharge;
+    },
     0
   );
 
@@ -186,7 +206,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                     >
                       {item.deliveryCharges} SR
                     </span>
-                    {removeDelivery === 'yes' && (
+                    {removeDelivery === "yes" && (
                       <span style={{ color: "green", marginLeft: "8px" }}>
                         0 SR
                       </span>

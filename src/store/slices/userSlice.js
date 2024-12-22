@@ -30,7 +30,7 @@ const userSlice = (set) => ({
     const countryCode = createUser.mobileNumber.substring(0, 3);
     if (countryCode !== "966") {
       return {
-        message: "Enter Correct Number with Country Code 966",
+        message: "Enter Correct Number",
         status: false,
       };
     }

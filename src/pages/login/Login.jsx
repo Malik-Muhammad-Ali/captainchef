@@ -17,20 +17,22 @@ import useAppStore from "../../store/store";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loginUser, user, authenticated, planDetailUrl } = useAppStore();
+  const { loginUser, user, authenticated, planDetailUrl, language } =
+    useAppStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  // const [language, setLanguage] = useState("en"); // 'en' for English, 'ar' for Arabic
 
   const handleSubmit = async () => {
     const user_info = await loginUser(email, password);
-    console.log(user_info)
+    console.log(user_info);
     if (user_info) {
-      console.log("True Conidition");
+      console.log("True Condition");
       setError(false);
       navigate(planDetailUrl, { replace: true });
     } else {
-      console.log("False Conidition");
+      console.log("False Condition");
       setError(true);
     }
   };
@@ -42,6 +44,7 @@ const Login = () => {
           backgroundColor: "#f5f5f5",
           display: "flex",
           flexDirection: "column",
+          direction: language === "ar" ? "rtl" : "ltr",
         }}
       >
         <IconButton
@@ -50,16 +53,24 @@ const Login = () => {
             height: { xs: "48px", sm: "56px" },
             display: "flex",
             alignItems: "center",
-            m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
             justifyContent: "center",
+            m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
             borderRadius: "20%",
             backgroundColor: "#fff",
             cursor: "pointer",
           }}
           onClick={() => navigate(-1)}
         >
-          <ArrowBackIosIcon sx={{ fontSize: "24px", ml: "7px" }} />
+          <ArrowBackIosIcon
+            sx={{
+              fontSize: "24px",
+              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease-in-out",
+            }}
+          />
         </IconButton>
+
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -90,8 +101,11 @@ const Login = () => {
                 fontSize: { lg: "32px", md: "32px", sm: "28px", xs: "24px" },
                 fontWeight: "600",
               }}
+              dir={language === "ar" ? "rtl" : "ltr"}
             >
-              Login to your account
+              {language === "en"
+                ? "Login to your account"
+                : "تسجيل الدخول إلى حسابك"}
             </Typography>
 
             {/* Description */}
@@ -101,20 +115,29 @@ const Login = () => {
                 textAlign: "center",
                 color: "#666",
                 marginBottom: "35px",
-                fontWeight: "400px",
+                fontWeight: "400",
                 fontSize: "20px",
               }}
+              dir={language === "ar" ? "rtl" : "ltr"}
             >
-              Please Enter Your Username and Password Before Further Move.
+              {language === "en"
+                ? "Please Enter Your Username and Password Before Further Move."
+                : "يرجى إدخال اسم المستخدم وكلمة المرور قبل المتابعة."}
             </Typography>
 
             {/* Email TextField */}
             <TextField
               fullWidth
-              error={error ? true : false}
-              helperText={error ? "Please Enter a Valid Email" : ""}
-              placeholder=""
-              label="Email"
+              error={error}
+              helperText={
+                error
+                  ? language === "en"
+                    ? "Please Enter a Valid Email"
+                    : "يرجى إدخال بريد إلكتروني صالح"
+                  : ""
+              }
+              placeholder={language === "en" ? "" : "البريد الإلكتروني"}
+              label={language === "en" ? "Email" : "البريد الإلكتروني"}
               variant="outlined"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -124,17 +147,9 @@ const Login = () => {
                     <PersonIcon sx={{ color: "#666" }} />
                   </InputAdornment>
                 ),
-                sx: {
-                  '& input[type="text"]': {
-                    letterSpacing: "2px",
-                  },
-                },
               }}
               InputLabelProps={{
                 shrink: true,
-                sx: {
-                  fontWeight: "500",
-                },
               }}
               sx={{
                 width: { xs: "100%", sm: "360px", md: "512px" },
@@ -148,14 +163,20 @@ const Login = () => {
               }}
             />
 
-            {/* Password Textfield */}
+            {/* Password TextField */}
             <Box>
               <TextField
                 fullWidth
-                error={error ? true : false}
-                helperText={error ? "Please Enter Correct Password" : ""}
-                placeholder=""
-                label="Password"
+                error={error}
+                helperText={
+                  error
+                    ? language === "en"
+                      ? "Please Enter Correct Password"
+                      : "يرجى إدخال كلمة مرور صحيحة"
+                    : ""
+                }
+                placeholder={language === "en" ? "" : "كلمة المرور"}
+                label={language === "en" ? "Password" : "كلمة المرور"}
                 variant="outlined"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -165,17 +186,9 @@ const Login = () => {
                       <LockIcon sx={{ color: "#666" }} />
                     </InputAdornment>
                   ),
-                  sx: {
-                    '& input[type="text"]': {
-                      letterSpacing: "2px",
-                    },
-                  },
                 }}
                 InputLabelProps={{
                   shrink: true,
-                  sx: {
-                    fontWeight: "500",
-                  },
                 }}
                 sx={{
                   width: { xs: "100%", sm: "360px", md: "512px" },
@@ -188,6 +201,7 @@ const Login = () => {
                   },
                 }}
               />
+
               <Typography
                 sx={{
                   textAlign: "right",
@@ -195,8 +209,9 @@ const Login = () => {
                   cursor: "Pointer",
                   fontWeight: "Bold",
                 }}
+                dir={language === "ar" ? "rtl" : "ltr"}
               >
-                Forget Password
+                {language === "en" ? "Forget Password" : "نسيت كلمة المرور"}
               </Typography>
             </Box>
 
@@ -216,15 +231,22 @@ const Login = () => {
               }}
               onClick={() => handleSubmit()}
             >
-              Submit
+              {language === "en" ? "Submit" : "إرسال"}
             </Button>
-            <Box sx={{ display: "flex", gap: "6px" }}>
-              <Typography>Don't Have any Account?</Typography>
+            <Box
+              sx={{ display: "flex", gap: "6px" }}
+              dir={language === "ar" ? "rtl" : "ltr"}
+            >
+              <Typography>
+                {language === "en"
+                  ? "Don't Have any Account?"
+                  : "ليس لديك أي حساب؟"}
+              </Typography>
               <Typography
                 sx={{ cursor: "Pointer", color: "#D92531", fontWeight: "Bold" }}
-                onClick={() => navigate('/createaccount')}
+                onClick={() => navigate("/createaccount")}
               >
-                Create Account
+                {language === "en" ? "Create Account" : "إنشاء حساب"}
               </Typography>
             </Box>
           </Box>

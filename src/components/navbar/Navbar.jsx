@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,6 +15,7 @@ import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
 import useAppStore from "../../store/store";
 import Logo from "../../../public/logocaptainchef.png";
+import { ShoppingCart } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -228,6 +229,23 @@ const Navbar = () => {
                 <Person2OutlinedIcon sx={{ color: "white" }} />
               </Box>
             )}
+            {authenticated && (
+              <Box
+                onClick={() => Navigate("/cart")}
+                sx={{
+                  width: "56px",
+                  height: "56px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "20%",
+                  backgroundColor: "grey",
+                  cursor: "pointer",
+                }}
+              >
+                <ShoppingCart sx={{ color: "white" }} />
+              </Box>
+            )}
           </Box>
 
           {/* Download Button */}
@@ -308,7 +326,23 @@ const Navbar = () => {
               />
             </Box>
           )}
-
+          {authenticated && ( // Display only if authenticated}
+            <Box
+              // onClick={() => Navigate("/cart")}
+              sx={{
+                width: "56px",
+                height: "56px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "20%",
+                backgroundColor: "grey",
+                cursor: "pointer",
+              }}
+            >
+              <ShoppingCart sx={{ color: "white" }} />
+            </Box>
+          )}
           {/* Pages */}
           <Link to="/">
             <Button
@@ -323,7 +357,6 @@ const Navbar = () => {
               Home
             </Button>
           </Link>
-
           <Link to="/features">
             <Button
               sx={{
@@ -338,7 +371,6 @@ const Navbar = () => {
               Feature
             </Button>
           </Link>
-
           <Link to="/subscriptions">
             <Button
               sx={{
@@ -355,7 +387,6 @@ const Navbar = () => {
               Subscriptions
             </Button>
           </Link>
-
           {/* Language Selector */}
           <FormControl
             sx={{

@@ -280,9 +280,11 @@ const PlanDetails = () => {
           >
             <ArrowBackIosIcon
               style={{
-                marginLeft: "8px",
                 fontSize: "24px",
-                transform: isArabic ? "rotate(180deg)" : "rotate(0deg)",
+                ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+                transform:
+                  language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease-in-out",
               }}
             />
           </IconButton>
@@ -461,7 +463,7 @@ const PlanDetails = () => {
                             fontSize: isSmallScreen ? "6px" : "12px",
                           }}
                         >
-                          {item.selectedMeals}/{currentPlan.no_of_items.total}
+                          {item.selectedMeals}/{currentPlan?.no_of_items.total}
                         </Typography>
                       </div>
                       <div

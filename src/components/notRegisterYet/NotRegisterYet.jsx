@@ -114,7 +114,7 @@ const NotRegisterYet = () => {
               +96653226457895. Please Enter The Code Below
             </Typography>
 
-            {/* Password TextField */ }
+            {/* Password TextField */}
             <Box
               sx={{
                 display: "flex",

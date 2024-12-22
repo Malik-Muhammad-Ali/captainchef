@@ -7,48 +7,13 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import useAppStore from "../../store/store";
-import axios from "axios";
-import Loader from "../loader/Loader";
-import { useNavigate } from "react-router-dom";
 
 const MyCart = () => {
-  const { language, user, authenticated } = useAppStore();
+  const handleNavigation = () => {};
+  const { language } = useAppStore();
   const isArabic = language == "ar";
-  const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState();
-  const [loading, setLoading] = useState(true);
-
-  const fetchCartItems = async () => {
-    try {
-      const response = await axios.get("https://appv2.captainchef.net/AppV2/public/api/ver2/get-cart", {
-        params: {
-          user_id: user.id,
-        },
-      });
-      console.log(response.data.data[0].plan);
-      setCartItems(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    if (!user || !authenticated) {
-      navigate('/login')
-      return;
-    }
-    setLoading(true);
-    fetchCartItems();
-    setLoading(false);
-  }, [])
-
-  if (loading) {
-    return <Loader />;
-  }
-
 
   return (
     <>
@@ -76,7 +41,9 @@ const MyCart = () => {
           <ArrowBackIosIcon
             sx={{
               fontSize: "24px",
-              transform: isArabic ? "rotate(180deg)" : "rotate(0deg)", // Rotate 180 degrees for Arabic
+              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease-in-out", // Set text direction based on language
             }}
           />
         </Box>
@@ -85,7 +52,9 @@ const MyCart = () => {
         <Grid2
           sx={{
             display: "flex",
+            // flexGrow: 1,
             padding: "12px",
+            // flexDirection: "column",
           }}
         >
           <Paper
@@ -101,8 +70,8 @@ const MyCart = () => {
             {/* Headings */}
             <Box
               sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
+                display: "grid", // Use grid for aligning items under headings
+                gridTemplateColumns: "repeat(4, 1fr)", // 4 equal columns
                 gap: 2,
                 padding: "15px 20px",
                 borderRadius: "8px",
@@ -125,12 +94,12 @@ const MyCart = () => {
             </Box>
 
             {/* Product Rows */}
-            {cartItems?.map((item, index) => (
+            {["Diteplan", "Diteplan", "Diteplan"].map((product, index) => (
               <Box
                 key={index}
                 sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(4, 1fr)",
+                  display: "grid", // Grid layout to align content below each heading
+                  gridTemplateColumns: "repeat(4, 1fr)", // Matching the 4 columns from the heading section
                   alignItems: "center",
                   padding: "15px 20px",
                   backgroundColor: "#ffffff",
@@ -140,19 +109,12 @@ const MyCart = () => {
                 }}
               >
                 <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                  {item.plan.title}
+                  {product}
                 </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ fontWeight: "bold", color: "#EACB78" }}
-                >
-                  {/* {isArabic ? "١١٩٣٫٠٠ ريال" : "1193.00 SR"} */}
-                  {item.plan.basic_amount} SR
+                <Typography variant="body1" sx={{ color: "#EACB78" }}>
+                  {isArabic ? "١١٩٣٫٠٠ ريال" : "1193.00 SR"}
                 </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ fontWeight: "bold", color: "#EACB78" }}
-                >
+                <Typography variant="body1" sx={{ color: "#EACB78" }}>
                   {isArabic ? "استلام" : "Pickup"}
                 </Typography>
                 <Grid2>
@@ -218,7 +180,7 @@ const MyCart = () => {
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              <Typography variant="h6">
                 {isArabic ? "خطة لمرضى السكري" : "Diabetic Plan"}
               </Typography>
               <IconButton
@@ -261,7 +223,6 @@ const MyCart = () => {
             <Typography
               variant="body1"
               sx={{
-                fontWeight: "bold",
                 color: "#EACB78",
                 marginBottom: "10px",
               }}
@@ -273,7 +234,6 @@ const MyCart = () => {
             <Typography
               variant="body1"
               sx={{
-                fontWeight: "bold",
                 color: "#EACB78",
               }}
             >
@@ -332,7 +292,6 @@ const MyCart = () => {
             <Typography
               variant="body1"
               sx={{
-                fontWeight: "bold",
                 color: "#EACB78",
                 marginBottom: "10px",
               }}
@@ -344,7 +303,6 @@ const MyCart = () => {
             <Typography
               variant="body1"
               sx={{
-                fontWeight: "bold",
                 color: "#EACB78",
               }}
             >
@@ -353,6 +311,121 @@ const MyCart = () => {
           </Paper>
         </Grid2>
       </Grid2>
+      {/* Desktop Button */}
+      <Box
+        sx={{
+          bgcolor: "#F8F8F8",
+          display: { md: "flex", xs: "none" }, // Only visible on desktop
+          justifyContent: "center",
+          alignItems: "center",
+          boxShadow: "none",
+          mb: "10px",
+          width: "100%",
+          height: "50px",
+        }}
+      >
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: "#D92531",
+            width: { xs: "280px", md: "180px", sm: "180px" },
+            borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
+            height: "48px",
+            boxShadow: "none",
+          }}
+          onClick={() => handleNavigation()}
+        >
+          {isArabic ? "التالي" : "Next"}
+        </Button>
+      </Box>
+      <Box
+        sx={{
+          bgcolor: "#F8F8F8",
+          justifyContent: "space-between",
+          direction: isArabic ? "rtl" : "ltr",
+          alignItems: "center",
+          boxShadow: "none",
+          mb: "10px",
+          padding: "20px",
+          display: { xs: "flex", md: "none" }, // Only visible on mobile
+          // flexDirection: "column",
+        }}
+      >
+        {/* First Division: Typography */}
+        <Box
+          sx={{
+            display: "flex",
+            // flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            // mb: "20px",
+          }}
+        >
+          {/* Plan2 Typography */}
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "600",
+              fontSize: "12px",
+              textAlign: "center",
+              marginBottom: "5px",
+            }}
+          >
+            {isArabic ? "الخطة 2" : "Plan 2"}
+          </Typography>
+
+          {/* Total Typography */}
+          <Box sx={{ ml: "20px" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: "500",
+                fontSize: "12 px",
+                textAlign: "center",
+                marginBottom: "5px",
+              }}
+            >
+              {isArabic ? "إجمالي" : "Total"}
+            </Typography>
+
+            {/* 1193Sr Typography */}
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "600",
+                fontSize: "12px",
+                color: "#D92531",
+                textAlign: "center",
+              }}
+            >
+              1193Sr
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Second Division: Button */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            width: "100%",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#D92531",
+              width: "50%",
+              borderRadius: "16px",
+              height: "48px",
+              boxShadow: "none",
+            }}
+            onClick={() => handleNavigation()}
+          >
+            {isArabic ? "الدفع" : "Checkout"}
+          </Button>
+        </Box>
+      </Box>
     </>
   );
 };

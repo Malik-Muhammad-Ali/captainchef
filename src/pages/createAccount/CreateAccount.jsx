@@ -14,7 +14,7 @@ import useAppStore from "../../store/store";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
-  const { registerUser } = useAppStore();
+  const { registerUser, language } = useAppStore();
   const [error, setError] = useState("");
   const [createUser, setCreateUser] = useState({
     firstName: "",
@@ -24,6 +24,7 @@ const CreateAccount = () => {
     password: "",
     confirmPassword: "",
   });
+  const isArabic = language == "ar";
 
   const handleRegistration = async () => {
     console.log(createUser);
@@ -42,6 +43,7 @@ const CreateAccount = () => {
         backgroundColor: "#f5f5f5",
         padding: "40px",
         minHeight: "100vh",
+        direction: isArabic ? "rtl" : "ltr", // Set text direction based on language
       }}
     >
       <Box
@@ -74,7 +76,9 @@ const CreateAccount = () => {
           <ArrowBackIosIcon
             sx={{
               fontSize: "24px",
-              ml: "7px",
+              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease-in-out",
             }}
           />
         </IconButton>
@@ -91,10 +95,8 @@ const CreateAccount = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            // height: "100vh",
             padding: "16px",
             backgroundColor: "#f5f5f5",
-            // mt: { xs: "80px", sm: "40px", md: "0", lg: "0" },
             mb: "40px",
           }}
         >
@@ -106,7 +108,6 @@ const CreateAccount = () => {
             sx={{
               width: "369px",
               height: "205px",
-              // mt: { xs: "250px", sm: "100px", md: "0", lg: "0" },
             }}
           />
 
@@ -119,7 +120,7 @@ const CreateAccount = () => {
               fontSize: "30px",
             }}
           >
-            Create Your Account
+            {isArabic ? "قم بإنشاء حسابك" : "Create Your Account"}
           </Typography>
 
           {/* Description */}
@@ -132,14 +133,16 @@ const CreateAccount = () => {
               fontSize: "16px",
             }}
           >
-            Please Enter Your Details To Create Your Account In Captain
-            <br /> Chef Business
+            {isArabic
+              ? "الرجاء إدخال تفاصيلك لإنشاء حسابك في كابتن شيف بيزنس"
+              : "Please Enter Your Details To Create Your Account In Captain Chef Business"}
           </Typography>
 
           {/* First Name TextField */}
+          {/* First Name */}
           <TextField
             fullWidth
-            placeholder="Enter Your Name Here"
+            placeholder={isArabic ? "أدخل اسمك هنا" : "Enter Your Name Here"}
             value={createUser.firstName}
             onChange={(e) =>
               setCreateUser((prev) => ({
@@ -147,7 +150,7 @@ const CreateAccount = () => {
                 firstName: e.target.value,
               }))
             }
-            label="First Name"
+            label={isArabic ? "الاسم الأول" : "First Name"}
             variant="outlined"
             InputProps={{
               sx: {
@@ -168,16 +171,6 @@ const CreateAccount = () => {
               marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
-                "& fieldset": {
-                  // border: "2px solid #ccc",
-                },
-                "&:hover fieldset": {
-                  // border: "2px solid #888",
-                },
-                "&.Mui-focused fieldset": {
-                  // border: "2px solid #FF5722",
-                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
-                },
               },
             }}
           />
@@ -185,8 +178,10 @@ const CreateAccount = () => {
           {/* Last Name */}
           <TextField
             fullWidth
-            placeholder="Enter Your Last Name Here"
-            label="Last Name"
+            placeholder={
+              isArabic ? "أدخل اسم عائلتك هنا" : "Enter Your Last Name Here"
+            }
+            label={isArabic ? "اسم العائلة" : "Last Name"}
             value={createUser.lastName}
             onChange={(e) =>
               setCreateUser((prev) => ({
@@ -214,25 +209,17 @@ const CreateAccount = () => {
               marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
-                "& fieldset": {
-                  // border: "2px solid #ccc",
-                },
-                "&:hover fieldset": {
-                  // border: "2px solid #888",
-                },
-                "&.Mui-focused fieldset": {
-                  // border: "2px solid #FF5722",
-                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
-                },
               },
             }}
           />
 
-          {/* Email Textfield */}
+          {/* Email */}
           <TextField
             fullWidth
-            placeholder="Enter Your Email Here"
-            label="Email"
+            placeholder={
+              isArabic ? "أدخل بريدك الإلكتروني هنا" : "Enter Your Email Here"
+            }
+            label={isArabic ? "البريد الإلكتروني" : "Email"}
             value={createUser.email}
             onChange={(e) =>
               setCreateUser((prev) => ({
@@ -260,16 +247,6 @@ const CreateAccount = () => {
               marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
-                "& fieldset": {
-                  // border: "2px solid #ccc",
-                },
-                "&:hover fieldset": {
-                  // border: "2px solid #888",
-                },
-                "&.Mui-focused fieldset": {
-                  // border: "2px solid #FF5722",
-                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
-                },
               },
             }}
           />
@@ -277,8 +254,12 @@ const CreateAccount = () => {
           {/* Mobile Number */}
           <TextField
             fullWidth
-            placeholder="Enter Your Mobile Number Here. Start with 966"
-            label="Mobile Number"
+            placeholder={
+              isArabic
+                ? "أدخل رقم هاتفك المحمول هنا. ابدأ بـ 966"
+                : "Enter Your Mobile Number Here. Start with 966"
+            }
+            label={isArabic ? "رقم الجوال" : "Mobile Number"}
             value={createUser.mobileNumber}
             onChange={(e) =>
               setCreateUser((prev) => ({
@@ -306,26 +287,19 @@ const CreateAccount = () => {
               marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
-                "& fieldset": {
-                  // border: "2px solid #ccc",
-                },
-                "&:hover fieldset": {
-                  // border: "2px solid #888",
-                },
-                "&.Mui-focused fieldset": {
-                  // border: "2px solid #FF5722",
-                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
-                },
               },
             }}
           />
 
-          {/* Password Textfield */}
+          {/* Password */}
           <TextField
             fullWidth
-            placeholder="Enter Your Password Here"
-            label="Password"
-            variant="outlined"
+            placeholder={
+              isArabic
+                ? "أدخل كلمة المرور الخاصة بك هنا"
+                : "Enter Your Password Here"
+            }
+            label={isArabic ? "كلمة المرور" : "Password"}
             value={createUser.password}
             onChange={(e) =>
               setCreateUser((prev) => ({
@@ -333,6 +307,7 @@ const CreateAccount = () => {
                 password: e.target.value,
               }))
             }
+            variant="outlined"
             InputProps={{
               sx: {
                 '& input[type="text"]': {
@@ -352,25 +327,19 @@ const CreateAccount = () => {
               marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
-                "& fieldset": {
-                  // border: "2px solid #ccc",
-                },
-                "&:hover fieldset": {
-                  // border: "2px solid #888",
-                },
-                "&.Mui-focused fieldset": {
-                  // border: "2px solid #FF5722",
-                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
-                },
               },
             }}
           />
 
-          {/* Confirm Password Textfield */}
+          {/* Confirm Password */}
           <TextField
             fullWidth
-            placeholder="Re Enter Your Password Here"
-            label="Confirm Password"
+            placeholder={
+              isArabic
+                ? "أعد إدخال كلمة المرور الخاصة بك هنا"
+                : "Re Enter Your Password Here"
+            }
+            label={isArabic ? "تأكيد كلمة المرور" : "Confirm Password"}
             value={createUser.confirmPassword}
             onChange={(e) =>
               setCreateUser((prev) => ({
@@ -398,16 +367,6 @@ const CreateAccount = () => {
               marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "12px",
-                "& fieldset": {
-                  // border: "2px solid #ccc",
-                },
-                "&:hover fieldset": {
-                  // border: "2px solid #888",
-                },
-                "&.Mui-focused fieldset": {
-                  // border: "2px solid #FF5722",
-                  // boxShadow: "0 0 8px rgba(255, 87, 34, 0.5)",
-                },
               },
             }}
           />
@@ -417,32 +376,44 @@ const CreateAccount = () => {
           </Typography>
 
           {/* Submit Button */}
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#D92531",
-              color: "#fff",
-              fontWeight: "bold",
-              borderRadius: "8px",
-              padding: "10px 16px",
-              width: { xs: "100%", sm: "360px", md: "512px" },
-              height: { xs: "56px", sm: "56px", md: "56px" },
-              marginBottom: "10px",
-            }}
-            onClick={() => handleRegistration()}
-          >
-            Register
-          </Button>
-
-          <Box sx={{ display: "flex", gap: "6px", paddingBottom: "20px" }}>
-            <Typography>Already Have any Account?</Typography>
-            <Typography
-              sx={{ cursor: "Pointer", color: "#D92531", fontWeight: "Bold" }}
-              onClick={() => navigate("/login")}
+          <div dir={isArabic ? "rtl" : "ltr"}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#D92531",
+                color: "#fff",
+                fontWeight: "bold",
+                borderRadius: "8px",
+                padding: "10px 16px",
+                width: { xs: "100%", sm: "360px", md: "512px" },
+                height: { xs: "56px", sm: "56px", md: "56px" },
+                marginBottom: "10px",
+              }}
+              onClick={() => handleRegistration()}
             >
-              Login
-            </Typography>
-          </Box>
+              {isArabic ? "تسجيل" : "Register"}
+            </Button>
+
+            <Box
+              sx={{
+                display: "flex",
+                gap: "6px",
+                paddingBottom: "20px",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography>
+                {isArabic ? "هل لديك حساب بالفعل؟" : "Already Have an Account?"}
+              </Typography>
+              <Typography
+                sx={{ cursor: "pointer", color: "#D92531", fontWeight: "bold" }}
+                onClick={() => navigate("/login")}
+              >
+                {isArabic ? "تسجيل الدخول" : "Login"}
+              </Typography>
+            </Box>
+          </div>
         </Box>
       </motion.div>
     </Grid2>

@@ -1,12 +1,22 @@
-import { Box, Button, Grid2, TextField, Typography, IconButton } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Grid2,
+  TextField,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [pin, setPin] = useState(["", "", "", ""]);
+  const { language } = useAppStore();
+  const isArabic = language == "ar";
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/\D/g, "");
@@ -34,6 +44,7 @@ const ForgotPassword = () => {
           backgroundColor: "#f5f5f5",
           display: "flex",
           flexDirection: "column",
+          direction: isArabic ? "rtl" : "ltr", // Set text direction based on language
         }}
       >
         <IconButton
@@ -51,14 +62,21 @@ const ForgotPassword = () => {
           }}
           onClick={() => navigate(-1)}
         >
-          <ArrowBackIosIcon sx={{ fontSize: "24px", ml: "7px" }} />
+          <ArrowBackIosIcon
+            sx={{
+              fontSize: "24px",
+              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease-in-out", // Set text direction based on language
+            }}
+          />
         </IconButton>
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <Box
+          <Grid2
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -84,7 +102,7 @@ const ForgotPassword = () => {
                 fontSize: { lg: "32px", md: "32px", sm: "28px", xs: "24px" },
               }}
             >
-              Forgot Your Password?
+              {isArabic ? "نسيت كلمة المرور ؟" : "Forgot Your Password?"}
             </Typography>
 
             {/* Description */}
@@ -97,8 +115,18 @@ const ForgotPassword = () => {
                 fontSize: "20px",
               }}
             >
-              Don’t worry about that, Please Enter The OTP Code Below And <br />
-              Re Generate Your Password
+              {isArabic ? (
+                <>
+                  لا تقلق بشأن ذلك، يرجى إدخال رمز OTP أدناه و <br />
+                  إعادة إنشاء كلمة المرور الخاصة بك
+                </>
+              ) : (
+                <>
+                  Don’t worry about that, Please Enter The OTP Code Below And{" "}
+                  <br />
+                  Re Generate Your Password
+                </>
+              )}
             </Typography>
 
             {/* Password TextField */}
@@ -165,14 +193,14 @@ const ForgotPassword = () => {
                   width: { xs: "100%", sm: "360px", md: "512px" },
                   height: { xs: "56px", sm: "56px", md: "56px" },
                   cursor: "pointer",
-                  boxShadow: 'none'
+                  boxShadow: "none",
                 }}
                 onClick={() => navigate("/regeneratepassword")}
               >
-                Submit
+                {isArabic ? "إرسال" : "Submit"}
               </Button>
             </Box>
-          </Box>
+          </Grid2>
         </motion.div>
       </Grid2>
     </>

@@ -164,55 +164,71 @@ const Login = () => {
             />
 
             {/* Password TextField */}
-            <Box>
-              <TextField
-                fullWidth
-                error={error}
-                helperText={
-                  error
-                    ? language === "en"
-                      ? "Please Enter Correct Password"
-                      : "يرجى إدخال كلمة مرور صحيحة"
-                    : ""
-                }
-                placeholder={language === "en" ? "" : "كلمة المرور"}
-                label={language === "en" ? "Password" : "كلمة المرور"}
-                variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon sx={{ color: "#666" }} />
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Box
                 sx={{
                   width: { xs: "100%", sm: "360px", md: "512px" },
-                  marginBottom: "6px",
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "12px",
-                    "&.Mui-focused fieldset": {
-                      border: "2px solid grey",
-                    },
-                  },
+                  display: "flex",
+                  flexDirection: "column",
+                  position: "relative",
                 }}
-              />
-
-              <Typography
-                sx={{
-                  textAlign: "right",
-                  color: "#D92531",
-                  cursor: "Pointer",
-                  fontWeight: "Bold",
-                }}
-                dir={language === "ar" ? "rtl" : "ltr"}
               >
-                {language === "en" ? "Forget Password" : "نسيت كلمة المرور"}
-              </Typography>
+                <TextField
+                  fullWidth
+                  error={error}
+                  helperText={
+                    error
+                      ? language === "en"
+                        ? "Please Enter Correct Password"
+                        : "يرجى إدخال كلمة مرور صحيحة"
+                      : ""
+                  }
+                  placeholder={language === "en" ? "" : "كلمة المرور"}
+                  label={language === "en" ? "Password" : "كلمة المرور"}
+                  variant="outlined"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon sx={{ color: "#666" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  sx={{
+                    width: "100%",
+                    marginBottom: "6px",
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      "&.Mui-focused fieldset": {
+                        border: "2px solid grey",
+                      },
+                    },
+                  }}
+                />
+                <Typography
+                  sx={{
+                    alignSelf: "flex-end",
+                    color: "#D92531",
+                    cursor: "pointer",
+                    fontWeight: "Bold",
+                  }}
+                  dir={language === "ar" ? "rtl" : "ltr"}
+                >
+                  {language === "en" ? "Forget Password" : "نسيت كلمة المرور"}
+                </Typography>
+              </Box>
             </Box>
 
             {/* Submit Button */}

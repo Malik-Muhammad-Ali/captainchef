@@ -44,6 +44,8 @@ const Plans = () => {
           alignItems: "center",
           borderRadius: "10px",
           width: { xs: "350px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
+          // border: "2px solid black",
+          mr: { lg: "20px", sm: "0px", md: "0px", xs: "0px" },
         }}
       >
         {/* First Child Box */}
@@ -66,9 +68,11 @@ const Plans = () => {
           <IconButton
             sx={{
               width: { xs: "48px", sm: "56px" },
+              height: { xs: "48px", sm: "56px" },
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
               borderRadius: "20%",
               backgroundColor: "#fff",
               cursor: "pointer",
@@ -77,7 +81,10 @@ const Plans = () => {
             <ArrowBackIosIcon
               sx={{
                 fontSize: "24px",
-                ml: "7px",
+                ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
+                transform:
+                  language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease-in-out",
               }}
             />
           </IconButton>

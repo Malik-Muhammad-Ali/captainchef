@@ -90,10 +90,12 @@ const AddDeliveryAddress = () => {
           customer_id: user?.id,
         }
       );
-      if (response.data.status === "success" && response.data.is_available === 1) {
+      console.log(response);
+      if (response.data.status === "success" && response.data.is_available === 0) {
         console.log('True Condition')
         setIsAvailable(true);
         addAddress();
+        navigate('/deliveryAddress')
       } else {
         console.log('False Condition')
         setIsAvailable(false);
@@ -204,8 +206,11 @@ const AddDeliveryAddress = () => {
             >
               <ArrowBackIosIcon
                 sx={{
-                  paddingLeft: { xs: "5px", sm: "8px" },
-                  fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
+                  fontSize: "24px",
+                  ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
+                  transform:
+                    language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.3s ease-in-out",
                 }}
               />
             </IconButton>
@@ -566,6 +571,7 @@ const AddDeliveryAddress = () => {
               borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
               height: "48px",
               boxShadow: "none",
+              mb: "2px",
             }}
             onClick={() => handleNavigation()}
           >

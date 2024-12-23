@@ -1,14 +1,17 @@
-import { Box, Button, Radio, Typography, IconButton } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, Radio, Typography, IconButton, useMediaQuery } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
+import { useTheme } from "@emotion/react";
 
 const PickupAddress = () => {
   const navigate = useNavigate();
-  const {language} = useAppStore();
-  const arr = ["Home1", "Home2", "Office", "Playground"];
+  const {fetchPickupAddress, pickupAddress, language} = useAppStore();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
+  const isDesktopOrTablet = useMediaQuery(theme.breakpoints.up("sm"));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
   const isArabic = language == 'ar';
@@ -23,6 +26,26 @@ const PickupAddress = () => {
       setError(null);
       navigate("/cart");
     }
+  };
+  useEffect(()=>{
+    fetchPickupAddress();
+  },[])
+  const getTodaysTimings = (timings) => {
+    const daysMap = [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+    ];
+    const today = daysMap[new Date().getDay()];
+    if (timings && timings[today]) {
+      const { start, end } = timings[today];
+      return `(${start[0]} am - ${end[0]} pm)`;
+    }
+    return isArabic ? "غير متوفر" : "Unavailable";
   };
   return (
     <>
@@ -126,14 +149,20 @@ const PickupAddress = () => {
             borderRadius: "16px",
           }}
         >
-          {arr.map((key, index) => (
+          {pickupAddress.map((key, index) => {
+            const timings = key.timings
+                ? JSON.parse(key.timings)
+                : null;
+              const todayTimings = getTodaysTimings(timings);
+            return (
             <Box
               key={index}
               onClick={() => handleSelect(index)}
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", sm: "row" },
-                alignItems: { xs: "flex-start", sm: "center" },
+                justifyContent:{xs:"unset", sm:"space-between",md:"space-between"},
+                alignItems: { xs: "flex-start", sm: "center", },
                 padding: "8px 16px",
                 border:
                   selectedIndex === index
@@ -141,7 +170,7 @@ const PickupAddress = () => {
                     : "1px solid #e0e0e0",
                 borderRadius: "12px",
                 bgcolor: selectedIndex === index ? "#FAE9EA" : "#FFFFFF",
-                width: { lg: "1080px", md: "900px", sm: "644px", xs: "280px" },
+                width: { lg: "1080px", md: "900px", sm: "644px", xs: "300px" },
                 height: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
                 margin: "8px 0",
                 boxShadow: "none",
@@ -154,13 +183,14 @@ const PickupAddress = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  width: "100%",
+                  width: {xs:"100%",sm:"unset"},
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent:"space-between"
                   }}
                 >
                   <Radio
@@ -184,29 +214,21 @@ const PickupAddress = () => {
                       fontFamily: "work sans",
                     }}
                   >
-                    {key}
+                    {isArabic?key.branch_name_ar:key.branch_name}
                   </Typography>
                 </Box>
-                {/* {isMobile && (
-          <IconButton
-            sx={{
-              // backgroundColor: "#FAE9EA",
-              // color: "#D92531",
-              padding: "4px",
-              borderRadius: "50%",
-            }}
-          >
-            <img
-                  src="/Trash_light.png"
-                  alt="trash-icon"
-                  style={{
-                    width: "100%",
-                    maxWidth: "24px",
-                    objectFit: "contain",
-                  }}
-                />
-          </IconButton>
-        )} */}
+                {isMobile && (
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: { md: "18px", xs: "16px" },
+                      fontWeight: "400px",
+                      fontFamily: "work sans",
+                    }}
+                  >
+                    {todayTimings}
+                  </Typography>
+        )}
               </Box>
               <Box
                 sx={{
@@ -215,9 +237,9 @@ const PickupAddress = () => {
                   justifyContent:{lg:"flex-end",md:"flex-end",sm:"flex-end",xs:"flex-start"},
                   marginTop: { xs: "8px", sm: "0" },
                   padding: "8px",
-                  gap: "6x",
+                  gap: "10px",
                   borderRadius: "8px",
-                  width: { sm: "100%", xs: "100%", md: "100%", lg: "100%" },
+                  // width: { sm: "100%", xs: "100%", md: "100%", lg: "100%" },
                 }}
               >
                 <LocationOnOutlinedIcon />
@@ -228,29 +250,22 @@ const PickupAddress = () => {
                 >
                   Short address here
                 </Typography>
+              {isDesktopOrTablet && (
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: { md: "18px", xs: "16px" },
+                      fontWeight: "400px",
+                      fontFamily: "work sans",
+                    }}
+                  >
+                    {todayTimings}
+                  </Typography>)}
               </Box>
-              {/* {isDesktopOrTablet && (
-          <IconButton
-            sx={{
-              // backgroundColor: "#FAE9EA",
-              color: "#D92531",
-              padding: "4px",
-              borderRadius: "50%",
-            }}
-          >
-            <img
-                  src="/Trash_light.png"
-                  alt="trash-icon"
-                  style={{
-                    width: "100%",
-                    maxWidth: "24px",
-                    objectFit: "contain",
-                  }}
-                />
-          </IconButton>
-        )} */}
             </Box>
-          ))}
+          );
+        }
+        )}
           <p
             style={{
               textAlign: "center",

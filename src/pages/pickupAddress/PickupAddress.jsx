@@ -43,7 +43,7 @@ const PickupAddress = () => {
     const today = daysMap[new Date().getDay()];
     if (timings && timings[today]) {
       const { start, end } = timings[today];
-      return `(${start[0]} am - ${end[0]} pm)`;
+      return `(${start[0]} - ${end[0]})`;
     }
     return isArabic ? "غير متوفر" : "Unavailable";
   };
@@ -297,6 +297,7 @@ const PickupAddress = () => {
               borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
               height: "48px",
               boxShadow: "none",
+              mb:"2px"
             }}
             onClick={() => handleNavigation()}
           >

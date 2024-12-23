@@ -36,7 +36,7 @@ const DeliveryAddress = () => {
         gap: { lg: "30px", md: "30px", sm: "15px", xs: "24px" },
         bgcolor: "#F8F8F8",
         height: "calc(100vh - 170px)",
-        overflowY:"scroll",
+        overflowY: "scroll",
         direction: isArabic ? "rtl" : "ltr",
       }}
     >
@@ -74,8 +74,11 @@ const DeliveryAddress = () => {
           >
             <ArrowBackIosIcon
               sx={{
-                paddingLeft: { xs: "5px", sm: "8px" },
-                fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
+                fontSize: "24px",
+                ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
+                transform:
+                  language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease-in-out",
               }}
             />
           </IconButton>
@@ -129,7 +132,6 @@ const DeliveryAddress = () => {
             borderRadius: "16px",
           }}
         >
-          
           <p
             style={{
               textAlign: "center",
@@ -141,34 +143,35 @@ const DeliveryAddress = () => {
             {error}
           </p>
         </Box>
-
-    </Box>
-    <Box sx={{
-        bgcolor: "#F8F8F8",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        boxShadow: "none",
-        width:"100%",
-        height:"50px"
-      }}
-      >
-      <Button
-        variant="contained"
+      </Box>
+      <Box
         sx={{
-          bgcolor: "#D92531",
-          width: { xs: "280px", md: "130px", sm: "130px" },
-          borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
-          height: "48px",
+          bgcolor: "#F8F8F8",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           boxShadow: "none",
+          width: "100%",
+          height: "50px",
         }}
-        onClick={() => handleNavigation()}
+      >
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: "#D92531",
+            width: { xs: "280px", md: "130px", sm: "130px" },
+            borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
+            height: "48px",
+            boxShadow: "none",
+            mb: "2px",
+          }}
+          onClick={() => handleNavigation()}
         >
-          {isArabic?"التالي":"Next"}
-      </Button>
+          {isArabic ? "التالي" : "Next"}
+        </Button>
+      </Box>
     </Box>
-  </Box>
-);
+  );
 };
 
 export default DeliveryAddress;

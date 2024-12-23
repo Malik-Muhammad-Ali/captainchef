@@ -72,12 +72,12 @@ const CreateAccount = () => {
     <Grid2
       sx={{
         backgroundColor: "#f5f5f5",
-        padding: "40px",
-        minHeight: "100vh",
-        direction: isArabic ? "rtl" : "ltr", // Set text direction based on language
+        display: "flex",
+        flexDirection: "column",
+        direction: language === "ar" ? "rtl" : "ltr", // Set text direction based on language
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           width: { xs: "48px", sm: "56px" },
           height: { xs: "48px", sm: "56px" },
@@ -89,31 +89,31 @@ const CreateAccount = () => {
           backgroundColor: "white",
           cursor: "pointer",
         }}
+      > */}
+      <IconButton
+        sx={{
+          width: { xs: "48px", sm: "56px" },
+          height: { xs: "48px", sm: "56px" },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
+          borderRadius: "20%",
+          backgroundColor: "#fff",
+          cursor: "pointer",
+        }}
+        onClick={() => navigate(-1)}
       >
-        <IconButton
+        <ArrowBackIosIcon
           sx={{
-            width: { xs: "48px", sm: "56px" },
-            height: { xs: "48px", sm: "56px" },
-            display: "flex",
-            alignItems: "center",
-            // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
-            justifyContent: "center",
-            borderRadius: "20%",
-            backgroundColor: "#fff",
-            cursor: "pointer",
+            fontSize: "24px",
+            ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+            transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 0.3s ease-in-out",
           }}
-          onClick={() => navigate(-1)}
-        >
-          <ArrowBackIosIcon
-            sx={{
-              fontSize: "24px",
-              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
-              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.3s ease-in-out",
-            }}
-          />
-        </IconButton>
-      </Box>
+        />
+      </IconButton>
+      {/* </Box> */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -427,9 +427,10 @@ const CreateAccount = () => {
                 fontWeight: "bold",
                 borderRadius: "8px",
                 padding: "10px 16px",
+                marginTop: "12px",
                 width: { xs: "100%", sm: "360px", md: "512px" },
                 height: { xs: "56px", sm: "56px", md: "56px" },
-                marginBottom: "10px",
+                boxShadow: "none",
               }}
               onClick={() => handleRegistration()}
             >

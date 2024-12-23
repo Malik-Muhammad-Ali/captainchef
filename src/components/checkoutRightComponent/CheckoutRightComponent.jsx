@@ -15,6 +15,8 @@ const CheckoutRightComponent = ({ couponData }) => {
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
+  const { language } = useAppStore();
+  const isArabic = language == "ar";
 
   // Find the user's city in the cities array
   const userCity = cities.find(
@@ -91,15 +93,11 @@ const CheckoutRightComponent = ({ couponData }) => {
           mb: "16px",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "20px",
-            fontWeight: "600",
-          }}
-        >
-          Order Summary
+        <Typography sx={{ fontSize: "20px", fontWeight: "600" }}>
+          {isArabic ? "ملخص الطلب" : "Order Summary"}
         </Typography>
-        <Box onClick={toggleCollapse} sx={{ cursor: "pointer", pl: "40px" }}>
+
+        <Box onClick={toggleCollapse} sx={{ cursor: "pointer", pl: "12px" }}>
           {isCollapsed ? (
             <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
           ) : (
@@ -122,17 +120,21 @@ const CheckoutRightComponent = ({ couponData }) => {
               sx={{
                 fontSize: "18px",
                 fontWeight: "500",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              Items
+              {isArabic ? "العناصر" : "Items"}
             </Typography>
             <Typography
               sx={{
                 fontSize: "18px",
                 fontWeight: "500",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              Price
+              {isArabic ? "السعر" : "Price"}
             </Typography>
           </Box>
           {discountedCart.map((item, index) => {
@@ -294,15 +296,19 @@ const CheckoutRightComponent = ({ couponData }) => {
               sx={{
                 fontSize: "20px",
                 fontWeight: "600",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              Subtotal
+              {isArabic ? "المجموع الفرعي" : "Subtotal"}
             </Typography>
             <Typography
               sx={{
                 fontSize: "20px",
                 fontWeight: "600",
                 color: "red",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
               {(totalPrice + VAT).toFixed(2)} SAR

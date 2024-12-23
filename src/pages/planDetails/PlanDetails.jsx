@@ -272,6 +272,7 @@ const PlanDetails = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
               borderRadius: "20%",
               backgroundColor: "#fff",
               cursor: "pointer",
@@ -279,9 +280,9 @@ const PlanDetails = () => {
             onClick={() => navigate(-1)}
           >
             <ArrowBackIosIcon
-              style={{
+              sx={{
                 fontSize: "24px",
-                ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+                ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
                 transform:
                   language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
                 transition: "transform 0.3s ease-in-out",
@@ -659,7 +660,7 @@ const PlanDetails = () => {
                         py: 0.5,
                         fontWeight: "light",
                         fontSize: "0.8rem",
-                        margin: "20px 0px 0px 0px",
+                        margin: "20px 0px 0px 10px",
                         height: "40px",
                         boxShadow: "none",
                       }}

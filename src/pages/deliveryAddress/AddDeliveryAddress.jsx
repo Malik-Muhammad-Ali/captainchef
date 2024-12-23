@@ -161,8 +161,11 @@ const AddDeliveryAddress = () => {
             >
               <ArrowBackIosIcon
                 sx={{
-                  paddingLeft: { xs: "5px", sm: "8px" },
-                  fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
+                  fontSize: "24px",
+                  ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
+                  transform:
+                    language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.3s ease-in-out",
                 }}
               />
             </IconButton>
@@ -422,50 +425,49 @@ const AddDeliveryAddress = () => {
           />
         </Box>
         {/* map box */}
-        {positionFetching &&
-          position && (
-              <Box
-                sx={{
-                  // height:"500px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: "2px solid black",
-                  width: {
-                    lg: "1100px",
-                    md: "920px",
-                    sm: "664px",
-                    xs: "311px",
+        {positionFetching && position && (
+          <Box
+            sx={{
+              // height:"500px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "2px solid black",
+              width: {
+                lg: "1100px",
+                md: "920px",
+                sm: "664px",
+                xs: "311px",
+              },
+            }}
+          >
+            <MapContainer
+              center={position}
+              zoom={13}
+              style={{ height: "100vh", width: "100%" }}
+              whenCreated={(map) => map.flyTo(position)}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+
+              <Marker
+                position={position}
+                draggable
+                eventHandlers={{
+                  dragend: (event) => {
+                    const marker = event.target;
+                    const newPosition = marker.getLatLng();
+                    setPosition([newPosition.lat, newPosition.lng]);
+                    // Print the new position to the console
+                    console.log("New Coordinates: ", newPosition);
                   },
                 }}
-              >
-                <MapContainer
-                  center={position}
-                  zoom={13}
-                  style={{ height: "100vh", width: "100%" }}
-                  whenCreated={(map) => map.flyTo(position)}
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-
-                  <Marker
-                    position={position}
-                    draggable
-                    eventHandlers={{
-                      dragend: (event) => {
-                        const marker = event.target;
-                        const newPosition = marker.getLatLng();
-                        setPosition([newPosition.lat, newPosition.lng]);
-                        // Print the new position to the console
-                        console.log("New Coordinates: ", newPosition);
-                      },
-                    }}
-                  />
-                </MapContainer>
-              </Box>
-            )}
+              />
+            </MapContainer>
+          </Box>
+        )}
 
         <Box>
           <TextField
@@ -530,6 +532,7 @@ const AddDeliveryAddress = () => {
               borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
               height: "48px",
               boxShadow: "none",
+              mb: "2px",
             }}
             onClick={() => handleNavigation()}
           >

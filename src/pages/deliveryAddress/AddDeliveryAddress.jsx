@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -10,55 +11,128 @@ import {
   Grid2,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
-import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 
 const AddDeliveryAddress = () => {
   const navigate = useNavigate();
-  const { city, setCity, cities, fetchCities, language } = useAppStore();
+  const { city, setCity, cities, fetchCities, language, user } = useAppStore();
   const isArabic = language == "ar";
-  //   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [selectedText, setSelectedText] = useState("");
+
+  // States
+  const [addressType, setAddressType] = useState("");
   const [isTextFieldEnabled, setIsTextFieldEnabled] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const [error, setError] = useState(null);
   const [positionFetching, setPositionFetching] = useState(true);
-  //   const handleSelect = (index) => {
-  //     setSelectedIndex(index);
-  //   };
-
+  const [address, setAddress] = useState("");
   const [position, setPosition] = useState(null);
-  function DraggableMarker() {
-    useMapEvents({
-      dragend(event) {
-        const marker = event.target;
-        const newPosition = marker.getLatLng();
-        setPosition([newPosition.lat, newPosition.lng]);
-      },
-    });
+  const [isAvailable, setIsAvailable] = useState();
 
-    return (
-      <Marker
-        position={position}
-        draggable
-        eventHandlers={{
-          dragend: (event) => {
-            const marker = event.target;
-            const newPosition = marker.getLatLng();
-            setPosition([newPosition.lat, newPosition.lng]);
-          },
-        }}
-      />
-    );
-  }
+  // Get the city ID
+  const selectedCity = cities.find((cityName) => cityName.city_name === city);
+  const cityId = selectedCity ? selectedCity.id : null;
 
+  // Fetch Address API
+  const fetchAddress = async (lat, lon) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+      );
+      const data = await response.json();
+      if (data && data.display_name) {
+        setAddress(data.display_name);
+        console.log("Address:", data.display_name);
+      } else {
+        console.error("No address found for the given coordinates");
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+    }
+  };
+
+  // Add address API
+  const addAddress = async () => {
+    try {
+      const response = await axios.post(
+        "https://appv2.captainchef.net/AppV2/public/contact/save-contact-addresses",
+        {
+          contact_id: user?.id,
+          address_type: addressType,
+          contact_person_name: user?.name,
+          contact_person_mobile: user?.mobile,
+          address: address,
+          latitude: position[0],
+          longitude: position[1],
+          city_id: cityId,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Check Latitude and Longitude exists API
+  const checkLatLon = async () => {
+    try {
+      const response = await axios.post(
+        "https://portal.captainchef.net/public/check-location",
+        {
+          latitude: position[0],
+          longitude: position[1],
+          city_id: cityId,
+          customer_id: user?.id,
+        }
+      );
+      if (response.data.status === "success" && response.data.is_available === 1) {
+        console.log('True Condition')
+        setIsAvailable(true);
+        addAddress();
+      } else {
+        console.log('False Condition')
+        setIsAvailable(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // handle marker drag end
+  const handleMarkerDragEnd = (event) => {
+    const marker = event.target;
+    const newPosition = marker.getLatLng();
+    setPosition([newPosition.lat, newPosition.lng]);
+    fetchAddress(newPosition.lat, newPosition.lng); // Fetch address for the new position
+  };
+
+  // handle selection
+  const handleSelection = (text) => {
+    setAddressType(text);
+    if (text === "Custom") {
+      setIsTextFieldEnabled(true);
+    } else {
+      setIsTextFieldEnabled(false);
+    }
+  };
+
+  // handle navigation
+  const handleNavigation = () => {
+    checkLatLon();
+    // addAddress();
+  };
+
+  // handle city change
+  const handleCityChange = (event) => {
+    setCity(event.target.value);
+  };
+
+  // useEffect
   useEffect(() => {
     // Get the user's current position
     if (navigator.geolocation) {
@@ -66,6 +140,7 @@ const AddDeliveryAddress = () => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setPosition([latitude, longitude]); // Set the current position as the initial map position
+          fetchAddress(latitude, longitude);
         },
         (error) => {
           console.error(error);
@@ -79,39 +154,8 @@ const AddDeliveryAddress = () => {
       setPositionFetching(false);
     }
   }, []);
-  console.log("position", position);
 
-  const handleSelection = (text) => {
-    setSelectedText(text);
-    if (text === "Custom") {
-      setIsTextFieldEnabled(true);
-    } else {
-      setIsTextFieldEnabled(false);
-    }
-  };
-  const handleNavigation = () => {
-    if (selectedIndex === null) {
-      setError("Please select an address");
-    } else {
-      setError(null);
-      navigate("/checkout");
-    }
-  };
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
-  };
-  useEffect(() => {
-    fetchCities();
-    if (!city) {
-      // setOpen(true);
-    }
-  }, [city]);
-
-  // const handleSubmit = () => {
-  //   if (city) {
-  //     // setOpen(false);
-  //   }
-  // };
+  // Component
   return (
     <>
       <Box
@@ -124,7 +168,6 @@ const AddDeliveryAddress = () => {
           height: "calc(100vh - 120px)",
           overflowY: "scroll",
           direction: isArabic ? "rtl" : "ltr",
-          // width:"100%"
         }}
       >
         <Box
@@ -384,7 +427,7 @@ const AddDeliveryAddress = () => {
             fullWidth
             placeholder="Custom Label"
             label="Custom Label"
-            value={selectedText}
+            value={addressType}
             onChange={(e) => setSelectedText(e.target.value)}
             disabled={!isTextFieldEnabled}
             variant="outlined"
@@ -422,59 +465,52 @@ const AddDeliveryAddress = () => {
           />
         </Box>
         {/* map box */}
-        {positionFetching &&
-          position && (
-              <Box
-                sx={{
-                  // height:"500px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: "2px solid black",
-                  width: {
-                    lg: "1100px",
-                    md: "920px",
-                    sm: "664px",
-                    xs: "311px",
-                  },
-                }}
-              >
-                <MapContainer
-                  center={position}
-                  zoom={13}
-                  style={{ height: "100vh", width: "100%" }}
-                  whenCreated={(map) => map.flyTo(position)}
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
+        {positionFetching && position && (
+          <Box
+            sx={{
+              // height:"500px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "2px solid black",
+              width: {
+                lg: "1100px",
+                md: "920px",
+                sm: "664px",
+                xs: "311px",
+              },
+            }}
+          >
+            <MapContainer
+              center={position}
+              zoom={13}
+              style={{ height: "100vh", width: "100%" }}
+              whenCreated={(map) => map.flyTo(position)}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
 
-                  <Marker
-                    position={position}
-                    draggable
-                    eventHandlers={{
-                      dragend: (event) => {
-                        const marker = event.target;
-                        const newPosition = marker.getLatLng();
-                        setPosition([newPosition.lat, newPosition.lng]);
-                        // Print the new position to the console
-                        console.log("New Coordinates: ", newPosition);
-                      },
-                    }}
-                  />
-                </MapContainer>
-              </Box>
-            )}
+              <Marker
+                position={position}
+                draggable
+                eventHandlers={{
+                  dragend: handleMarkerDragEnd,
+                }}
+              />
+            </MapContainer>
+          </Box>
+        )}
 
         <Box>
           <TextField
             fullWidth
             placeholder="Address"
             label="Address"
-            // value={selectedText}
+            value={address}
             // onChange={(e) => setSelectedText(e.target.value)}
-            // disabled={!isTextFieldEnabled}
+            disabled={true}
             variant="outlined"
             InputProps={{
               sx: {

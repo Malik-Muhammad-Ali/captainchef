@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,50 +8,54 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import LockIcon from "@mui/icons-material/Lock";
-import CheckoutRightComponent from "../../components/checkoutRightComponent/CheckoutRightComponent";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CheckoutRightComponent from "../../components/checkoutRightComponent/CheckoutRightComponent";
+import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const { user, city, authenticated } = useAppStore();
+
+  // States
   const [couponData, setCouponData] = useState();
   const [couponError, setCouponError] = useState();
   const [code, setCode] = useState("");
-  const { user, city, authenticated } = useAppStore();
   const [freePlan, setFreePlan] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed1, setIsCollapsed1] = useState(false);
+  const [collapsedComments, setCollapsedComments] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
+  // useEffect
   useEffect(() => {
     if (!authenticated) {
       navigate("/login");
     }
   }, [authenticated]);
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // Toggle Collapse
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const [isCollapsed1, setIsCollapsed1] = useState(false);
   const toggleCollapse1 = () => {
     setIsCollapsed1(!isCollapsed1);
   };
 
-  const [collapsedComments, setCollapsedComments] = useState(false);
   const toggleComments = () => {
     setCollapsedComments(!collapsedComments);
   };
 
-  const [selectedPayment, setSelectedPayment] = useState(null);
   const handleSelection = (paymentMethod) => {
     setSelectedPayment(paymentMethod);
   };
 
+  // handle coupon API
   const handleCoupon = async () => {
     const dataSend = {
       contact_id: user?.contact_id,
@@ -74,6 +79,7 @@ const Checkout = () => {
     }
   };
 
+  // Payment Options
   const paymentOptions = [
     {
       id: "wallet",
@@ -112,10 +118,10 @@ const Checkout = () => {
     },
   ];
 
+  // Component
   return (
     <>
       <Box
-        item
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -242,7 +248,7 @@ const Checkout = () => {
                   variant="standard"
                   InputProps={{
                     disableUnderline: true,
-                    readOnly: true, // Makes the field read-only
+                    readOnly: true,
                   }}
                   InputLabelProps={{
                     sx: {
@@ -285,7 +291,7 @@ const Checkout = () => {
                   variant="standard"
                   InputProps={{
                     disableUnderline: true,
-                    readOnly: "true",
+                    readOnly: true,
                   }}
                   InputLabelProps={{
                     sx: {

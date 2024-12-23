@@ -13,6 +13,7 @@ const cartSlice = (set) => ({
           },
         }
       );
+      console.log(response)
       const data = response.data.data;
       set({ cartData: data });
       console.log(response.data.data);

@@ -23,13 +23,12 @@ const CheckoutRightComponent = ({ couponData }) => {
   const calDeliveryCharges = cartData.map((item) => {
     if(item.plan && item.plan.city){
       const planCityIds = item.plan.city.split(",").map(id => parseInt(id));
-      console.log(planCityIds)
       if(planCityIds.includes(userCity?.id)){
         return userCity?.delivery_charges
       }
     }
 
-    return cities[0]?.delivery_charges
+    return 250
   })
 
   const cart = cartData.map((item, index) => ({
@@ -38,10 +37,8 @@ const CheckoutRightComponent = ({ couponData }) => {
       item.plan.discount_offer_only === "yes"
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
-    deliveryCharges: parseFloat(calDeliveryCharges[index]) || parseFloat(cities[0]?.delivery_charges),
+    deliveryCharges: parseFloat(calDeliveryCharges[index]) || 250,
   }));
-
-  console.log(cart)
 
   // Calculate the discounted price for each plan
   const discountedCart = cart.map((item) => {

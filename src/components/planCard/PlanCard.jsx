@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import useAppStore from "../../store/store";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const getFilteredItems = (items) => {
   return items.filter((item) => Number(item.value) > 0);
@@ -478,14 +479,23 @@ const PlanCard = ({
           </Box>
 
           {/* Button Section */}
-          <Box sx={{ textAlign: "center", mt: 1 }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              mt: 1,
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 1,
+              width: "100%",
+            }}
+          >
             <Button
               variant="contained"
               sx={{
                 bgcolor: "#D92531",
                 color: "#fff",
                 borderRadius: 3,
-                width: "100%",
+                width: "100%", // Adjusted width
                 py: 0.5,
                 fontSize: "0.8rem",
                 height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
@@ -495,6 +505,22 @@ const PlanCard = ({
               onClick={() => handleSubmit()}
             >
               {isArabic ? "عرض التفاصيل" : "See Details"}
+            </Button>
+
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "black",
+                color: "#fff",
+                borderRadius: 3,
+                width: { sm: "20%", md: "10%", lg: "20%", xs: "20%" }, // Further reduced width for the cart button
+                py: 0.5,
+                height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
+                boxShadow: "none",
+                minWidth: "40px", // Ensures it doesn't shrink too much
+              }}
+            >
+              <ShoppingCartIcon sx={{ fontSize: "1.2rem" }} />
             </Button>
           </Box>
         </CardContent>

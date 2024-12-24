@@ -55,7 +55,8 @@ const MyCart = () => {
           display: "flex",
           flexDirection: "column",
           direction: isArabic ? "rtl" : "ltr",
-          minHeight: "100vh",
+          height: "calc(100vh - 180px)",
+          overflowY: "scroll",
         }}
       >
         {/* Back Arrow Icon */}
@@ -377,32 +378,7 @@ const MyCart = () => {
         </Grid2>
       </Grid2>
       {/* Desktop Button */}
-      <Box
-        sx={{
-          bgcolor: "#F8F8F8",
-          display: { md: "flex", xs: "none" },
-          justifyContent: "center",
-          alignItems: "center",
-          boxShadow: "none",
-          mb: "10px",
-          width: "100%",
-          height: "50px",
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: "#D92531",
-            width: { xs: "280px", md: "180px", sm: "180px" },
-            borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
-            height: "48px",
-            boxShadow: "none",
-          }}
-          onClick={() => handleNavigation()}
-        >
-          {isArabic ? "الدفع" : "Checkout"}
-        </Button>
-      </Box>
+
       <Box
         sx={{
           bgcolor: "#F8F8F8",
@@ -489,6 +465,33 @@ const MyCart = () => {
             {isArabic ? "الدفع" : "Checkout"}
           </Button>
         </Box>
+      </Box>
+      <Box
+        sx={{
+          bgcolor: "#F8F8F8",
+          position: "fixed",
+          display: { md: "flex", xs: "none" },
+          justifyContent: "center",
+          alignItems: "center",
+          boxShadow: "none",
+          mb: "10px",
+          width: "100%",
+          height: "50px",
+        }}
+      >
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: "#D92531",
+            width: { xs: "280px", md: "180px", sm: "180px" },
+            borderRadius: { xs: "12px", sm: "16px", md: "16px", lg: "16px" },
+            height: "48px",
+            boxShadow: "none",
+          }}
+          onClick={() => handleNavigation()}
+        >
+          {isArabic ? "الدفع" : "Checkout"}
+        </Button>
       </Box>
     </>
   );

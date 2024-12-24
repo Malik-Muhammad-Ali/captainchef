@@ -136,6 +136,8 @@ const Checkout = () => {
           alignItems: "center",
           gap: "10px",
           direction: isArabic ? "rtl" : "ltr",
+          height: "calc(100vh - 190px)",
+          overflowY: "scroll",
         }}
       >
         <Box
@@ -200,7 +202,7 @@ const Checkout = () => {
             maxWidth: { lg: "1170px", md: "900px", sm: "750px", xs: "400px" },
           }}
         >
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -208,9 +210,9 @@ const Checkout = () => {
               gap: "40px",
               mb: { sm: "350px", md: "0", xs: "0", lg: "0" },
             }}
-          >
-            {/*paper 1 of billing address*/}
-            <Paper
+          > */}
+          {/*paper 1 of billing address*/}
+          {/* <Paper
               elevation={0}
               sx={{
                 padding: "16px",
@@ -221,8 +223,8 @@ const Checkout = () => {
                 gap: "40px",
                 display: "flex",
               }}
-            >
-              <Box
+            > */}
+          {/* <Box
                 component="form"
                 noValidate
                 autoComplete="off"
@@ -231,9 +233,9 @@ const Checkout = () => {
                   height: "264px",
                   gap: "12px",
                 }}
-              >
-                {/* Title */}
-                <Box
+              > */}
+          {/* Title */}
+          {/* <Box
                   sx={{
                     width: {
                       lg: "620px",
@@ -255,10 +257,10 @@ const Checkout = () => {
                   >
                     {language === "ar" ? "عنوان الفواتير" : "Billing Address"}
                   </Typography>
-                </Box>
+                </Box> */}
 
-                {/* Name Field */}
-                <TextField
+          {/* Name Field */}
+          {/* <TextField
                   label={language === "ar" ? "الاسم" : "Name"}
                   margin="normal"
                   value={user?.name}
@@ -299,10 +301,10 @@ const Checkout = () => {
                     paddingRight: "10px",
                     position: "relative",
                   }}
-                />
+                /> */}
 
-                {/* Phone Field */}
-                <TextField
+          {/* Phone Field */}
+          {/* <TextField
                   label={language === "ar" ? "الهاتف" : "Phone"}
                   value={user?.mobile}
                   margin="normal"
@@ -342,10 +344,10 @@ const Checkout = () => {
                     paddingRight: "10px",
                     position: "relative",
                   }}
-                />
+                /> */}
 
-                {/* City Field */}
-                <TextField
+          {/* City Field */}
+          {/* <TextField
                   label={language === "ar" ? "المدينة" : "City"}
                   margin="normal"
                   variant="standard"
@@ -385,12 +387,12 @@ const Checkout = () => {
                     paddingRight: "10px",
                     position: "relative",
                   }}
-                />
-              </Box>
-            </Paper>
+                /> */}
+          {/* </Box> */}
+          {/* </Paper> */}
 
-            {/* paper 2 (Payment Method )*/}
-            <Paper
+          {/* paper 2 (Payment Method )*/}
+          {/* <Paper
               elevation={0}
               sx={{
                 padding: "16px",
@@ -486,8 +488,8 @@ const Checkout = () => {
                   </Typography>
                 </Box>
               </Box>
-            </Paper>
-          </Box>
+            </Paper> */}
+          {/* </Box> */}
 
           <Box
             sx={{
@@ -761,6 +763,8 @@ const Checkout = () => {
                 right: "32px",
                 bottom: "40px",
                 left: "32px",
+                // mb: "30px",
+                pb: "20px",
               }}
             >
               <Box
@@ -838,7 +842,7 @@ const Checkout = () => {
                       width: {
                         lg: "530px",
                         md: "450px",
-                        sm: "335px",
+                        sm: "300px",
                         xs: "313px",
                       },
                       minHeight: {
@@ -860,28 +864,29 @@ const Checkout = () => {
             </Paper>
           </Box>
         </Box>
-        <Box
+      </Box>
+      <Box
+        sx={{
+          height: "70px",
+          alignItems: "center",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Button
           sx={{
-            height: "136px",
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "center",
+            width: { lg: "220px", md: "220px", sm: "300px", xs: "345px" },
+            height: "50px",
+            borderRadius: "16px",
+            background: "#D92531",
+            color: "white",
+            fontSize: "22px",
+            fontWeight: "400",
+            textTransform: "none",
           }}
         >
-          <Button
-            sx={{
-              width: { lg: "220px", md: "220px", sm: "600px", xs: "345px" },
-              height: "65px",
-              borderRadius: "16px",
-              background: "#D92531",
-              color: "white",
-              fontSize: "22px",
-              fontWeight: "400",
-            }}
-          >
-            {isArabic ? "ادفع الفاتورة الآن" : "Pay bill now"}
-          </Button>
-        </Box>
+          {isArabic ? "ادفع الفاتورة الآن" : "Pay Bill Now"}
+        </Button>
       </Box>
     </>
   );

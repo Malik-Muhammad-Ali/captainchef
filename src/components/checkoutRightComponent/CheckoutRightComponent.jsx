@@ -23,15 +23,15 @@ const CheckoutRightComponent = ({ couponData }) => {
     (cityName) => cityName.city_name.toLowerCase() === city.toLowerCase()
   );
   const calDeliveryCharges = cartData.map((item) => {
-    if(item.plan && item.plan.city){
-      const planCityIds = item.plan.city.split(",").map(id => parseInt(id));
-      if(planCityIds.includes(userCity?.id)){
-        return userCity?.delivery_charges
+    if (item.plan && item.plan.city) {
+      const planCityIds = item.plan.city.split(",").map((id) => parseInt(id));
+      if (planCityIds.includes(userCity?.id)) {
+        return userCity?.delivery_charges;
       }
     }
 
-    return 250
-  })
+    return 250;
+  });
 
   const cart = cartData.map((item, index) => ({
     planName: item.plan.title,
@@ -48,7 +48,8 @@ const CheckoutRightComponent = ({ couponData }) => {
     if (discountType === "percent") {
       discountedPrice = item.planPrice - (item.planPrice * discount) / 100;
     } else if (discountType === "fixed") {
-      discountedPrice = item.planPrice - parseFloat(item.plan.discounted_amount);
+      discountedPrice =
+        item.planPrice - parseFloat(item.plan.discounted_amount);
     }
     return {
       ...item,
@@ -57,14 +58,11 @@ const CheckoutRightComponent = ({ couponData }) => {
   });
 
   // Calculate the total price with discounts applied
-  const totalPrice = discountedCart.reduce(
-    (total, item, index) => {
-      // If removeDelivery is 'yes', we set delivery charges to 0
-      const deliveryCharge = removeDelivery === "yes" ? 0 : item.deliveryCharges;
-      return total + item.discountedPrice + deliveryCharge;
-    },
-    0
-  );
+  const totalPrice = discountedCart.reduce((total, item, index) => {
+    // If removeDelivery is 'yes', we set delivery charges to 0
+    const deliveryCharge = removeDelivery === "yes" ? 0 : item.deliveryCharges;
+    return total + item.discountedPrice + deliveryCharge;
+  }, 0);
 
   // VAT calculation
   const VAT = 0.15 * totalPrice;
@@ -87,7 +85,7 @@ const CheckoutRightComponent = ({ couponData }) => {
           height: { lg: "48px", sm: "24px", md: "48px", xs: "" },
           display: "flex",
           justifyContent: "space-between",
-          mb: "16px",
+          mb: { xs: "50px", sm: "20px", md: "0px", lg: "0px" },
         }}
       >
         <Typography sx={{ fontSize: "20px", fontWeight: "600" }}>

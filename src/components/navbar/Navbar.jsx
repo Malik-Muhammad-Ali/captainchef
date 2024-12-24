@@ -208,7 +208,7 @@ const Navbar = () => {
                 width: { xs: "56px", sm: "40px", md: "130px", lg: "197px" },
                 boxShadow: "none",
               }}
-              onClick={() => navigate('/downloadapp')}
+              onClick={() => navigate("/downloadapp")}
             >
               Download App
             </Button>
@@ -258,7 +258,7 @@ const Navbar = () => {
               borderRadius: "12px",
               width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
             }}
-            onClick={() => navigate('/downloadapp')}
+            onClick={() => navigate("/downloadapp")}
           >
             Download App
           </Button>
@@ -308,41 +308,43 @@ const Navbar = () => {
             height: "100%",
           }}
         >
-          {/* Account Icon */}
-          {authenticated && (
-            <Box
-              sx={{
-                width: "56px",
-                height: "56px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "20%",
-                backgroundColor: "green",
-              }}
-            >
-              <Person2OutlinedIcon
-                sx={{ color: "white", alignSelf: "center" }}
-              />
-            </Box>
-          )}
-          {authenticated && ( // Display only if authenticated}
-            <Box
-              // onClick={() => Navigate("/cart")}
-              sx={{
-                width: "56px",
-                height: "56px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "20%",
-                backgroundColor: "grey",
-                cursor: "pointer",
-              }}
-            >
-              <ShoppingCart sx={{ color: "white" }} />
-            </Box>
-          )}
+          <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
+            {/* Account Icon */}
+            {authenticated && (
+              <Box
+                sx={{
+                  width: "56px",
+                  height: "56px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "20%",
+                  backgroundColor: "green",
+                }}
+              >
+                <Person2OutlinedIcon
+                  sx={{ color: "white", alignSelf: "center" }}
+                />
+              </Box>
+            )}
+            {authenticated && ( // Display only if authenticated}
+              <Box
+                // onClick={() => Navigate("/cart")}
+                sx={{
+                  width: "56px",
+                  height: "56px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "20%",
+                  backgroundColor: "grey",
+                  cursor: "pointer",
+                }}
+              >
+                <ShoppingCart sx={{ color: "white" }} />
+              </Box>
+            )}
+          </Box>
           {/* Pages */}
           <Link to="/">
             <Button

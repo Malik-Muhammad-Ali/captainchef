@@ -25,12 +25,8 @@ const PlanDetails = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [mealInfoModalOpen, setMealInfoModalOpen] = useState(false);
-  const isSmallScreen = useMediaQuery("(max-width:500px)");
-  const [subscribeFirstModalOpen, setSubscribeFirstModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
 
+  // Appstore
   const {
     authenticated,
     setPlanDetailUrl,
@@ -42,7 +38,13 @@ const PlanDetails = () => {
     currentPlan,
     user,
   } = useAppStore();
-  const isArabic = language == "ar";
+
+  // States
+  const [modalOpen, setModalOpen] = useState(false);
+  const [mealInfoModalOpen, setMealInfoModalOpen] = useState(false);
+  const isSmallScreen = useMediaQuery("(max-width:500px)");
+  const [subscribeFirstModalOpen, setSubscribeFirstModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [cartItems, setCartItems] = useState({
     user_id: user?.id,
@@ -53,8 +55,11 @@ const PlanDetails = () => {
       },
     ],
   });
-  console.log(cartItems);
 
+  const isArabic = language == "ar";
+  // console.log(cartItems);
+
+  // Icons
   const iconsMap = {
     meals: (
       <svg
@@ -153,22 +158,13 @@ const PlanDetails = () => {
     ),
   };
 
+  // Add Icons in the Plan
   const updatedItems = currentPlan?.no_of_items?.items.map((item) => ({
     ...item,
     icon: iconsMap[item.name] || "❓",
   }));
 
-  useEffect(() => {
-    setLoading(true);
-    if (!currentPlan) {
-      navigate("/subscriptions", { replace: true });
-      return;
-    }
-    fetchMeals(categoryId);
-    setSelectedIndex(0);
-    setLoading(false);
-  }, []);
-
+  // weekdays
   const weekdays = [
     {
       day: "Monday",
@@ -214,6 +210,7 @@ const PlanDetails = () => {
     },
   ];
 
+  // filter meals by day
   const handleDayClick = (index) => {
     setSelectedIndex(index);
     setMealsByDay(
@@ -224,12 +221,12 @@ const PlanDetails = () => {
     );
   };
 
+  // handle meal selection
   const handleSelect = () => {
-    if (!authenticated) {
-      setSubscribeFirstModalOpen(true);
-    }
+    setSubscribeFirstModalOpen(true);
   };
 
+  // Ad to cart API
   const handleAddToCart = async () => {
     try {
       const response = await axios.post(
@@ -247,6 +244,7 @@ const PlanDetails = () => {
     }
   };
 
+  // handle Navigation
   const handleNavigation = () => {
     if (authenticated) {
       handleAddToCart();
@@ -257,6 +255,19 @@ const PlanDetails = () => {
     }
   };
 
+  // useEfffect
+  useEffect(() => {
+    setLoading(true);
+    if (!currentPlan) {
+      navigate("/subscriptions", { replace: true });
+      return;
+    }
+    fetchMeals(categoryId);
+    setSelectedIndex(0);
+    setLoading(false);
+  }, []);
+
+  // Component
   return (
     <>
       <div
@@ -272,7 +283,6 @@ const PlanDetails = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
               borderRadius: "20%",
               backgroundColor: "#fff",
               cursor: "pointer",
@@ -282,7 +292,7 @@ const PlanDetails = () => {
             <ArrowBackIosIcon
               sx={{
                 fontSize: "24px",
-                ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
+                ml: language === "ar" ? "-10px" : "10px",
                 transform:
                   language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
                 transition: "transform 0.3s ease-in-out",

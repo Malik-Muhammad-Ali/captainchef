@@ -2,12 +2,19 @@ import axios from "axios";
 
 const deliveryAddressSlice = (set) => ({
   address: [],
+  setAddress: (updatedAddress) => {
+    console.log(updatedAddress)
+    set({
+      address: updatedAddress,
+    });
+  },
   fetchAddress: async (userId) => {
-    console.log('API Hit')
+    console.log("API Hit");
     const response = await axios.get(
       `https://appv2.captainchef.net/AppV2/public/contact/get-contact-addresses?contact_id=${userId}`
     );
     const data = await response.data.data;
+    console.log(data)
     if (response.data.status === "success") {
       set({
         address: data,

@@ -42,9 +42,10 @@ const AddDeliveryAddress = () => {
   const fetchAddress = async (lat, lon) => {
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${parseFloat(lon)}`
       );
       const data = await response.json();
+      console.log(data)
       if (data && data.display_name) {
         setAddress(data.display_name);
         console.log("Address:", data.display_name);
@@ -126,6 +127,7 @@ const AddDeliveryAddress = () => {
   // handle navigation
   const handleNavigation = () => {
     checkLatLon();
+    fetchAddress(user?.id)
     // addAddress();
   };
 

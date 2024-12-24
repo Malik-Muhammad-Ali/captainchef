@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const DeliveryAddress = () => {
   const navigate = useNavigate();
-  const { fetchAddress, address, language, user, deleteAddress } =
+  const { fetchAddress, address, language, user, deleteAddress, setAddress } =
     useAppStore();
   const isArabic = language == "ar";
 
@@ -31,8 +31,10 @@ const DeliveryAddress = () => {
     }
   };
 
+  // Address Delete API
   const handleDelete = async (addressId) => {
     console.log(addressId, user?.id);
+    setAddress((prevAddresses) => prevAddresses.filter((addr) => addr.id !== addressId));
     const status = await deleteAddress(user?.id, addressId);
     if (status === "success") {
       fetchAddress(user?.id);
@@ -150,7 +152,7 @@ const DeliveryAddress = () => {
             borderRadius: "16px",
           }}
         >
-          {address.map((singleAddress, index) => (
+          {address?.map((singleAddress, index) => (
             <Box
               key={index}
               onClick={() => handleSelect(index)}

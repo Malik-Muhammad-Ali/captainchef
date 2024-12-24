@@ -21,7 +21,7 @@ import axios from "axios";
 
 const AddDeliveryAddress = () => {
   const navigate = useNavigate();
-  const { city, setCity, cities, fetchCities, language, user } = useAppStore();
+  const { city, setCity, cities, fetchCities, language, user, fetchAddress } = useAppStore();
   const isArabic = language == "ar";
 
   // States
@@ -38,11 +38,12 @@ const AddDeliveryAddress = () => {
   const selectedCity = cities.find((cityName) => cityName.city_name === city);
   const cityId = selectedCity ? selectedCity.id : null;
 
-  // Fetch Address API
-  const fetchAddress = async (lat, lon) => {
+  // Check Address API
+  const checkAddress = async (lat, lon) => {
+    console.log("Fetching address for coordinates:", lat, lon);
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${parseFloat(lon)}`
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
       );
       const data = await response.json();
       console.log(data)
@@ -111,7 +112,7 @@ const AddDeliveryAddress = () => {
     const marker = event.target;
     const newPosition = marker.getLatLng();
     setPosition([newPosition.lat, newPosition.lng]);
-    fetchAddress(newPosition.lat, newPosition.lng); // Fetch address for the new position
+    checkAddress(newPosition.lat, newPosition.lng); // Fetch address for the new position
   };
 
   // handle selection
@@ -144,7 +145,7 @@ const AddDeliveryAddress = () => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setPosition([latitude, longitude]); // Set the current position as the initial map position
-          fetchAddress(latitude, longitude);
+          checkAddress(latitude, longitude);
         },
         (error) => {
           console.error(error);

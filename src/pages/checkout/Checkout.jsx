@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import LockIcon from "@mui/icons-material/Lock";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CheckoutRightComponent from "../../components/checkoutRightComponent/CheckoutRightComponent";
@@ -30,7 +29,6 @@ const Checkout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isCollapsed1, setIsCollapsed1] = useState(false);
   const [collapsedComments, setCollapsedComments] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState(null);
 
   // useEffect
   useEffect(() => {
@@ -50,10 +48,6 @@ const Checkout = () => {
 
   const toggleComments = () => {
     setCollapsedComments(!collapsedComments);
-  };
-
-  const handleSelection = (paymentMethod) => {
-    setSelectedPayment(paymentMethod);
   };
 
   // handle coupon API

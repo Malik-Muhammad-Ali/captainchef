@@ -33,13 +33,13 @@ export default function Home() {
           mr: { xs: 2, sm: 4, md: 8 } ,
           ml: { xs: 2, sm: 4, md: 8 } ,
           borderRadius: '16px',
-          // marginTop: 4,
+
         }}
       >
-        <Box sx={{ textAlign: {xs:'center',sm:"center",md:"start",lg:"start"} }}>
+        <Box sx={{ textAlign: {xs:'center',sm:"center",md:"center",lg:"center"} }}>
           <Typography sx={{ 
             fontWeight: {lg:600,md:500,sm:500,xs:500}, 
-            fontSize:{lg:"55px", md:"45px",sm:"30px",xs:"18px"} 
+            fontSize:{lg:"40px", md:"40px",sm:"30px",xs:"18px"} 
             }}>
             64+
           </Typography>
@@ -50,10 +50,10 @@ export default function Home() {
             Dishes</Typography>
         </Box>
           <Divider sx={{ height: {lg:'80px' , md:"70px",sm:"60px",xs:"50px"}, borderWidth:"2px",bgcolor:"white" }} />
-        <Box sx={{ textAlign: {xs:'center',sm:"center",md:"start",lg:"start"}  }}>
+        <Box sx={{ textAlign: {xs:'center',sm:"center",md:"center",lg:"center"}  }}>
         <Typography sx={{ 
             fontWeight: {lg:600,md:500,sm:500,xs:500}, 
-            fontSize:{lg:"55px", md:"45px",sm:"30px",xs:"18px"} 
+            fontSize:{lg:"40px", md:"40px",sm:"30px",xs:"18px"} 
             }}>
             10+
           </Typography>
@@ -63,10 +63,10 @@ export default function Home() {
             }}>Plan Categories</Typography>
         </Box>
         <Divider sx={{ height: {lg:'80px' , md:"70px",sm:"60px",xs:"50px"}, borderWidth:"2px",bgcolor:"white" }} />
-        <Box sx={{ textAlign: {xs:'center',sm:"center",md:"start",lg:"start"} }}>
+        <Box sx={{ textAlign: {xs:'center',sm:"center",md:"center",lg:"center"} }}>
         <Typography sx={{ 
             fontWeight: {lg:600,md:500,sm:500,xs:500}, 
-            fontSize:{lg:"55px", md:"45px",sm:"30px",xs:"18px"} 
+            fontSize:{lg:"40px", md:"40px",sm:"30px",xs:"18px"} 
             }}>
             105K+
           </Typography>
@@ -244,11 +244,11 @@ export default function Home() {
       <ServicesComp/>
     </Box>
 
-    <Box sx={{
+    {/* <Box sx={{
       width:"100%"
     }}>
       <TestimonialsSec/>
-    </Box>
+    </Box> */}
     <Box sx={{
       width:"100%"
     }}>

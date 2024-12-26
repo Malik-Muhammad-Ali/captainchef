@@ -51,7 +51,7 @@ const MenuSec1 = () => {
     width: { lg: "300px", md: "300px", sm: "185px", xs: "164px" },
     height: { lg: "500px", md: "500px", sm: "375px", xs: "330px" },
     position: "relative",
-    backgroundImage: `url('/body.png')`,
+    backgroundImage: `url('/public/Body.svg')`,
     backgroundSize: "contain",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -69,7 +69,6 @@ const MenuSec1 = () => {
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      borderRadius: "30%",
     }}
   />
 </Box>
@@ -90,7 +89,7 @@ const MenuSec1 = () => {
           fontSize:{lg:"32px",md:"32px",sm:"22px",xs:"22px"},
           fontWeight:{lg:600,md:600,sm:600,xs:600},
           color:"#CE2729"
-        }}>Snaks</Typography>
+        }}>Snacks</Typography>
         <Typography>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mattis vel tempor commodo pellentesque rutrum nunc duis. adipiscing elit. Mattis vel tempor commodo pellentesque rutrum nunc duis
         </Typography>
@@ -135,7 +134,7 @@ const MenuSec1 = () => {
     width: { lg: "300px", md: "300px", sm: "185px", xs: "164px" },
     height: { lg: "500px", md: "500px", sm: "375px", xs: "330px" },
     position: "relative",
-    backgroundImage: `url('/body.png')`,
+    backgroundImage: `url('/public/Body.svg')`,
     backgroundSize: "contain",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -153,7 +152,6 @@ const MenuSec1 = () => {
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      borderRadius: "30%",
     }}
   />
 </Box>
@@ -218,7 +216,7 @@ const MenuSec1 = () => {
     width: { lg: "300px", md: "300px", sm: "185px", xs: "164px" },
     height: { lg: "500px", md: "500px", sm: "375px", xs: "330px" },
     position: "relative",
-    backgroundImage: `url('/body.png')`,
+    backgroundImage: `url('/public/Body.svg')`,
     backgroundSize: "contain",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -236,7 +234,6 @@ const MenuSec1 = () => {
       backgroundSize: "contain",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      borderRadius: "30%",
     }}
   />
 </Box>

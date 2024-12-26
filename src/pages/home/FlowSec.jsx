@@ -99,7 +99,8 @@ const FlowSec = () => {
           flex: 1,
           maxWidth: "400px",
           textAlign: { xs: "center", sm: "left" },
-          width:"70%",
+          width:"65%",
+          minHeight:{lg:"150px",md:"150px",sm:"100px",xs:"100px"}
         }}
       >
         <Typography sx={{
@@ -116,57 +117,50 @@ const FlowSec = () => {
         </Typography>
       </Box>
 
-      {/* Center - Phone Mockup */}
       <Box>
       <Box
-        sx={{
+  sx={{
     flex: 1,
     width: { lg: "300px", md: "300px", sm: "185px", xs: "164px" },
     height: { lg: "500px", md: "500px", sm: "375px", xs: "330px" },
     position: "relative",
-    backgroundImage: `url('/body.png')`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    backgroundImage: `url('/public/Body.svg')`,
     backgroundSize: "contain",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    overflow:"hidden"
+    transition: "background-image 0.5s ease-in-out",
   }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "15px",
-            left: "15px",
-            right: "17px",
-            bottom: "15px",
-            backgroundImage: `url(${steps[currentStep].image})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            borderRadius: "50px",
-          }}
-        />
-      </Box>
-      </Box>
+>
+  <Box
+    sx={{
+      width: "85%",
+      height: "85%", 
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      overflow: "hidden",
+    }}
+  >
+    <img
+      src={steps[currentStep].image}
+      alt="Step Content"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        borderRadius: {lg:"20px",md:"20px",sm:"8px",xs:"8px"},
+      }}
+    />
+  </Box>
+</Box>
 
-      {/* Right Side - Navigation Buttons */}
-      
+      </Box>
     </Box>
-    <Box
-        sx={{
-          // flex: 1,
-          // // maxWidth: "100px",
-          // textAlign: { xs: "center", sm: "right" },
-          // // flexDirection: "column",
-          // gap: 2,
-          // display: "flex",
-          // alignItems: "center",
-          // // justifyContent:"flex-end",
-          // // border:"2px solid black",
-          // // position:"absolute",
-          // // top:"50%",
-          // // right:{xs:"20px"}
-        }}
-      >
+    <Box>
         <IconButton
           onClick={handleBack}
           sx={{

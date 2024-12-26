@@ -19,7 +19,20 @@ import axios from "axios";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { user, city, authenticated, language } = useAppStore();
+  const {
+    user,
+    city,
+    authenticated,
+    language,
+    paymentNoon,
+    cartData,
+    selectedDeliveryAddress,
+    cities,
+    totalPriceWithVAT,
+    postUrl,
+    returnUrl,
+    selectedPickupAddress,
+  } = useAppStore();
   const isArabic = language === "ar";
 
   // States
@@ -31,13 +44,8 @@ const Checkout = () => {
   const [isCollapsed1, setIsCollapsed1] = useState(false);
   const [collapsedComments, setCollapsedComments] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
-
-  // useEffect
-  useEffect(() => {
-    if (!authenticated) {
-      navigate("/login");
-    }
-  }, [authenticated]);
+  const [internalPostUrl , setInternalPostUrl] = useState('');
+  const [showIframe, setShowIframe] = useState(false);
 
   // Toggle Collapse
   const toggleCollapse = () => {
@@ -125,6 +133,39 @@ const Checkout = () => {
     },
   ];
 
+  const selectedCity = cities.find((currentCity) => currentCity.city_name === city)
+  const addedPlans = cartData.map((CurrentPlan) => ({
+    plan_id: CurrentPlan?.plan_id, //done
+    addon_ids: [], //done
+    delivery_type: 'delivery', //done
+    city: selectedCity.city_name, //done
+    city_id: selectedCity.id, //done
+    delivery_charges: selectedCity.delivery_charges, //done
+    delivery_address_id: selectedDeliveryAddress?.deliveryAddressId, //done
+    delivery_address: selectedDeliveryAddress?.deliveryAddress, //done
+    branch_id: null, //done
+    branch_name: null, //done
+    paid_amount_for_plan: 250, //done
+  }));
+
+  const handlePayment = async () => {
+    const {post_url, return_url} = await paymentNoon(addedPlans, totalPriceWithVAT);
+    setInternalPostUrl(post_url);
+    if(post_url){
+      setShowIframe(true)
+    }
+    // console.log(post_url)
+    // console.log(return_url)
+    // window.open(post_url, '_blank');
+  };
+
+  // useEffect
+  useEffect(() => {
+    if (!authenticated) {
+      navigate("/login");
+    }
+  }, [authenticated]);
+
   // Component
   return (
     <>
@@ -165,7 +206,6 @@ const Checkout = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
                 borderRadius: "20%",
                 backgroundColor: "#fff",
                 cursor: "pointer",
@@ -175,7 +215,7 @@ const Checkout = () => {
               <ArrowBackIosIcon
                 sx={{
                   fontSize: "24px",
-                  ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+                  ml: language === "ar" ? "-7px" : "7px",
                   transform:
                     language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
                   transition: "transform 0.3s ease-in-out",
@@ -884,6 +924,7 @@ const Checkout = () => {
             fontWeight: "400",
             textTransform: "none",
           }}
+          onClick={() => handlePayment()}
         >
           {isArabic ? "ادفع الفاتورة الآن" : "Pay Bill Now"}
         </Button>

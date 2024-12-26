@@ -3,6 +3,7 @@ import axios from "axios";
 const cartSlice = (set) => ({
   cartData: [],
   totalPrice: 0,
+  totalPriceWithVAT: 0,
   fetchCartData: async (userId) => {
     try {
       const response = await axios.get(
@@ -13,7 +14,7 @@ const cartSlice = (set) => ({
           },
         }
       );
-      console.log(response)
+      console.log(response.data.data);
       const data = response.data.data;
       set({ cartData: data });
       console.log(response.data.data);
@@ -28,9 +29,29 @@ const cartSlice = (set) => ({
         return acc + price;
       }, 0);
 
-      set({ totalPrice: total });
+      console.log(total);
+      const finalVAT = total * 0.05;
+      set({ totalPrice: total.toFixed(2) });
+      set({ totalPriceWithVAT: (total + finalVAT).toFixed(2) });
     } catch (error) {
       console.error(error);
+    }
+  },
+  addToCart: async (cartItems) => {
+    console.log(cartItems)
+    try {
+      const response = await axios.post(
+        "https://appv2.captainchef.net/AppV2/public/api/ver2/add-to-cart",
+        cartItems,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
     }
   },
 });

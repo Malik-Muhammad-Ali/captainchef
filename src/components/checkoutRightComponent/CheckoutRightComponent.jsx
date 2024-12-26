@@ -6,7 +6,7 @@ import useAppStore from "../../store/store";
 
 const CheckoutRightComponent = ({ couponData }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { cartData, city, cities } = useAppStore();
+  const { cartData, city, cities, totalPriceWithVAT } = useAppStore();
 
   const discountType = couponData?.data?.discount_type || "";
   const discount = couponData?.data?.discount || 0;
@@ -306,7 +306,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                 textAlign: isArabic ? "right" : "left",
               }}
             >
-              {(totalPrice + VAT).toFixed(2)} SAR
+              {totalPriceWithVAT} SAR
             </Typography>
           </Box>
         </>

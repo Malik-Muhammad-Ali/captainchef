@@ -37,6 +37,7 @@ const PlanDetails = () => {
     language,
     currentPlan,
     user,
+    addToCart,
   } = useAppStore();
 
   // States
@@ -228,20 +229,7 @@ const PlanDetails = () => {
 
   // Ad to cart API
   const handleAddToCart = async () => {
-    try {
-      const response = await axios.post(
-        "https://appv2.captainchef.net/AppV2/public/api/ver2/add-to-cart",
-        cartItems,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Response:", response.data);
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-    }
+    addToCart(cartItems)
   };
 
   // handle Navigation

@@ -26,7 +26,7 @@ const PlanCard = ({
   freePlans,
   title,
 }) => {
-  const { setCurrentPlan, city } = useAppStore();
+  const { setCurrentPlan, city, addToCart, user } = useAppStore();
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const isArabic = language === "ar";
@@ -131,6 +131,19 @@ const PlanCard = ({
         />
       </svg>
     ),
+  };
+
+  const cartItems = {
+    user_id: user?.id,
+    cart_details: [
+      {
+        plan_id: planID,
+        qty: 1,
+      },
+    ],
+  };
+  const handleAddToCart = () => {
+    addToCart(cartItems);
   };
 
   const updatedItems = plan.no_of_items.items.map((item) => ({
@@ -519,6 +532,7 @@ const PlanCard = ({
                 boxShadow: "none",
                 minWidth: "40px", // Ensures it doesn't shrink too much
               }}
+              onClick={() => handleAddToCart()}
             >
               <ShoppingCartIcon sx={{ fontSize: "1.2rem" }} />
             </Button>

@@ -21,7 +21,7 @@ const Plans = () => {
     setLoading(false);
   }, [categoryId]);
   const isArabic = language === "ar";
-  console.log(plans[0]);
+  // console.log(plans);
 
   return (
     <Box

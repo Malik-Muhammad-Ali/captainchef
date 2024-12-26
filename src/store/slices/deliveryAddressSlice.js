@@ -2,6 +2,12 @@ import axios from "axios";
 
 const deliveryAddressSlice = (set) => ({
   address: [],
+  selectedDeliveryAddress: null,
+  setSelectedDeliveryAddress: (deliveryAddressId, deliveryAddress) => {
+    set({
+      selectedDeliveryAddress: {deliveryAddressId, deliveryAddress},
+    });
+  },
   setAddress: (updatedAddress) => {
     console.log(updatedAddress)
     set({

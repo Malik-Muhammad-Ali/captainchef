@@ -19,16 +19,18 @@ const DeliveryAddress = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isDesktopOrTablet = useMediaQuery(theme.breakpoints.up("sm"));
-  const { fetchAddress, address, language, user, deleteAddress, setAddress } =
+  const { fetchAddress, address, language, user, deleteAddress, setAddress, setSelectedDeliveryAddress } =
     useAppStore();
   const isArabic = language == "ar";
 
+  // console.log(address)
   // States
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
 
   // handle select
-  const handleSelect = (index) => {
+  const handleSelect = (index, deliveryAddressId, deliveryAddress) => {
+    setSelectedDeliveryAddress(deliveryAddressId, deliveryAddress)
     setSelectedIndex(index);
   };
 
@@ -169,7 +171,7 @@ const DeliveryAddress = () => {
             {address?.map((singleAddress, index) => (
               <Box
                 key={index}
-                onClick={() => handleSelect(index)}
+                onClick={() => handleSelect(index, singleAddress.id, singleAddress.address)}
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },

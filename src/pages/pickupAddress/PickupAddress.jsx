@@ -8,7 +8,7 @@ import { useTheme } from "@emotion/react";
 
 const PickupAddress = () => {
   const navigate = useNavigate();
-  const {fetchPickupAddress, pickupAddress, language} = useAppStore();
+  const {fetchPickupAddress, pickupAddress, language, setSelectedPickupAddress} = useAppStore();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
   const isDesktopOrTablet = useMediaQuery(theme.breakpoints.up("sm"));
@@ -17,6 +17,8 @@ const PickupAddress = () => {
   const isArabic = language == 'ar';
   const handleSelect = (index) => {
     setSelectedIndex(index);
+    console.log(pickupAddress[index]);
+    setSelectedPickupAddress(pickupAddress[index].id, pickupAddress[index].branch_name);
   };
 
   const handleNavigation = () => {

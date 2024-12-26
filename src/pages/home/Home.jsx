@@ -17,8 +17,6 @@ export default function Home() {
       display:"flex",
       flexDirection:"column",
       width:"100%",
-      height:'calc(100vh - 120px)',
-      overflowY:"scroll"
       }}>
       {/* Hero Section */}
       <HeroSec/>

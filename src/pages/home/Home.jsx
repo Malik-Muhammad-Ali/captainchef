@@ -16,7 +16,9 @@ export default function Home() {
       gap:{xs:"20px",sm:'40px',md:"80px",lg:"80px"},
       display:"flex",
       flexDirection:"column",
-      width:"100%"
+      width:"100%",
+      height:'calc(100vh - 120px)',
+      overflowY:"scroll"
       }}>
       {/* Hero Section */}
       <HeroSec/>

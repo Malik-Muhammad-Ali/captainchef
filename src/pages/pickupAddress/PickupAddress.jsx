@@ -149,9 +149,7 @@ const PickupAddress = () => {
             borderRadius: "16px",
           }}
         >
-          {pickupAddress
-          .filter(key => key.status === 1)
-          .map((key, index) => {
+          {pickupAddress.map((key, index) => {
             const timings = key.timings
                 ? JSON.parse(key.timings)
                 : null;

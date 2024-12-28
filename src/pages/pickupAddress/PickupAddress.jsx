@@ -173,7 +173,7 @@ const PickupAddress = () => {
                 borderRadius: "12px",
                 bgcolor: selectedIndex === index ? "#FAE9EA" : "#FFFFFF",
                 width: { lg: "1080px", md: "900px", sm: "644px", xs: "300px" },
-                height: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
+                minHeight: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
                 margin: "8px 0",
                 boxShadow: "none",
                 cursor: "pointer",
@@ -223,7 +223,7 @@ const PickupAddress = () => {
                   <Typography
                     variant="body1"
                     sx={{
-                      fontSize: { md: "18px", xs: "16px" },
+                      fontSize: { md: "14px", xs: "14px" },
                       fontWeight: "400px",
                       fontFamily: "work sans",
                     }}
@@ -256,7 +256,7 @@ const PickupAddress = () => {
                   <Typography
                     variant="body1"
                     sx={{
-                      fontSize: { md: "18px", xs: "16px" },
+                      fontSize: { md: "14px", xs: "14px" },
                       fontWeight: "400px",
                       fontFamily: "work sans",
                     }}

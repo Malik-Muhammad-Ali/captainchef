@@ -549,7 +549,7 @@ const PlanCard = ({
             <Button
               variant="contained"
               sx={{
-                bgcolor: "black",
+                bgcolor: "#3C3D37",
                 color: "#fff",
                 borderRadius: 3,
                 width: { sm: "20%", md: "10%", lg: "20%", xs: "20%" }, // Further reduced width for the cart button

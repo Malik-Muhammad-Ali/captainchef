@@ -25,7 +25,7 @@ const PickupAddress = () => {
     addToCart,
   } = useAppStore();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
   const isDesktopOrTablet = useMediaQuery(theme.breakpoints.up("sm"));
   const isArabic = language == "ar";
 
@@ -179,21 +179,45 @@ const PickupAddress = () => {
             marginBottom: "2rem",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
-              bgcolor: "#F8F8F8",
-              borderRadius: "16px",
-            }}
-          >
-            {pickupAddress.map((key, index) => {
-              const timings = key.timings ? JSON.parse(key.timings) : null;
+          {pickupAddress
+          .filter(key => key.status === 1)
+          .map((key, index) => {
+            const timings = key.timings
+                ? JSON.parse(key.timings)
+                : null;
               const todayTimings = getTodaysTimings(timings);
-              return (
+            return (
+            <Box
+              key={index}
+              onClick={() => handleSelect(index)}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent:{xs:"unset", sm:"space-between",md:"space-between"},
+                alignItems: { xs: "flex-start", sm: "center", },
+                padding: "8px 16px",
+                border:
+                  selectedIndex === index
+                    ? "2px solid #D92531"
+                    : "1px solid #e0e0e0",
+                borderRadius: "12px",
+                bgcolor: selectedIndex === index ? "#FAE9EA" : "#FFFFFF",
+                width: { lg: "1080px", md: "900px", sm: "644px", xs: "300px" },
+                minHeight: { xs: "96px", sm: "76px", md: "64px", lg: "64px" },
+                margin: "8px 0",
+                boxShadow: "none",
+                cursor: "pointer",
+              }}
+            >
+              <Box
+                checked={selectedIndex === index}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: {xs:"100%",sm:"unset"},
+                }}
+              >
                 <Box
                   key={index}
                   onClick={() => handleSelect(index)}
@@ -318,19 +342,65 @@ const PickupAddress = () => {
                     )}
                   </Box>
                 </Box>
-              );
-            })}
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: "22px",
-                color: "red",
-                fontWeight: "500",
-              }}
-            >
-              {error}
-            </p>
-          </Box>
+                {isMobile && (
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: { md: "14px", xs: "14px" },
+                      fontWeight: "400px",
+                      fontFamily: "work sans",
+                    }}
+                  >
+                    {todayTimings}
+                  </Typography>
+        )}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent:{lg:"flex-end",md:"flex-end",sm:"flex-end",xs:"flex-start"},
+                  marginTop: { xs: "8px", sm: "0" },
+                  padding: "8px",
+                  gap: "10px",
+                  borderRadius: "8px",
+                  // width: { sm: "100%", xs: "100%", md: "100%", lg: "100%" },
+                }}
+              >
+                <LocationOnOutlinedIcon />
+                <Typography
+                  fontSize="14px"
+                  fontWeight="400px"
+                  fontFamily="work sans"
+                >
+                  Short address here
+                </Typography>
+              {isDesktopOrTablet && (
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: { md: "14px", xs: "14px" },
+                      fontWeight: "400px",
+                      fontFamily: "work sans",
+                    }}
+                  >
+                    {todayTimings}
+                  </Typography>)}
+              </Box>
+            </Box>
+          );
+        }
+        )}
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "22px",
+              color: "red",
+              fontWeight: "500",
+            }}
+          >
+            {error}
+          </p>
         </Box>
       </Box>
       <Box

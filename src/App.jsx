@@ -31,6 +31,7 @@ import Navbar from "./components/navbar/Navbar";
 import CityModal from "./components/cityModal/CityModal";
 import AddDeliveryAddress from "./pages/deliveryAddress/AddDeliveryAddress";
 import PaymentModal from "./components/paymentModal/PaymentModal";
+import ErrorModal from "./components/errorModal/ErrorModal";
 
 // Create a custom theme
 const theme = createTheme({
@@ -294,6 +295,32 @@ const AnimatedRoutes = () => {
               exit="exit"
             >
               <AddDeliveryAddress />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <PaymentModal />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/error"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <ErrorModal />
             </motion.div>
           }
         />

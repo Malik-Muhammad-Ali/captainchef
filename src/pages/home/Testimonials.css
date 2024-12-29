@@ -1,0 +1,150 @@
+<<<<<<< HEAD
+=======
+.custom-next,
+.custom-prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ce2729;
+  z-index: 10;
+}
+
+.custom-next {
+  right: 27%; /* Adjust position */
+}
+
+.custom-prev {
+  left: 27%; /* Adjust position */
+}
+
+/* Hover Effect */
+.custom-next:hover,
+.custom-prev:hover {
+  color: #ff4d4d;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.testimonial-slider {
+  width: 100%;
+  /* max-width: 800px; */
+  margin: 0 auto;
+  position: relative;
+}
+
+.testimonial-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 500px;
+  height: auto;
+}
+
+.testimonial-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.testimonial-upperIcon {
+  display: "flex";
+  align-self: self-start;
+}
+
+.testimonial-text {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.testimonial-lowerIcon {
+  display: "flex";
+  align-self: self-end;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.author-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #ce2729;
+}
+
+.testimonial-author h4 {
+  margin: 10px 0 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.testimonial-author p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+@media (max-width: 1024px) {
+  .testimonial-card {
+    width: 450px; /* Adjust card width for tablets */
+  }
+
+  .custom-prev {
+    left: 26%; /* Adjust button position */
+  }
+
+  .custom-next {
+    right: 26%;
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonial-card {
+    width: 400px; /* Adjust card width for smaller tablets */
+  }
+
+  .custom-prev,
+  .custom-next {
+    top: 55%; /* Adjust button position slightly */
+  }
+
+  .custom-prev {
+    left: 22%;
+  }
+
+  .custom-next {
+    right: 22%;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-card {
+    width: 300px; /* Adjust card width for mobile devices */
+  }
+
+  .custom-prev,
+  .custom-next {
+    top: 50%; /* Adjust button position further for mobile */
+    font-size: 14px; /* Optionally reduce icon size */
+  }
+
+  .custom-prev {
+    left: 3%;
+  }
+
+  .custom-next {
+    right: 4%;
+  }
+}
+>>>>>>> 4fbb6d9744f540bbb5ebdc31983abcd2d3764c77

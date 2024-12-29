@@ -10,7 +10,7 @@ const PickupAddress = () => {
   const navigate = useNavigate();
   const {fetchPickupAddress, pickupAddress, language} = useAppStore();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isDesktopOrTablet = useMediaQuery(theme.breakpoints.up("sm"));
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);

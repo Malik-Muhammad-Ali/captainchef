@@ -3,8 +3,10 @@ import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import React from 'react'
 import CustomerRating from './CustomerRating';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSec = () => {
+  const navigate = useNavigate();
   const isMobile = useMediaQuery  ("(max-width:600px)");
   return (
     <Box spacing={4} 
@@ -90,6 +92,7 @@ const HeroSec = () => {
                 fontSize:{xs:"11px",sm:"14px",md:"16px"},
                 flexGrow:1
               }}
+              onClick={() => navigate("/downloadapp")}
             >
               Download Now
             </Button>

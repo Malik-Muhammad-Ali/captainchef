@@ -1,7 +1,9 @@
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const MenuSec1 = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{
         display: "flex",
@@ -104,8 +106,10 @@ const MenuSec1 = () => {
           fontWeight: "bold",
           textTransform: "none",
           borderRadius:"12px",
+          cursor: "pointer",
           width:{xs:"100%",md:"unset"}
         }}
+        onClick={() => navigate("/downloadapp")}
       >
         Download App Now
       </Button>
@@ -186,8 +190,10 @@ const MenuSec1 = () => {
           fontWeight: "bold",
           textTransform: "none",
           borderRadius:"12px",
+          cursor: "pointer",
           width:{xs:"100%",md:"unset"}
         }}
+        onClick={() => navigate("/downloadapp")}
       >
         Download App Now
       </Button>
@@ -267,9 +273,11 @@ const MenuSec1 = () => {
           color: "#FFFFFF",
           fontWeight: "bold",
           textTransform: "none",
+          cursor: "pointer",
           borderRadius:"12px",
           width:{xs:"100%",md:"unset"}
         }}
+        onClick={() => navigate("/downloadapp")}
       >
         Download App Now
       </Button>

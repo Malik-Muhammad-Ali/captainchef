@@ -196,7 +196,7 @@ export default function Home() {
             variant="h6"
             sx={{
               fontWeight: 600,
-              fontSize: { xs: "16px", md: "24px" }, // Responsive font size
+              fontSize: { xs: "16px", md: "24px" },
             }}
           >
             FEELING SPECIAL WITH US?
@@ -325,6 +325,7 @@ export default function Home() {
       >
         <TestimonialsSec />
       </Box>
+
       <Box
         sx={{
           width: "100%",
@@ -332,6 +333,7 @@ export default function Home() {
       >
         <Footer />
       </Box>
+
     </Box>
   );
 }

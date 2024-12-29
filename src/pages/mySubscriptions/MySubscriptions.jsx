@@ -13,7 +13,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
-import useAppStore from '../../store/store'
+import useAppStore from "../../store/store";
+import axios from "axios";
 import { nav } from "framer-motion/client";
 
 const MySubscriptions = () => {
@@ -22,13 +23,15 @@ const MySubscriptions = () => {
   const [isPlanStatusExpanded, setIsPlanStatusExpanded] = useState(true);
   const [selectedPlanType, setSelectedPlanType] = useState("");
   const [selectedPlanStatus, setSelectedPlanStatus] = useState("");
-  const { user, authenticated } = useAppStore();
+  const { user, authenticated, paymentResult } = useAppStore();
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [subscribedPlans, setSubscribedPlans] = useState([]);
 
   useEffect(() => {
-    if(!authenticated){
-      navigate('/subscriptions');
+    if (!authenticated) {
+      navigate("/subscriptions");
     }
-  }, [authenticated])
+  }, [authenticated]);
 
   // Status Options
   const planStatusOptions = {
@@ -95,6 +98,24 @@ const MySubscriptions = () => {
   const [selectedTab, setSelectedTab] = useState("Running");
   const [selectedStatus, setSelectedStatus] = useState("Active");
 
+  const fetchMySubscriptions = async () => {
+    try {
+      const response = await axios.get(
+        `https://portal.captainchef.net/public/contact/get-purchased-subscription?user_id=${user?.id}`
+      );
+      console.log();
+      setOrderDetails(response?.data?.data?.order_details);
+      setSubscribedPlans(response?.data?.data?.plan_details);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMySubscriptions();
+  }, [])
+
+  // Component
   return (
     <>
       <Box sx={{ px: { xs: 1, sm: 2, md: 4 }, backgroundColor: "#F8F8F8" }}>
@@ -128,99 +149,103 @@ const MySubscriptions = () => {
         </Box>
 
         {/* HURRAY!!! Content */}
-        <Box
-          sx={{
-            display: { lg: "flex", sm: "none", md: "flex", xs: "none" },
-            flexDirection: "column",
-            alignItems: "center",
-            mt: { xs: 4, sm: 6, md: 8 },
-            px: { xs: 2, sm: 4 },
-          }}
-        >
-          {/* Image */}
+        {paymentResult === "CAPTURED" && (
           <Box
-            component="img"
-            src="/hurray.png"
-            alt="Authentication Illustration"
             sx={{
-              width: { xs: "90%", sm: "70%", md: "369px" },
-              height: "auto",
-            }}
-          />
-
-          {/* Heading */}
-          <Typography
-            variant="h5"
-            sx={{
-              fontSize: { xs: "24px", sm: "28px", md: "32px" },
-              fontWeight: 600,
-              mt: 2,
+              display: { lg: "flex", sm: "none", md: "flex", xs: "none" },
+              flexDirection: "column",
+              alignItems: "center",
+              mt: { xs: 4, sm: 6, md: 8 },
+              px: { xs: 2, sm: 4 },
             }}
           >
-            Hurray!!!
-          </Typography>
+            {/* Image */}
+            <Box
+              component="img"
+              src="/hurray.png"
+              alt="Authentication Illustration"
+              sx={{
+                width: { xs: "90%", sm: "70%", md: "369px" },
+                height: "auto",
+              }}
+            />
 
-          {/* Description */}
-          <Typography
-            variant="body1"
-            sx={{
-              textAlign: "center",
-              color: "#666",
-              marginBottom: "35px",
-              fontSize: { xs: "14px", sm: "16px", md: "20px" },
-            }}
-          >
-            You have successfully purchased a subscription plan. But it’s
-            inactive now. For Activation, Download the app Now.
-            <br /> Go to my subscriptions and schedule it.
-          </Typography>
-        </Box>
+            {/* Heading */}
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: "24px", sm: "28px", md: "32px" },
+                fontWeight: 600,
+                mt: 2,
+              }}
+            >
+              Hurray!!!
+            </Typography>
+
+            {/* Description */}
+            <Typography
+              variant="body1"
+              sx={{
+                textAlign: "center",
+                color: "#666",
+                marginBottom: "35px",
+                fontSize: { xs: "14px", sm: "16px", md: "20px" },
+              }}
+            >
+              You have successfully purchased a subscription plan. But it’s
+              inactive now. For Activation, Download the app Now.
+              <br /> Go to my subscriptions and schedule it.
+            </Typography>
+          </Box>
+        )}
 
         {/*OOPS content */}
-        {/* <Box
-        sx={{
-          display: {lg:"flex",md:"flex",sm:"none",xs:"none"},
-          flexDirection: "column",
-          alignItems: "center",
-          mt: { xs: 4, sm: 6, md: 8 },
-          px: { xs: 2, sm: 4 },
-        }}
-      >
-        <Box
-          component="img"
-          src="/oopsimg.png"
-          alt="Authentication Illustration"
-          sx={{
-            width: { xs: "90%", sm: "70%", md: "369px" },
-            height: "auto",
-          }}
-        />
+        {paymentResult === "REJECTED" && (
+          <Box
+            sx={{
+              display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+              flexDirection: "column",
+              alignItems: "center",
+              mt: { xs: 4, sm: 6, md: 8 },
+              px: { xs: 2, sm: 4 },
+            }}
+          >
+            <Box
+              component="img"
+              src="/oops.png"
+              alt="Authentication Illustration"
+              sx={{
+                width: { xs: "90%", sm: "70%", md: "369px" },
+                height: "auto",
+              }}
+            />
 
-        <Typography
-          variant="h5"
-          sx={{
-            fontSize: { xs: "24px", sm: "28px", md: "32px" },
-            fontWeight: 600,
-            mt: 2,
-          }}
-        >
-          Oopss!!!
-        </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: "24px", sm: "28px", md: "32px" },
+                fontWeight: 600,
+                mt: 2,
+              }}
+            >
+              Oopss!!!
+            </Typography>
 
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: "center",
-            color: "#666",
-            marginBottom: "35px",
-            fontSize: { xs: "14px", sm: "16px", md: "20px" },
-          }}
-        >
-          Payment Failed, It is held till your payment paid successfully. For
-          Try again, Please press complete Payment
-          <br /> button.
-        </Typography>
-      </Box> */}
+            <Typography
+              variant="body1"
+              sx={{
+                textAlign: "center",
+                color: "#666",
+                marginBottom: "35px",
+                fontSize: { xs: "14px", sm: "16px", md: "20px" },
+              }}
+            >
+              Payment Failed, It is held till your payment paid successfully.
+              For Try again, Please press complete Payment
+              <br /> button.
+            </Typography>
+          </Box>
+        )}
 
         {/*container to be displayed as on mobile app of CC*/}
         <Box
@@ -600,7 +625,7 @@ const MySubscriptions = () => {
                 width: "100%",
               }}
             >
-              {[...Array(6)].map((_, index) => (
+              {subscribedPlans?.map((plan, index) => (
                 <Card
                   key={index}
                   sx={{
@@ -627,7 +652,7 @@ const MySubscriptions = () => {
                       component="img"
                       alt="Plan Image"
                       height="140"
-                      image="/Banner.png"
+                      image={plan?.plan_image}
                     />
                     {/* Top Left Typo */}
                     <Typography

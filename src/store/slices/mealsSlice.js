@@ -3,21 +3,26 @@ import axios from "axios";
 const mealsSlice = (set) => ({
   meals: [],
   mealsByDay: [],
-  fetchMeals: async (categoryId) => { 
-    const response = await axios.get(
-      `https://app.captainchef.net/api/v1/subscription/meals?subscription_category=${categoryId}`
-    );
-    const data = await response.data;
-    set({
-      meals: data,
-      mealsByDay: data
-        .filter((meal) => meal.meal_day === "Monday")
-        .map((meal) => meal.selected_products)
-        .flat(),
-    });
+  finalDeliveryType: null,
+  setFinalDeliveryType: (type) => {
+    set({ deliveryType: type });
   },
   setMealsByDay: (meals) => {
     set({ mealsByDay: meals });
+  },
+  fetchMeals: async (mealList) => { 
+    console.log('Fetching Meals')
+    const response = await axios.get(
+      `https://portal.captainchef.net/public/get-meal/${mealList}`
+    );
+    const today = new Date();
+    const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+    const selectedProductsDetails = response.data.data.selected_products_details;
+    const mealsForToday = selectedProductsDetails[dayName.toLowerCase()] || [];
+    set({
+      meals: selectedProductsDetails,
+      mealsByDay: mealsForToday,
+    });
   },
 });
 

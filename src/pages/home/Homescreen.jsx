@@ -8,7 +8,7 @@ import ServicesComp from './ServicesComp';
 import Footer from './Footer';
 
 
-export default function Home() {
+export default function Homescreen() {
   return (
     <Box sx={{ 
       backgroundColor: '#fff', 

@@ -30,6 +30,7 @@ import MyCart from "./components/mycart/MyCart";
 import Navbar from "./components/navbar/Navbar";
 import CityModal from "./components/cityModal/CityModal";
 import AddDeliveryAddress from "./pages/deliveryAddress/AddDeliveryAddress";
+import PaymentModal from "./components/paymentModal/PaymentModal";
 
 // Create a custom theme
 const theme = createTheme({

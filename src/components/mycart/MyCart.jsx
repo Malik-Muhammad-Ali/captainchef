@@ -22,6 +22,7 @@ const MyCart = () => {
   const { language, user, fetchCartData, totalPrice, cartData } = useAppStore();
   const isArabic = language == "ar";
   const [loading, setLoading] = useState(true);
+  console.log(cartData)
 
   useEffect(() => {
     setLoading(true);
@@ -32,7 +33,7 @@ const MyCart = () => {
   const handleDelete = async (productId) => {
     try {
       await axios.get(
-        "https://appv2.captainchef.net/AppV2/public/api/ver2/delete-item-from-cart",
+        "https://portal.captainchef.net/public/api/ver2/delete-item-from-cart",
         {
           params: {
             user_id: user?.id,
@@ -166,15 +167,16 @@ const MyCart = () => {
                 }}
               >
                 <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                  {product.plan.title}
+                  {product?.plan?.title}
                 </Typography>
                 <Typography variant="body1" sx={{ color: "#EACB78" }}>
-                  {product.plan.discount_offer_only === "yes"
-                    ? product.plan.discounted_amount
-                    : product.plan.basic_amount}
+                  {product?.plan?.discount_offer_only === "yes"
+                    ? product?.plan?.discounted_amount
+                    : product?.plan?.basic_amount}
                 </Typography>
                 <Typography variant="body1" sx={{ color: "#EACB78" }}>
-                  {isArabic ? "استلام" : "Pickup"}
+                  {/* {isArabic ? "استلام" : "Pickup"} */}
+                  {product?.delivery_type}
                 </Typography>
                 <Grid2>
                   <IconButton
@@ -183,7 +185,7 @@ const MyCart = () => {
                       borderRadius: "none",
                       transition: "none",
                     }}
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => handleDelete(product?.id)}
                   >
                     <svg
                       width="26"
@@ -243,13 +245,13 @@ const MyCart = () => {
                       marginBottom: "10px",
                     }}
                   >
-                    <Typography variant="h6">{product.plan.title}</Typography>
+                    <Typography variant="h6">{product?.plan?.title}</Typography>
                     <IconButton
                       sx={{
                         border: "none",
                         transition: "none",
                       }}
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product?.id)}
                     >
                       <svg
                         width="26"
@@ -289,9 +291,9 @@ const MyCart = () => {
                       marginBottom: "10px",
                     }}
                   >
-                    {product.plan.discount_offer_only === "yes"
-                      ? product.plan.discounted_amount
-                      : product.plan.basic_amount}
+                    {product?.plan?.discount_offer_only === "yes"
+                      ? product?.plan?.discounted_amount
+                      : product?.plan?.basic_amount}
                   </Typography>
 
                   {/* Delivery Type */}
@@ -301,7 +303,8 @@ const MyCart = () => {
                       color: "#EACB78",
                     }}
                   >
-                    {isArabic ? "Pickup" : "استلام "}
+                    {/* {isArabic ? "Pickup" : "استلام "} */}
+                    {product?.delivery_type}
                   </Typography>
                 </div>
               );

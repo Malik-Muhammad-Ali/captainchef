@@ -17,6 +17,7 @@ import useAppStore from "../../store/store";
 import Logo from "../../../public/logocaptainchef.png";
 import { ShoppingCart } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,6 +25,12 @@ const Navbar = () => {
   const location = useLocation();
   const [flag, setFlag] = useState("https://flagcdn.com/w40/us.png");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const handleLogout = () => {
+    // Your logout logic here
+    console.log("Logged out!");
+  };
 
   //   Flag Change
   const handleChange = (event) => {
@@ -217,18 +224,69 @@ const Navbar = () => {
             {authenticated && (
               <Box
                 sx={{
-                  width: "56px",
-                  height: "56px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "20%",
-                  backgroundColor: "green",
+                  position: "relative",
                 }}
               >
-                <Person2OutlinedIcon sx={{ color: "white" }} />
+                <Box
+                  onClick={() => setMenuOpen((prev) => !prev)} // Toggles the dropdown
+                  sx={{
+                    width: "56px",
+                    height: "56px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "20%",
+                    backgroundColor: "green",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Person2OutlinedIcon sx={{ color: "white" }} />
+                </Box>
+
+                {/* Dropdown */}
+                {menuOpen && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "60px",
+                      right: 0,
+                      backgroundColor: "#fff",
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      padding: "8px",
+                      zIndex: 1000,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                      onClick={handleLogout} // Add your logout function here
+                    >
+                      <LogoutIcon sx={{ color: "red", marginRight: "8px" }} />
+                      <Typography
+                        sx={{
+                          color: "red",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Logout
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
               </Box>
             )}
+
             {authenticated && (
               <Box
                 onClick={() => navigate("/cart")}
@@ -302,14 +360,11 @@ const Navbar = () => {
             padding: 2,
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
-            justifyContent: "start",
             gap: 2,
             height: "100%",
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
-            {/* Account Icon */}
             {authenticated && (
               <Box
                 sx={{
@@ -322,14 +377,11 @@ const Navbar = () => {
                   backgroundColor: "green",
                 }}
               >
-                <Person2OutlinedIcon
-                  sx={{ color: "white", alignSelf: "center" }}
-                />
+                <Person2OutlinedIcon sx={{ color: "white" }} />
               </Box>
             )}
-            {authenticated && ( // Display only if authenticated}
+            {authenticated && (
               <Box
-                // onClick={() => Navigate("/cart")}
                 sx={{
                   width: "56px",
                   height: "56px",
@@ -345,7 +397,6 @@ const Navbar = () => {
               </Box>
             )}
           </Box>
-          {/* Pages */}
           <Link to="/">
             <Button
               sx={{
@@ -389,7 +440,6 @@ const Navbar = () => {
               Subscriptions
             </Button>
           </Link>
-          {/* Language Selector */}
           <FormControl
             sx={{
               minWidth: "150px",
@@ -468,12 +518,34 @@ const Navbar = () => {
               display: { xs: "flex", sm: "none", md: "flex", lg: "flex" },
               height: "56px",
               borderRadius: "12px",
-              width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
+              width: "206px",
               boxShadow: "none",
             }}
           >
             Download App
           </Button>
+          <Box sx={{ flexGrow: 1 }} />
+          {/* Logout Section */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              padding: "16px 0",
+              borderTop: "1px solid #ccc",
+              direction: language === "ar" ? "rtl" : "ltr",
+            }}
+          >
+            <LogoutIcon sx={{ color: "#CE2729", cursor: "pointer" }} />
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#656565",
+              }}
+            >
+              {language === "ar" ? "تسجيل الخروج" : "Logout"}
+            </Typography>
+          </Box>
         </Box>
       </Drawer>
     </AppBar>

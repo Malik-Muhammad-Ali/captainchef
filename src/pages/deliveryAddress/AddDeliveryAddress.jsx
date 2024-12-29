@@ -62,7 +62,7 @@ const AddDeliveryAddress = () => {
   const addAddress = async () => {
     try {
       const response = await axios.post(
-        "https://appv2.captainchef.net/AppV2/public/contact/save-contact-addresses",
+        "https://portal.captainchef.net/public/contact/save-contact-addresses",
         {
           contact_id: user?.id,
           address_type: addressType,

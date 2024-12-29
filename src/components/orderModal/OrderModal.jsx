@@ -15,26 +15,30 @@ import useAppStore from "../../store/store";
 
 const OrderModal = ({ modalOpen, setModalOpen }) => {
   const navigate = useNavigate();
-  const { language } = useAppStore();
+  const { language, finalDeliveryType, setFinalDeliveryType } = useAppStore();
   const isArabic = language === "ar";
-  const [selectedCity, setSelectedCity] = useState(null);
   const isMobile = useMediaQuery("(max-width:600px)");
+
+  // States
+  const [deliveryType, setDeliveryType] = useState(null);
 
   const arr = [
     { key: "pickup", label: isArabic ? "الاستلام" : "Pickup" },
     { key: "homeDelivery", label: isArabic ? "التوصيل إلى المنزل" : "Home Delivery" },
   ];
 
-  const handleCityChange = (event) => {
-    setSelectedCity(event.target.value); // Use `key` instead of text for comparison
+  const handleDeliveryType = (event) => {
+    setDeliveryType(event.target.value);
   };
 
   const handleSubmit = () => {
-    if (selectedCity) {
+    if (deliveryType) {
       setModalOpen(false);
-      if (selectedCity === "homeDelivery") {
+      if (deliveryType === "homeDelivery") {
+        setFinalDeliveryType("delivery");
         navigate("/deliveryaddress");
-      } else if (selectedCity === "pickup") {
+      } else if (deliveryType === "pickup") {
+        setFinalDeliveryType("pickup");
         navigate("/pickupaddress");
       }
     }
@@ -102,8 +106,8 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
           </Typography>
 
           <RadioGroup
-            value={selectedCity}
-            onChange={handleCityChange}
+            value={deliveryType}
+            onChange={handleDeliveryType}
             sx={{
               width: "100%",
             }}
@@ -125,7 +129,7 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
                 label={
                   <span style={{ display: "flex", alignItems: "center" }}>
                     {label}
-                    {key === "homeDelivery" && selectedCity === "homeDelivery" && (
+                    {key === "homeDelivery" && deliveryType === "homeDelivery" && (
                       <span
                         style={{
                           marginLeft: "8px",
@@ -147,9 +151,9 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
                   marginBottom: "8px",
                   borderRadius: "8px",
                   backgroundColor:
-                    selectedCity === key ? "#FAE9EA" : "#F8F8F8",
+                  deliveryType === key ? "#FAE9EA" : "#F8F8F8",
                   border:
-                    selectedCity === key
+                  deliveryType === key
                       ? "2px solid #D92531"
                       : "1px solid #e0e0e0",
                   fontSize: "18px",
@@ -163,7 +167,7 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
           <Button
             variant="contained"
             onClick={handleSubmit}
-            disabled={!selectedCity}
+            disabled={!deliveryType}
             sx={{
               width: "91%",
               mt: 2,

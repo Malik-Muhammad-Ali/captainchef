@@ -19,22 +19,27 @@ const PlanCard = ({
   plan,
   planID,
   days,
-  items,
-  delivery,
   heading,
   language,
   freePlans,
   title,
 }) => {
-  const { setCurrentPlan, city, addToCart, user } = useAppStore();
   const navigate = useNavigate();
   const { categoryId } = useParams();
+  const { setCurrentPlan, city, addToCart, user, setPlanAvailableDays } =
+    useAppStore();
   const isArabic = language === "ar";
 
+  // Calculate delivery charges
   const deliveryCharges =
     plan?.city.find((currentCity) => currentCity.city === city)
       ?.delivery_charges || plan?.city[0]?.delivery_charges;
 
+  // Set plan available days
+  
+  // setPlanAvailableDays(availableDays)
+
+  // Icons
   const iconsMap = {
     meals: (
       <svg
@@ -133,6 +138,7 @@ const PlanCard = ({
     ),
   };
 
+  // Cart Items
   const cartItems = {
     user_id: user?.id,
     cart_details: [
@@ -142,20 +148,26 @@ const PlanCard = ({
       },
     ],
   };
+
+  // Add to Cart Function
   const handleAddToCart = () => {
     addToCart(cartItems);
   };
 
+  // Update Items with Icons
   const updatedItems = plan.no_of_items.items.map((item) => ({
     ...item,
     icon: iconsMap[item.name] || "❓",
   }));
 
+  // Handle Submit Function
   const handleSubmit = () => {
     setCurrentPlan(plan);
+    setPlanAvailableDays(plan.plan_available_days);
     navigate(`/subscriptions/category/${categoryId}/plans/${planID}`);
   };
 
+  // Component
   return (
     <Grid2
       sx={{
@@ -266,25 +278,39 @@ const PlanCard = ({
             </Typography>
 
             <Box sx={{ display: "flex", gap: "8px" }}>
-              <Typography
-                variant="body2"
-                sx={{
-                  textDecoration: "line-through",
-                  color: "gray",
-                  fontSize: "0.8rem",
-                }}
-              >
-                {plan.basic_amount}
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  color: "#D92531",
-                  fontSize: "1rem",
-                }}
-              >
-                {plan.basic_amount} SR
-              </Typography>
+              {plan.discount_offer_only === "no" ? (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "gray",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {plan.basic_amount} SR
+                </Typography>
+              ) : (
+                <>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      textDecoration: "line-through",
+                      color: "gray",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {plan.basic_amount}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#D92531",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {plan.discounted_amount} SR
+                  </Typography>
+                </>
+              )}
             </Box>
           </Box>
 

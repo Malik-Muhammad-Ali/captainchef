@@ -3,11 +3,12 @@ import axios from "axios";
 const paymentSlice = (set) => ({
   postUrl: '',
   returnUrl: '',
-  paymentNoon: async (addedPlans, totalPaid) => {
-    console.log(addedPlans);
+  paymentResult: '',
+  setPaymentResult: (result) => set({paymentResult: result}),
+  paymentNoon: async (addedPlans, totalPaid, couponData) => {
     try {
       const response = await axios.post(
-        "https://appv2.captainchef.net/AppV2/public/api/ver2/save-purchased-subscription-with-noon",
+        "https://portal.captainchef.net/public/api/ver2/save-purchased-subscription-with-noon",
         {
           user_id: 31163,
           total_amount: totalPaid,
@@ -17,8 +18,8 @@ const paymentSlice = (set) => ({
           status: "waiting_for_payment",
           wallet_amount: "0",
           //   transaction_channel: "buy_subscription",
-          //   coupon_code: null,
-          //   coupon_name: null,
+            coupon_code: couponData?.data?.code,
+            coupon_name: couponData?.data?.title,
           //   discount_via: null,
           //   comment: "",
           payment_status: "unpaid",
@@ -27,13 +28,16 @@ const paymentSlice = (set) => ({
           noon_category: "pay",
         }
       );
+      // console.log(response.data.data.noon_order_id);
       if(response.data.status === "success" && response.data.data.status === "INITIATED"){
         console.log('Success');
         const post_url = response?.data?.data?.checkout_data?.postUrl;
         const return_url = response?.data?.data?.return_url;
+        const noon_order_id = response.data.data.noon_order_id;
+        console.log(noon_order_id)
         set({postUrl: response?.data?.data?.checkout_data?.postUrl});
         set({returnUrl: response?.data?.data?.return_url});
-        return {post_url, return_url};
+        return {post_url, return_url, noon_order_id};
       }else{
         console.log('No Resoponse')
         set({postUrl: ''});

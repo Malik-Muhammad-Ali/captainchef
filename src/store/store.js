@@ -6,10 +6,10 @@ import languageSlice from "./slices/languageSlice";
 import mealsSlice from "./slices/mealsSlice";
 import PlansSlice from "./slices/plansSlice";
 import { persist } from "zustand/middleware";
-import deliveryAddressSlice from './slices/deliveryAddressSlice';
+import deliveryAddressSlice from "./slices/deliveryAddressSlice";
 import cartSlice from "./slices/cartSlice";
 import pickupSlice from "./slices/pickupSlice";
-import paymentSlice from './slices/paymentSlice';
+import paymentSlice from "./slices/paymentSlice";
 
 const useAppStore = create(
   persist(
@@ -20,13 +20,38 @@ const useAppStore = create(
       ...languageSlice(set, get),
       ...mealsSlice(set, get),
       ...PlansSlice(set, get),
-    ...deliveryAddressSlice(set),
-    ...pickupSlice(set),
-    ...cartSlice(set, get),
-    ...paymentSlice(set, get),
+      ...deliveryAddressSlice(set),
+      ...pickupSlice(set),
+      ...cartSlice(set, get),
+      ...paymentSlice(set, get),
     }),
     {
-      name: "app-storage",
+      name: "app-session",
+      storage: {
+        getItem: (key) => {
+          try {
+            const value = sessionStorage.getItem(key);
+            return value ? JSON.parse(value) : undefined;
+          } catch (error) {
+            console.error("Failed to retrieve sessionStorage item", error);
+            return undefined;
+          }
+        },
+        setItem: (key, value) => {
+          try {
+            sessionStorage.setItem(key, JSON.stringify(value));
+          } catch (error) {
+            console.error("Failed to set sessionStorage item", error);
+          }
+        },
+        removeItem: (key) => {
+          try {
+            sessionStorage.removeItem(key);
+          } catch (error) {
+            console.error("Failed to remove sessionStorage item", error);
+          }
+        },
+      },
       partialize: (state) => ({
         user: state.user,
         currentPlan: state.currentPlan,
@@ -38,6 +63,10 @@ const useAppStore = create(
         totalPrice: state.totalPrice,
         totalPriceWithVAT: state.totalPriceWithVAT,
         selectedPickupAddress: state.selectedPickupAddress,
+        planAvailableDays: state.planAvailableDays,
+        meals: state.meals,
+        mealsByDay: state.mealsByDay,
+        finalDeliveryType: state.finalDeliveryType,
       }),
     }
   )

@@ -264,10 +264,6 @@ const Plans = () => {
                     days={plan.total_days}
                     freePlans={plan.free_plans || []}
                     language={language}
-                    delivery={plan.city}
-                    items={plan.no_of_items.items.filter(
-                      (item) => item.value > 0
-                    )}
                   />
                 </Grid2>
               ))

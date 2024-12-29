@@ -19,19 +19,57 @@ const DeliveryAddress = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isDesktopOrTablet = useMediaQuery(theme.breakpoints.up("sm"));
-  const { fetchAddress, address, language, user, deleteAddress, setAddress, setSelectedDeliveryAddress } =
-    useAppStore();
+  const {
+    fetchAddress,
+    address,
+    language,
+    user,
+    deleteAddress,
+    setAddress,
+    setSelectedDeliveryAddress,
+    addToCart,
+    currentPlan,
+    finalDeliveryType,
+    cities,
+    city,
+  } = useAppStore();
   const isArabic = language == "ar";
+  console.log(address);
 
-  // console.log(address)
+  // Find Delivery Charges of a city
+  const cityDetails = cities.find(
+    (currentCity) => currentCity.city_name === city
+  );
   // States
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [error, setError] = useState(null);
+  const [cartItems, setCartItems] = useState({});
+  console.log(cartItems);
 
   // handle select
   const handleSelect = (index, deliveryAddressId, deliveryAddress) => {
-    setSelectedDeliveryAddress(deliveryAddressId, deliveryAddress)
+    setSelectedDeliveryAddress(deliveryAddressId, deliveryAddress);
     setSelectedIndex(index);
+    setCartItems({
+      user_id: user?.id,
+      cart_details: [
+        {
+          plan_id: currentPlan?.id,
+          qty: 1,
+          delivery_address_id: deliveryAddressId,
+          delivery_type: "delivery",
+          delivery_charges: cityDetails.delivery_charges || 250,
+          branch_id: null,
+        },
+      ],
+    });
+    console.log(cartItems);
+  };
+
+  // Add to cart API
+  const handleAddToCart = async () => {
+    console.log("Adding to cart Function");
+    addToCart(cartItems);
   };
 
   // handle navigation
@@ -40,6 +78,7 @@ const DeliveryAddress = () => {
       setError("Please select an address");
     } else {
       setError(null);
+      handleAddToCart();
       navigate("/cart");
     }
   };
@@ -48,7 +87,7 @@ const DeliveryAddress = () => {
   const handleDelete = async (addressId) => {
     console.log(addressId, user?.id);
     const updatedAddresses = address.filter((addr) => addr.id !== addressId);
-    console.log(updatedAddresses)
+    console.log(updatedAddresses);
     setAddress(updatedAddresses);
     const status = await deleteAddress(user?.id, addressId);
     if (status === "success") {
@@ -171,7 +210,9 @@ const DeliveryAddress = () => {
             {address?.map((singleAddress, index) => (
               <Box
                 key={index}
-                onClick={() => handleSelect(index, singleAddress.id, singleAddress.address)}
+                onClick={() =>
+                  handleSelect(index, singleAddress.id, singleAddress.address)
+                }
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },

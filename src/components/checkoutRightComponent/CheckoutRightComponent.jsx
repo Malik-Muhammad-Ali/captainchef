@@ -4,12 +4,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import useAppStore from "../../store/store";
 
-const CheckoutRightComponent = ({ couponData }) => {
+const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, subTotal }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { cartData, city, cities, totalPriceWithVAT } = useAppStore();
+  // const { cartData } = useAppStore();
 
   const discountType = couponData?.data?.discount_type || "";
-  const discount = couponData?.data?.discount || 0;
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
 
   const toggleCollapse = () => {
@@ -17,55 +16,6 @@ const CheckoutRightComponent = ({ couponData }) => {
   };
   const { language } = useAppStore();
   const isArabic = language == "ar";
-
-  // Find the user's city in the cities array
-  const userCity = cities.find(
-    (cityName) => cityName.city_name.toLowerCase() === city.toLowerCase()
-  );
-  const calDeliveryCharges = cartData.map((item) => {
-    if (item.plan && item.plan.city) {
-      const planCityIds = item.plan.city.split(",").map((id) => parseInt(id));
-      if (planCityIds.includes(userCity?.id)) {
-        return userCity?.delivery_charges;
-      }
-    }
-
-    return 250;
-  });
-
-  const cart = cartData.map((item, index) => ({
-    planName: item.plan.title,
-    planPrice:
-      item.plan.discount_offer_only === "yes"
-        ? parseFloat(item.plan.discounted_amount)
-        : parseFloat(item.plan.basic_amount),
-    deliveryCharges: parseFloat(calDeliveryCharges[index]) || 250,
-  }));
-
-  // Calculate the discounted price for each plan
-  const discountedCart = cart.map((item) => {
-    let discountedPrice = item.planPrice;
-    if (discountType === "percent") {
-      discountedPrice = item.planPrice - (item.planPrice * discount) / 100;
-    } else if (discountType === "fixed") {
-      discountedPrice =
-        item.planPrice - parseFloat(item.plan.discounted_amount);
-    }
-    return {
-      ...item,
-      discountedPrice: Math.max(discountedPrice, 0), // Ensure no negative prices
-    };
-  });
-
-  // Calculate the total price with discounts applied
-  const totalPrice = discountedCart.reduce((total, item, index) => {
-    // If removeDelivery is 'yes', we set delivery charges to 0
-    const deliveryCharge = removeDelivery === "yes" ? 0 : item.deliveryCharges;
-    return total + item.discountedPrice + deliveryCharge;
-  }, 0);
-
-  // VAT calculation
-  const VAT = 0.15 * totalPrice;
 
   return (
     <Paper
@@ -201,7 +151,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                         marginRight: discountType ? "6px" : "0px",
                       }}
                     >
-                      {item.deliveryCharges} SR
+                      {item.delivery_charges} SR
                     </span>
                     {removeDelivery === "yes" && (
                       <span style={{ color: "green", marginLeft: "8px" }}>
@@ -306,7 +256,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                 textAlign: isArabic ? "right" : "left",
               }}
             >
-              {totalPriceWithVAT} SAR
+              {subTotal} SAR
             </Typography>
           </Box>
         </>

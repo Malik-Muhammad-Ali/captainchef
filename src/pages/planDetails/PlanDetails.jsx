@@ -19,10 +19,8 @@ import {
 import StarIcon from "@mui/icons-material/Star";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/loader/Loader";
-import axios from "axios";
 
 const PlanDetails = () => {
-  const { categoryId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,8 +34,7 @@ const PlanDetails = () => {
     setMealsByDay,
     language,
     currentPlan,
-    user,
-    addToCart,
+    planAvailableDays,
   } = useAppStore();
 
   // States
@@ -47,18 +44,51 @@ const PlanDetails = () => {
   const [subscribeFirstModalOpen, setSubscribeFirstModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [cartItems, setCartItems] = useState({
-    user_id: user?.id,
-    cart_details: [
-      {
-        plan_id: currentPlan?.id,
-        qty: 1,
-      },
-    ],
-  });
+  const [availableDays, setAvailableDays] = useState([]);
+  const [modalData, setModalData] = useState({});
 
   const isArabic = language == "ar";
-  // console.log(cartItems);
+
+  // Set Plan Available Days
+  const adjustAvailableDays = (planAvailableDays, currentPlan) => {
+    // Get today's date
+    const currentDate = new Date();
+
+    // Find today's day
+    const todayName = currentDate.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const todayIndex = planAvailableDays.findIndex((day) => day === todayName);
+
+    if (todayIndex === -1) {
+      console.error("Today's day is not found in planAvailableDays.");
+      return [];
+    }
+
+    // Reorder planAvailableDays to start from today
+    const reorderedDays = [
+      ...planAvailableDays.slice(todayIndex),
+      ...planAvailableDays.slice(0, todayIndex),
+    ];
+
+    // Add dynamic dates and meal details to the reordered days
+    const availableDays = reorderedDays.map((day, index) => {
+      const date = new Date();
+      date.setDate(currentDate.getDate() + index); // Calculate the date dynamically
+
+      return {
+        day, // Directly use the day name
+        date: date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+        }), // Format date as "10 Dec"
+        totalMeals: currentPlan?.no_of_items.total || 0,
+        selectedMeals: 0,
+      };
+    });
+
+    return availableDays;
+  };
 
   // Icons
   const iconsMap = {
@@ -165,61 +195,12 @@ const PlanDetails = () => {
     icon: iconsMap[item.name] || "❓",
   }));
 
-  // weekdays
-  const weekdays = [
-    {
-      day: "Monday",
-      date: "10 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-    {
-      day: "Tuesday",
-      date: "11 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-    {
-      day: "Wednesday",
-      date: "12 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-    {
-      day: "Thursday",
-      date: "13 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-    {
-      day: "Friday",
-      date: "14 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-    {
-      day: "Saturday",
-      date: "15 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-    {
-      day: "Sunday",
-      date: "16 Dec",
-      totalMeals: 3,
-      selectedMeals: 0,
-    },
-  ];
-
   // filter meals by day
   const handleDayClick = (index) => {
     setSelectedIndex(index);
-    setMealsByDay(
-      meals
-        .filter((meal) => meal.meal_day === weekdays[index].day)
-        .map((meal) => meal.selected_products)
-        .flat()
-    );
+    const selectedDay = availableDays[index].day.toLowerCase();
+    const mealsForSelectedDay = meals[selectedDay] || [];
+    setMealsByDay(mealsForSelectedDay);
   };
 
   // handle meal selection
@@ -227,21 +208,32 @@ const PlanDetails = () => {
     setSubscribeFirstModalOpen(true);
   };
 
-  // Ad to cart API
-  const handleAddToCart = async () => {
-    addToCart(cartItems)
-  };
-
   // handle Navigation
   const handleNavigation = () => {
     if (authenticated) {
-      handleAddToCart();
       setModalOpen(true);
     } else {
       setPlanDetailUrl(location.pathname);
       navigate("/login", { replace: true });
     }
   };
+
+  const handleInfoClick = (meal) => {
+    setMealInfoModalOpen(true)
+    setModalData({
+      isAlergic: meal?.is_allergic,
+      name: meal?.detail?.name,
+      arabicName: meal?.detail?.name_ar,
+      description: meal?.detail?.product_description,
+      arabicdescription: meal?.detail?.product_description_ar,
+      rating: meal?.detail?.rating,
+      image: meal?.detail?.image_url,
+      calories: meal?.detail?.calories,
+      protein: meal?.detail?.protein,
+      fats: meal?.detail?.fats,
+      carbs: meal?.detail?.carbs,
+    })
+  }
 
   // useEfffect
   useEffect(() => {
@@ -250,10 +242,17 @@ const PlanDetails = () => {
       navigate("/subscriptions", { replace: true });
       return;
     }
-    fetchMeals(categoryId);
+    fetchMeals(currentPlan.meal_list);
     setSelectedIndex(0);
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (planAvailableDays && currentPlan) {
+      const adjustedDays = adjustAvailableDays(planAvailableDays, currentPlan);
+      setAvailableDays(adjustedDays);
+    }
+  }, [planAvailableDays, currentPlan]);
 
   // Component
   return (
@@ -434,7 +433,7 @@ const PlanDetails = () => {
               <div>
                 <p>{language === "en" ? "Week Days" : "أيام الأسبوع"}</p>
                 <div className="weekDays">
-                  {weekdays.map((item, index) => (
+                  {availableDays.map((item, index) => (
                     <div
                       className="weekday"
                       key={index}
@@ -462,7 +461,7 @@ const PlanDetails = () => {
                             fontSize: isSmallScreen ? "6px" : "12px",
                           }}
                         >
-                          {item.selectedMeals}/{currentPlan?.no_of_items.total}
+                          {item.selectedMeals}/{item.totalMeals}
                         </Typography>
                       </div>
                       <div
@@ -511,16 +510,16 @@ const PlanDetails = () => {
               {mealsByDay.map((meal, index) => (
                 <div key={index} className="mealCard">
                   {/* Image & Tags */}
-                  <div style={{ position: "relative", textAlign: "center" }}>
+                  <div style={{ position: "relative", textAlign: "center"}}>
                     <img
                       className="mealCardImg"
-                      src="/meal.png"
+                      src={meal?.detail?.image_url}
                       alt="Meal"
-                      style={{ borderRadius: "50%", width: "90%" }}
+                      style={{ borderRadius: "50%", width: "160px", height: '160px', objectFit: 'cover' }}
                     />
                     {/* Info Tag */}
                     <svg
-                      onClick={() => setMealInfoModalOpen(true)}
+                      onClick={() => handleInfoClick(meal)}
                       className="infoTagImg"
                       width="30"
                       height="30"
@@ -581,11 +580,13 @@ const PlanDetails = () => {
                     </svg>
 
                     {/* Recommended Tag */}
-                    <div className="recommended">
-                      {language === "en" ? "Recommended" : "مُستَحسَن"}
-                    </div>
+                    {meal.chef_recommended === "yes" && (
+                      <div className="recommended">
+                        {language === "en" ? "Recommended" : "مُستَحسَن"}
+                      </div>
+                    )}
                   </div>
-                  <CardContent sx={{ padding: "0px", textAlign: "center" }}>
+                  <CardContent sx={{ padding: "0px", textAlign: "center", justifyContent: "space-between" }}>
                     <Typography
                       variant="h6"
                       sx={{
@@ -594,7 +595,9 @@ const PlanDetails = () => {
                         mb: 1,
                       }}
                     >
-                      {language === "en" ? meal.name : meal.name_arabic}
+                      {language === "en"
+                        ? meal?.detail?.name
+                        : meal?.detail?.name_ar}
                     </Typography>
                     <Box display="flex" justifyContent="center" gap={2}>
                       {/* Box 1: 1080 KCal */}
@@ -631,7 +634,7 @@ const PlanDetails = () => {
                           variant="body"
                           sx={{ color: "#515151", fontSize: "12px" }}
                         >
-                          {JSON.parse(meal.cal_protein).en.cal} KCal
+                          {/* {JSON.parse(meal.cal_protein).en.cal} KCal */}
                         </Typography>
                       </Box>
 
@@ -678,6 +681,7 @@ const PlanDetails = () => {
         <MealInfo
           mealInfoModalOpen={mealInfoModalOpen}
           setMealInfoModalOpen={setMealInfoModalOpen}
+          modalData={modalData}
         />
         <SubscribeFirst
           subscribeFirstModalOpen={subscribeFirstModalOpen}

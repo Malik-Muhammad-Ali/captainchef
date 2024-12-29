@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Rating } from "@mui/material";
 
-const RatingModal = ({modalData}) => {
+const CustomerRating = () => {
   const [rating, setRating] = useState(4.8);
   const [reviews, setReviews] = useState(12500);
 
@@ -25,7 +25,7 @@ const RatingModal = ({modalData}) => {
       gap={1}
       sx={{ fontSize: "16px", fontWeight: "400" }}
     >
-      {/* <Typography
+      <Typography
         sx={{
           fontWeight: "500",
           fontSize: "18px",
@@ -34,22 +34,22 @@ const RatingModal = ({modalData}) => {
         }}
       >
         Our Happy Customers
-      </Typography> */}
+      </Typography>
       <Box display="flex" alignItems="center" gap={0.5}>
         <Rating
           name="customer-rating"
-          value={modalData.rating}
+          value={rating}
           precision={0.1}
           readOnly
           size="medium"
           sx={{ color: "#FFC107" }}
         />
         <Typography>
-          {modalData.rating.toFixed(1)} ({Math.floor(reviews / 1000)}k Reviews)
+          {rating.toFixed(1)} ({Math.floor(reviews / 1000)}k Reviews)
         </Typography>
       </Box>
     </Box>
   );
 };
 
-export default RatingModal;
+export default CustomerRating;

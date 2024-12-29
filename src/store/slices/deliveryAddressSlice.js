@@ -17,7 +17,7 @@ const deliveryAddressSlice = (set) => ({
   fetchAddress: async (userId) => {
     console.log("API Hit");
     const response = await axios.get(
-      `https://appv2.captainchef.net/AppV2/public/contact/get-contact-addresses?contact_id=${userId}`
+      `https://portal.captainchef.net/public/contact/get-contact-addresses?contact_id=${userId}`
     );
     const data = await response.data.data;
     console.log(data)

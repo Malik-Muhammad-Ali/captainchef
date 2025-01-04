@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Rating } from "@mui/material";
 
-const RatingModal = () => {
+const RatingModal = ({modalData}) => {
   const [rating, setRating] = useState(4.8);
   const [reviews, setReviews] = useState(12500);
 
@@ -38,14 +38,14 @@ const RatingModal = () => {
       <Box display="flex" alignItems="center" gap={0.5}>
         <Rating
           name="customer-rating"
-          value={rating}
+          value={modalData.rating}
           precision={0.1}
           readOnly
           size="medium"
           sx={{ color: "#FFC107" }}
         />
         <Typography>
-          {rating.toFixed(1)} ({Math.floor(reviews / 1000)}k Reviews)
+          {modalData.rating.toFixed(1)} ({Math.floor(reviews / 1000)}k Reviews)
         </Typography>
       </Box>
     </Box>

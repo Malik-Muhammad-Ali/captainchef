@@ -13,35 +13,83 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
-import useAppStore from '../../store/store'
-import { nav } from "framer-motion/client";
+import useAppStore from "../../store/store";
+import axios from "axios";
 
 const MySubscriptions = () => {
   const navigate = useNavigate();
+  const { user, authenticated, paymentResult, language } = useAppStore();
+
+  // States
   const [isPlanTypesExpanded, setIsPlanTypesExpanded] = useState(true);
   const [isPlanStatusExpanded, setIsPlanStatusExpanded] = useState(true);
-  const [selectedPlanType, setSelectedPlanType] = useState("");
-  const [selectedPlanStatus, setSelectedPlanStatus] = useState("");
-  const { user, authenticated } = useAppStore();
-
-  useEffect(() => {
-    if(!authenticated){
-      navigate('/subscriptions');
-    }
-  }, [authenticated])
+  const [selectedPlanType, setSelectedPlanType] = useState("running");
+  const [selectedPlanStatus, setSelectedPlanStatus] = useState("x");
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [subscribedPlans, setSubscribedPlans] = useState([]);
+  const [filteredPlans, setFilteredPlans] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("Running");
+  const [selectedStatus, setSelectedStatus] = useState("Active");
 
   // Status Options
   const planStatusOptions = {
-    running: ["Active", "Inactive", "Hold"],
-    others: ["Payment Pending", "Completed"],
+    running: [
+      { name: "Active", name_ar: "نشيط" },
+      { name: "Inactive", name_ar: "غير نشط" },
+      { name: "Hold", name_ar: "يمسك" },
+    ],
+    others: [
+      { name: "Payment Pending", name_ar: "الدفع معلق" },
+      { name: "Completed", name_ar: "Completed" },
+    ],
   };
 
+  // hanlde plan type
   const handlePlanTypeSelect = (type) => {
+    let finalType;
+    if (type === "running") {
+      finalType = "paid";
+    } else if (type === "others") {
+      finalType = "unpaid";
+    }
+
+    const updatedPlans = subscribedPlans?.filter((plan) => {
+      if (plan?.order_details?.length > 0) {
+        return plan?.order_details[0]?.payment_status === finalType;
+      } else {
+        return null;
+      }
+    });
+
+    setFilteredPlans(updatedPlans);
     setSelectedPlanType(type);
     setSelectedPlanStatus("");
   };
 
+  // handle plan status
   const handlePlanStatusSelect = (status) => {
+    let fintalStatus;
+    if (status === "Active") {
+      fintalStatus = "active";
+    } else if (status === "Inactive") {
+      fintalStatus = "inactive";
+    } else if (status === "Hold") {
+      fintalStatus = "hold";
+    } else if (status === "Payment Pending") {
+      fintalStatus = "waiting_for_payment";
+    } else if (status === "Completed") {
+      fintalStatus = "completed";
+    }
+
+    const updatedPlans = subscribedPlans?.filter((plan) => {
+      if (plan?.order_details?.length > 0) {
+        return plan?.order_details[0]?.status === fintalStatus;
+      } else {
+        return null;
+      }
+    });
+
+    setFilteredPlans(updatedPlans);
     setSelectedPlanStatus(status);
   };
 
@@ -92,9 +140,41 @@ const MySubscriptions = () => {
        <path d="M14 18H18" stroke="#1F1F1F" strokeWidth="0.5" stroke-linecap="round"/>
      </svg>`,
   ];
-  const [selectedTab, setSelectedTab] = useState("Running");
-  const [selectedStatus, setSelectedStatus] = useState("Active");
 
+  const fetchMySubscriptions = async () => {
+    try {
+      const response = await axios.get(
+        `https://portal.captainchef.net/public/contact/get-purchased-subscription?user_id=${user?.id}`
+      );
+      // console.log(response?.data?.data[0]);
+      // setOrderDetails(response?.data?.data);
+      setSubscribedPlans(response?.data?.data);
+      const updatedPlans = response?.data?.data.filter((plan) => {
+        if (plan?.order_details?.length > 0) {
+          return plan.order_details[0].payment_status === "paid";
+        } else {
+          return null;
+        }
+      });
+      setFilteredPlans(updatedPlans);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // console.log(filteredPlans);
+  // console.log(subscribedPlans);
+
+  useEffect(() => {
+    if (!authenticated) {
+      navigate("/login");
+    }
+  }, [authenticated]);
+
+  useEffect(() => {
+    fetchMySubscriptions();
+  }, []);
+
+  // Component
   return (
     <>
       <Box sx={{ px: { xs: 1, sm: 2, md: 4 }, backgroundColor: "#F8F8F8" }}>
@@ -128,99 +208,103 @@ const MySubscriptions = () => {
         </Box>
 
         {/* HURRAY!!! Content */}
-        <Box
-          sx={{
-            display: { lg: "flex", sm: "none", md: "flex", xs: "none" },
-            flexDirection: "column",
-            alignItems: "center",
-            mt: { xs: 4, sm: 6, md: 8 },
-            px: { xs: 2, sm: 4 },
-          }}
-        >
-          {/* Image */}
+        {paymentResult === "CAPTURED" && (
           <Box
-            component="img"
-            src="/hurray.png"
-            alt="Authentication Illustration"
             sx={{
-              width: { xs: "90%", sm: "70%", md: "369px" },
-              height: "auto",
-            }}
-          />
-
-          {/* Heading */}
-          <Typography
-            variant="h5"
-            sx={{
-              fontSize: { xs: "24px", sm: "28px", md: "32px" },
-              fontWeight: 600,
-              mt: 2,
+              display: { lg: "flex", sm: "none", md: "flex", xs: "none" },
+              flexDirection: "column",
+              alignItems: "center",
+              mt: { xs: 4, sm: 6, md: 8 },
+              px: { xs: 2, sm: 4 },
             }}
           >
-            Hurray!!!
-          </Typography>
+            {/* Image */}
+            <Box
+              component="img"
+              src="/hurray.png"
+              alt="Authentication Illustration"
+              sx={{
+                width: { xs: "90%", sm: "70%", md: "369px" },
+                height: "auto",
+              }}
+            />
 
-          {/* Description */}
-          <Typography
-            variant="body1"
-            sx={{
-              textAlign: "center",
-              color: "#666",
-              marginBottom: "35px",
-              fontSize: { xs: "14px", sm: "16px", md: "20px" },
-            }}
-          >
-            You have successfully purchased a subscription plan. But it’s
-            inactive now. For Activation, Download the app Now.
-            <br /> Go to my subscriptions and schedule it.
-          </Typography>
-        </Box>
+            {/* Heading */}
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: "24px", sm: "28px", md: "32px" },
+                fontWeight: 600,
+                mt: 2,
+              }}
+            >
+              {language === "en" ? "Hurray!!!" : "!!! يا هلا"}
+            </Typography>
+
+            {/* Description */}
+            <Typography
+              variant="body1"
+              sx={{
+                textAlign: "center",
+                color: "#666",
+                marginBottom: "35px",
+                fontSize: { xs: "14px", sm: "16px", md: "20px" },
+              }}
+            >
+              {language === "en"
+                ? "You have successfully purchased a subscription plan. But it's inactive now. For Activation, Download the app Now. Go to my subscriptions and schedule it."
+                : "لقد قمت بشراء خطة الاشتراك بنجاح. لكنه كذلك غير نشط الآن. للتفعيل قم بتحميل التطبيق الآن. اذهب الى بلدي الاشتراكات وجدولتها."}
+            </Typography>
+          </Box>
+        )}
 
         {/*OOPS content */}
-        {/* <Box
-        sx={{
-          display: {lg:"flex",md:"flex",sm:"none",xs:"none"},
-          flexDirection: "column",
-          alignItems: "center",
-          mt: { xs: 4, sm: 6, md: 8 },
-          px: { xs: 2, sm: 4 },
-        }}
-      >
-        <Box
-          component="img"
-          src="/oopsimg.png"
-          alt="Authentication Illustration"
-          sx={{
-            width: { xs: "90%", sm: "70%", md: "369px" },
-            height: "auto",
-          }}
-        />
+        {paymentResult === "REJECTED" && (
+          <Box
+            sx={{
+              display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+              flexDirection: "column",
+              alignItems: "center",
+              mt: { xs: 4, sm: 6, md: 8 },
+              px: { xs: 2, sm: 4 },
+            }}
+          >
+            <Box
+              component="img"
+              src="/oops.png"
+              alt="Authentication Illustration"
+              sx={{
+                width: { xs: "90%", sm: "70%", md: "369px" },
+                height: "auto",
+              }}
+            />
 
-        <Typography
-          variant="h5"
-          sx={{
-            fontSize: { xs: "24px", sm: "28px", md: "32px" },
-            fontWeight: 600,
-            mt: 2,
-          }}
-        >
-          Oopss!!!
-        </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: "24px", sm: "28px", md: "32px" },
+                fontWeight: 600,
+                mt: 2,
+              }}
+            >
+              {language === "en" ? "Oops!!!" : "!!! أُووبس"}
+            </Typography>
 
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: "center",
-            color: "#666",
-            marginBottom: "35px",
-            fontSize: { xs: "14px", sm: "16px", md: "20px" },
-          }}
-        >
-          Payment Failed, It is held till your payment paid successfully. For
-          Try again, Please press complete Payment
-          <br /> button.
-        </Typography>
-      </Box> */}
+            <Typography
+              variant="body1"
+              sx={{
+                textAlign: "center",
+                color: "#666",
+                marginBottom: "35px",
+                fontSize: { xs: "14px", sm: "16px", md: "20px" },
+              }}
+            >
+              {language === "en"
+                ? "Payment Failed, It is held till your payment paid successfully. For Try again, Please press complete Payment button."
+                : "فشل الدفع، يتم تعليقه حتى يتم سداد دفعتك بنجاح. للمحاولة مرة أخرى، يرجى الضغط على زر إتمام الدفع."}
+            </Typography>
+          </Box>
+        )}
 
         {/*container to be displayed as on mobile app of CC*/}
         <Box
@@ -243,7 +327,10 @@ const MySubscriptions = () => {
             }}
           >
             <Button
-              onClick={() => setSelectedTab("Running")}
+              onClick={() => {
+                setSelectedTab("Running");
+                handlePlanTypeSelect("running");
+              }}
               sx={{
                 flex: 1,
                 borderRadius: "10px",
@@ -258,7 +345,10 @@ const MySubscriptions = () => {
               Running
             </Button>
             <Button
-              onClick={() => setSelectedTab("Others")}
+              onClick={() => {
+                setSelectedTab("Others");
+                handlePlanTypeSelect("others");
+              }}
               sx={{
                 flex: 1,
                 borderRadius: "10px",
@@ -296,7 +386,10 @@ const MySubscriptions = () => {
               <>
                 {/* Active, Inactive, Hold Buttons */}
                 <Button
-                  onClick={() => setSelectedStatus("Active")}
+                  onClick={() => {
+                    setSelectedStatus("Active");
+                    handlePlanStatusSelect("Active");
+                  }}
                   sx={{
                     flex: 1,
                     bgcolor: selectedStatus === "Active" ? "#4caf50" : "white",
@@ -310,10 +403,13 @@ const MySubscriptions = () => {
                     },
                   }}
                 >
-                  Active
+                  {language === "en" ? "Active" : "نشيط"}
                 </Button>
                 <Button
-                  onClick={() => setSelectedStatus("Inactive")}
+                  onClick={() => {
+                    setSelectedStatus("Inactive");
+                    handlePlanStatusSelect("Inactive");
+                  }}
                   sx={{
                     flex: 1,
                     bgcolor:
@@ -328,10 +424,13 @@ const MySubscriptions = () => {
                     },
                   }}
                 >
-                  Inactive
+                  {language === "en" ? "Inactive" : "غير نشط"}
                 </Button>
                 <Button
-                  onClick={() => setSelectedStatus("Hold")}
+                  onClick={() => {
+                    setSelectedStatus("Hold");
+                    handlePlanStatusSelect("Hold");
+                  }}
                   sx={{
                     flex: 1,
                     bgcolor: selectedStatus === "Hold" ? "#000" : "white",
@@ -344,14 +443,17 @@ const MySubscriptions = () => {
                     },
                   }}
                 >
-                  Hold
+                  {language === "en" ? "Hold" : "يمسك"}
                 </Button>
               </>
             ) : (
               <>
                 {/* Payment Pending, Completed Buttons */}
                 <Button
-                  onClick={() => setSelectedStatus("Payment Pending")}
+                  onClick={() => {
+                    setSelectedStatus("Payment Pending");
+                    handlePlanStatusSelect("Payment Pending");
+                  }}
                   sx={{
                     flex: 1,
                     bgcolor:
@@ -371,10 +473,13 @@ const MySubscriptions = () => {
                     },
                   }}
                 >
-                  Payment Pending
+                  {language === "en" ? "Payment Pending" : "الدفع معلق"}
                 </Button>
                 <Button
-                  onClick={() => setSelectedStatus("Completed")}
+                  onClick={() => {
+                    setSelectedStatus("Completed");
+                    handlePlanStatusSelect("Completed");
+                  }}
                   sx={{
                     flex: 1,
                     bgcolor:
@@ -389,7 +494,7 @@ const MySubscriptions = () => {
                     },
                   }}
                 >
-                  Completed
+                  {language === "en" ? "Completed" : "مكتمل"}
                 </Button>
               </>
             )}
@@ -402,7 +507,7 @@ const MySubscriptions = () => {
             display: "flex",
             justifyContent: "center",
             mt: { xs: 10, sm: 4 },
-            flexDirection: { xs: "column", md: "row", lg: "row" },
+            direction: language === "en" ? "ltr" : "rtl",
           }}
         >
           <Box
@@ -435,7 +540,7 @@ const MySubscriptions = () => {
               }}
             >
               <Typography sx={{ fontWeight: "bold", fontSize: "16px" }}>
-                Plan Types
+                {language === "en" ? "Plan Types" : "أنواع الخطط"}
               </Typography>
               <IconButton
                 sx={{ p: 0 }}
@@ -470,7 +575,7 @@ const MySubscriptions = () => {
                     }}
                   />
                   <Typography sx={{ fontSize: "14px", ml: 1 }}>
-                    Running
+                    {language === "en" ? "Running" : "جري"}
                   </Typography>
                 </Box>
                 <Box
@@ -494,7 +599,7 @@ const MySubscriptions = () => {
                     }}
                   />
                   <Typography sx={{ fontSize: "14px", ml: 1 }}>
-                    Others
+                    {language === "en" ? "Others" : "آحرون"}
                   </Typography>
                 </Box>
               </Box>
@@ -510,7 +615,7 @@ const MySubscriptions = () => {
               }}
             >
               <Typography sx={{ fontWeight: "bold", fontSize: "16px" }}>
-                Plan Status
+                {language === "en" ? "Plan Status" : "حالة الخطة"}
               </Typography>
               <IconButton
                 sx={{ p: 0 }}
@@ -529,7 +634,7 @@ const MySubscriptions = () => {
                       display: "flex",
                       alignItems: "center",
                       backgroundColor:
-                        selectedPlanStatus === status
+                        selectedPlanStatus === status.name
                           ? "#FAE9EA"
                           : "transparent",
                       padding: "10px",
@@ -537,17 +642,17 @@ const MySubscriptions = () => {
                       mb: 1,
                       cursor: "pointer",
                     }}
-                    onClick={() => handlePlanStatusSelect(status)}
+                    onClick={() => handlePlanStatusSelect(status.name)}
                   >
                     <Radio
-                      checked={selectedPlanStatus === status}
+                      checked={selectedPlanStatus === status.name}
                       sx={{
                         color: "#f28b82",
                         "&.Mui-checked": { color: "red" },
                       }}
                     />
                     <Typography sx={{ fontSize: "14px", ml: 1 }}>
-                      {status}
+                      {language === 'en' ? status.name : status.name_ar}
                     </Typography>
                   </Box>
                 ))}
@@ -581,7 +686,7 @@ const MySubscriptions = () => {
                   fontSize: { xs: "24px", sm: "28px", md: "28px", lg: "28px" },
                 }}
               >
-                My Subscriptions
+                {language === "en" ? "My Subscriptions" : "اشتراكاتي"}
               </Typography>
             </Box>
 
@@ -600,214 +705,238 @@ const MySubscriptions = () => {
                 width: "100%",
               }}
             >
-              {[...Array(6)].map((_, index) => (
-                <Card
-                  key={index}
-                  sx={{
-                    width: {
-                      xs: "90%",
-                      sm: "40%",
-                      lg: "30%",
-                    },
-                    height: "auto",
-                    marginBottom: 2,
-                    borderRadius: 2,
-                    boxShadow: "none",
-                  }}
-                >
-                  {/* Image Section */}
-                  <Box
-                    sx={{
-                      position: "relative",
-                      p: "10px",
-                      borderRadius: "15px",
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      alt="Plan Image"
-                      height="140"
-                      image="/Banner.png"
-                    />
-                    {/* Top Left Typo */}
-                    <Typography
+              {filteredPlans?.map((plan, index) => {
+                if (plan?.order_details?.length > 0) {
+                  return (
+                    <Card
+                      key={index}
                       sx={{
-                        position: "absolute",
-                        top: 20,
-                        left: 22,
-                        backgroundColor: "#D92531",
-                        color: "#fff",
-                        padding: "2px 8px",
-                        borderRadius: "6px",
-                        fontSize: "0.9rem",
+                        width: {
+                          xs: "90%",
+                          sm: "40%",
+                          lg: "30%",
+                        },
+                        height: "auto",
+                        marginBottom: 2,
+                        borderRadius: 2,
+                        boxShadow: "none",
                       }}
                     >
-                      Weight Maintenance Plan
-                    </Typography>
-                  </Box>
-
-                  {/* Content Section */}
-                  <CardContent sx={{ padding: "8px 10px" }}>
-                    {/* Title and Prices */}
-                    <Box
-                      sx={{
-                        textAlign: "left",
-                        mb: 1,
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontWeight: "bold",
-                          fontSize: {
-                            lg: "22px",
-                            md: "22px",
-                            sm: "18px",
-                            xs: "16px",
-                          },
-                        }}
-                      >
-                        Title Of The Plan
-                      </Typography>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontWeight: "bold",
-                          fontSize: "14px",
-                          color: "#F8CD0F",
-                        }}
-                      >
-                        Inactive
-                      </Typography>
-                    </Box>
-
-                    {/* Features Section */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        mb: 1,
-                        padding: "4px",
-                        borderRadius: 1,
-                        color: "#515151",
-                        fontFamily: "Work Sans",
-                        gap: "1rem",
-                      }}
-                    >
+                      {/* Image Section */}
                       <Box
                         sx={{
-                          display: "flex",
-                          gap: "1rem",
-                          justifyContent: "space-between",
-                          width: "100%",
+                          position: "relative",
+                          p: "10px",
+                          borderRadius: "15px",
                         }}
                       >
-                        {/* Column 1 */}
-                        <Box
+                        <CardMedia
+                          component="img"
+                          alt="Plan Image"
+                          height="140"
+                          image={plan?.plan_details[0]?.plan_image}
+                        />
+                        {/* Top Left Typo */}
+                        <Typography
                           sx={{
-                            display: "grid",
-                            gap: 0.5,
+                            position: "absolute",
+                            top: 20,
+                            left: 22,
+                            backgroundColor: "#D92531",
+                            color: "#fff",
+                            padding: "2px 8px",
+                            borderRadius: "6px",
+                            fontSize: "0.9rem",
                           }}
                         >
-                          {["6 Days", "2 Meals"].map(
-                            (feature, featureIndex) => (
-                              <Box
-                                key={featureIndex}
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                {/* Render the icon */}
-                                <Box
-                                  sx={{
-                                    width: "20px",
-                                    height: "20px",
-                                    marginRight: "8px",
-                                  }}
-                                  dangerouslySetInnerHTML={{
-                                    __html: icons[featureIndex],
-                                  }}
-                                />
-                                {/* Render the text */}
-                                <Typography
-                                  variant="body2"
-                                  sx={{ fontSize: "0.7rem" }}
-                                >
-                                  {feature}
-                                </Typography>
-                              </Box>
-                            )
-                          )}
-                        </Box>
-
-                        {/* Column 2 */}
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gap: 0.5,
-                          }}
-                        >
-                          {["Buy 31/5/23", "Buy 31/5/23"].map(
-                            (feature, featureIndex) => (
-                              <Box
-                                key={featureIndex + 2}
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifySelf: "right",
-                                }}
-                              >
-                                {/* Render the icon */}
-                                <Box
-                                  sx={{
-                                    width: "20px",
-                                    height: "20px",
-                                    marginRight: "8px",
-                                  }}
-                                  dangerouslySetInnerHTML={{
-                                    __html: icons[featureIndex + 2],
-                                  }}
-                                />
-                                {/* Render the text */}
-                                <Typography
-                                  variant="body2"
-                                  sx={{ fontSize: "0.7rem" }}
-                                >
-                                  {feature}
-                                </Typography>
-                              </Box>
-                            )
-                          )}
-                        </Box>
+                          {plan?.plan_details[0]?.subscription_cat_name}
+                        </Typography>
                       </Box>
-                    </Box>
 
-                    {/* Button Section */}
-                    <Box sx={{ textAlign: "center", mt: 1 }}>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          bgcolor: "#D92531",
-                          color: "#fff",
-                          borderRadius: 2,
-                          width: "100%",
-                          py: 0.5,
-                          fontWeight: "bold",
-                          fontSize: "0.8rem",
-                          height: "2.8rem",
-                          boxShadow: "none",
-                        }}
-                        onClick={() => navigate("/downloadapp")}
-                      >
-                        Schedule Now
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))}
+                      {/* Content Section */}
+                      <CardContent sx={{ padding: "8px 10px" }}>
+                        {/* Title and Prices */}
+                        <Box
+                          sx={{
+                            textAlign: "left",
+                            mb: 1,
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontSize: {
+                                lg: "14px",
+                                md: "12px",
+                                sm: "12px",
+                                xs: "12px",
+                              },
+                            }}
+                          >
+                            {plan?.plan_details[0]?.title}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontSize: "12px",
+                              color: "#F8CD0F",
+                            }}
+                          >
+                            {plan?.order_details[0]?.status ===
+                            "waiting_for_payment"
+                              ? "Payment Pending"
+                              : plan?.order_details[0]?.status}
+                          </Typography>
+                        </Box>
+
+                        {/* Features Section */}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            mb: 1,
+                            padding: "4px",
+                            borderRadius: 1,
+                            color: "#515151",
+                            fontFamily: "Work Sans",
+                            gap: "1rem",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "1rem",
+                              justifyContent: "space-between",
+                              width: "100%",
+                            }}
+                          >
+                            {/* Column 1 */}
+                            <Box
+                              sx={{
+                                display: "grid",
+                                gap: 0.5,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    width: "20px",
+                                    height: "20px",
+                                    marginRight: "8px",
+                                  }}
+                                  dangerouslySetInnerHTML={{
+                                    __html: icons[0],
+                                  }}
+                                />
+                                <Typography
+                                  variant="body2"
+                                  sx={{ fontSize: "0.7rem" }}
+                                >
+                                  {plan?.plan_details[0]?.total_days} days
+                                </Typography>
+                              </Box>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    width: "20px",
+                                    height: "20px",
+                                    marginRight: "8px",
+                                  }}
+                                  dangerouslySetInnerHTML={{
+                                    __html: icons[1],
+                                  }}
+                                />
+                                <Typography
+                                  variant="body2"
+                                  sx={{ fontSize: "0.7rem" }}
+                                >
+                                  {
+                                    plan?.plan_details[0]?.no_of_items?.items[0]
+                                      .value
+                                  }{" "}
+                                  days
+                                </Typography>
+                              </Box>
+                            </Box>
+
+                            {/* Column 2 */}
+                            <Box
+                              sx={{
+                                display: "grid",
+                                gap: 0.5,
+                              }}
+                            >
+                              {["Buy 31/5/23", "Buy 31/5/23"].map(
+                                (feature, featureIndex) => (
+                                  <Box
+                                    key={featureIndex + 2}
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifySelf: "right",
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        width: "20px",
+                                        height: "20px",
+                                        marginRight: "8px",
+                                      }}
+                                      dangerouslySetInnerHTML={{
+                                        __html: icons[featureIndex + 2],
+                                      }}
+                                    />
+                                    <Typography
+                                      variant="body2"
+                                      sx={{ fontSize: "0.7rem" }}
+                                    >
+                                      {feature}
+                                    </Typography>
+                                  </Box>
+                                )
+                              )}
+                            </Box>
+                          </Box>
+                        </Box>
+
+                        {/* Button Section */}
+                        <Box sx={{ textAlign: "center", mt: 1 }}>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              bgcolor: "#D92531",
+                              color: "#fff",
+                              borderRadius: 2,
+                              width: "100%",
+                              py: 0.5,
+                              fontWeight: "bold",
+                              fontSize: "0.8rem",
+                              height: "2.8rem",
+                              boxShadow: "none",
+                            }}
+                            onClick={() => navigate("/downloadapp")}
+                          >
+                            Schedule Now
+                          </Button>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+                return null; // If order_details is empty, do not render anything
+              })}
             </Box>
           </Box>
         </Box>

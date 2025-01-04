@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,13 +15,22 @@ import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
 import useAppStore from "../../store/store";
 import Logo from "../../../public/logocaptainchef.png";
+import { ShoppingCart } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { authenticated, language, setLanguage } = useAppStore();
   const location = useLocation();
-  // const [language, setLanguage] = useState("");
   const [flag, setFlag] = useState("https://flagcdn.com/w40/us.png");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const handleLogout = () => {
+    // Your logout logic here
+    console.log("Logged out!");
+  };
 
   //   Flag Change
   const handleChange = (event) => {
@@ -206,6 +215,7 @@ const Navbar = () => {
                 width: { xs: "56px", sm: "40px", md: "130px", lg: "197px" },
                 boxShadow: "none",
               }}
+              onClick={() => navigate("/downloadapp")}
             >
               Download App
             </Button>
@@ -214,16 +224,84 @@ const Navbar = () => {
             {authenticated && (
               <Box
                 sx={{
+                  position: "relative",
+                }}
+              >
+                <Box
+                  onClick={() => setMenuOpen((prev) => !prev)} // Toggles the dropdown
+                  sx={{
+                    width: "56px",
+                    height: "56px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "20%",
+                    backgroundColor: "green",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Person2OutlinedIcon sx={{ color: "white" }} />
+                </Box>
+
+                {/* Dropdown */}
+                {menuOpen && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "60px",
+                      right: 0,
+                      backgroundColor: "#fff",
+                      border: "1px solid #ddd",
+                      borderRadius: "8px",
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      padding: "8px",
+                      zIndex: 1000,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                      onClick={handleLogout} // Add your logout function here
+                    >
+                      <LogoutIcon sx={{ color: "red", marginRight: "8px" }} />
+                      <Typography
+                        sx={{
+                          color: "red",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Logout
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            )}
+
+            {authenticated && (
+              <Box
+                onClick={() => navigate("/cart")}
+                sx={{
                   width: "56px",
                   height: "56px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: "20%",
-                  backgroundColor: "green",
+                  backgroundColor: "grey",
+                  cursor: "pointer",
                 }}
               >
-                <Person2OutlinedIcon sx={{ color: "white" }} />
+                <ShoppingCart sx={{ color: "white" }} />
               </Box>
             )}
           </Box>
@@ -238,6 +316,7 @@ const Navbar = () => {
               borderRadius: "12px",
               width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
             }}
+            onClick={() => navigate("/downloadapp")}
           >
             Download App
           </Button>
@@ -281,32 +360,43 @@ const Navbar = () => {
             padding: 2,
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
-            justifyContent: "start",
             gap: 2,
             height: "100%",
           }}
         >
-          {/* Account Icon */}
-          {authenticated && (
-            <Box
-              sx={{
-                width: "56px",
-                height: "56px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "20%",
-                backgroundColor: "green",
-              }}
-            >
-              <Person2OutlinedIcon
-                sx={{ color: "white", alignSelf: "center" }}
-              />
-            </Box>
-          )}
-
-          {/* Pages */}
+          <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
+            {authenticated && (
+              <Box
+                sx={{
+                  width: "56px",
+                  height: "56px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "20%",
+                  backgroundColor: "green",
+                }}
+              >
+                <Person2OutlinedIcon sx={{ color: "white" }} />
+              </Box>
+            )}
+            {authenticated && (
+              <Box
+                sx={{
+                  width: "56px",
+                  height: "56px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "20%",
+                  backgroundColor: "grey",
+                  cursor: "pointer",
+                }}
+              >
+                <ShoppingCart sx={{ color: "white" }} />
+              </Box>
+            )}
+          </Box>
           <Link to="/">
             <Button
               sx={{
@@ -320,7 +410,6 @@ const Navbar = () => {
               Home
             </Button>
           </Link>
-
           <Link to="/features">
             <Button
               sx={{
@@ -335,7 +424,6 @@ const Navbar = () => {
               Feature
             </Button>
           </Link>
-
           <Link to="/subscriptions">
             <Button
               sx={{
@@ -352,8 +440,6 @@ const Navbar = () => {
               Subscriptions
             </Button>
           </Link>
-
-          {/* Language Selector */}
           <FormControl
             sx={{
               minWidth: "150px",
@@ -432,12 +518,34 @@ const Navbar = () => {
               display: { xs: "flex", sm: "none", md: "flex", lg: "flex" },
               height: "56px",
               borderRadius: "12px",
-              width: { xs: "206px", sm: "206px", md: "206px", lg: "206px" },
+              width: "206px",
               boxShadow: "none",
             }}
           >
             Download App
           </Button>
+          <Box sx={{ flexGrow: 1 }} />
+          {/* Logout Section */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              padding: "16px 0",
+              borderTop: "1px solid #ccc",
+              direction: language === "ar" ? "rtl" : "ltr",
+            }}
+          >
+            <LogoutIcon sx={{ color: "#CE2729", cursor: "pointer" }} />
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#656565",
+              }}
+            >
+              {language === "ar" ? "تسجيل الخروج" : "Logout"}
+            </Typography>
+          </Box>
         </Box>
       </Drawer>
     </AppBar>

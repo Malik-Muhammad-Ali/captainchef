@@ -1,8 +1,11 @@
 import React from "react";
 import { Box } from "@mui/material";
 import "./circularAvt.css";
+import { useNavigate } from "react-router-dom";
 
 const CircularAvt = () => {
+
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -21,7 +24,9 @@ const CircularAvt = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "transparent",
+        cursor: "pointer",
       }}
+      onClick={() => navigate('/mysubscriptions')}
     >
       {/* Rings Around the Circle */}
       <Box className="ring"></Box>

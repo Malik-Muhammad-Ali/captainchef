@@ -11,28 +11,41 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 const OrderModal = ({ modalOpen, setModalOpen }) => {
   const navigate = useNavigate();
-  const [selectedCity, setSelectedCity] = useState(null);
+  const { language, finalDeliveryType, setFinalDeliveryType } = useAppStore();
+  const isArabic = language === "ar";
   const isMobile = useMediaQuery("(max-width:600px)");
-  const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
+
+  // States
+  const [deliveryType, setDeliveryType] = useState(null);
+
+  const arr = [
+    { key: "pickup", label: isArabic ? "الاستلام" : "Pickup" },
+    { key: "homeDelivery", label: isArabic ? "التوصيل إلى المنزل" : "Home Delivery" },
+  ];
+
+  const handleDeliveryType = (event) => {
+    setDeliveryType(event.target.value);
   };
 
   const handleSubmit = () => {
-    if (selectedCity) {
+    if (deliveryType) {
       setModalOpen(false);
-      if (selectedCity === "Home Delivery") {
+      if (deliveryType === "homeDelivery") {
+        setFinalDeliveryType("delivery");
         navigate("/deliveryaddress");
-      } else if (selectedCity === "Pickup") {
+      } else if (deliveryType === "pickup") {
+        setFinalDeliveryType("pickup");
         navigate("/pickupaddress");
       }
     }
   };
+
   const modalProps = {
-    disablePortal: modalOpen, // Prevent internal layering
-    // hideBackdrop: true,  // Remove the default backdrop
+    disablePortal: modalOpen,
   };
 
   return (
@@ -40,21 +53,20 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
       <motion.div
         initial={{
           opacity: 0,
-          y: isMobile ? "100%" : -20, // Start from the bottom on mobile, slightly above on web/tablet
+          y: isMobile ? "100%" : -20,
         }}
         animate={{
           opacity: 1,
-          y: isMobile ? 0 : 0, // Slide to 0 (bottom of screen for mobile, center for web/tablet)
+          y: isMobile ? 0 : 0,
         }}
         exit={{
           opacity: 0,
-          y: isMobile ? "100%" : -20, // Return to starting position when closing
+          y: isMobile ? "100%" : -20,
         }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
         style={{
           position: "absolute",
           width: isMobile ? "100%" : "400px",
-          // maxWidth: "400px",
           left: isMobile ? 0 : "35%",
           bottom: isMobile ? 0 : "auto",
           top: isMobile ? "auto" : "20%",
@@ -87,22 +99,23 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
               fontFamily: "work sans",
               marginBottom: 2,
               ml: 2,
+              mr: 2,
             }}
           >
-            Select Order Type
+            {isArabic ? "اختر نوع الطلب" : "Select Order Type"}
           </Typography>
 
           <RadioGroup
-            value={selectedCity}
-            onChange={handleCityChange}
+            value={deliveryType}
+            onChange={handleDeliveryType}
             sx={{
               width: "100%",
             }}
           >
-            {["Pickup", "Home Delivery"].map((city) => (
+            {arr.map(({ key, label }, index) => (
               <FormControlLabel
-                key={city}
-                value={city}
+                key={key}
+                value={key}
                 control={
                   <Radio
                     sx={{
@@ -115,20 +128,19 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
                 }
                 label={
                   <span style={{ display: "flex", alignItems: "center" }}>
-                    {city}
-                    {city === "Home Delivery" &&
-                      selectedCity === "Home Delivery" && (
-                        <span
-                          style={{
-                            marginLeft: "8px",
-                            color: "#D92531",
-                            fontSize: "14px",
-                            fontFamily: "work sans",
-                          }}
-                        >
-                          (Charges apply)
-                        </span>
-                      )}
+                    {label}
+                    {key === "homeDelivery" && deliveryType === "homeDelivery" && (
+                      <span
+                        style={{
+                          marginLeft: "8px",
+                          color: "#D92531",
+                          fontSize: "12px",
+                          fontFamily: "work sans",
+                        }}
+                      >
+                        {isArabic ? "(تنطبق الرسوم)" : "(Charges apply)"}
+                      </span>
+                    )}
                   </span>
                 }
                 sx={{
@@ -139,9 +151,9 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
                   marginBottom: "8px",
                   borderRadius: "8px",
                   backgroundColor:
-                    selectedCity === city ? "#FAE9EA" : "#F8F8F8",
+                  deliveryType === key ? "#FAE9EA" : "#F8F8F8",
                   border:
-                    selectedCity === city
+                  deliveryType === key
                       ? "2px solid #D92531"
                       : "1px solid #e0e0e0",
                   fontSize: "18px",
@@ -155,18 +167,19 @@ const OrderModal = ({ modalOpen, setModalOpen }) => {
           <Button
             variant="contained"
             onClick={handleSubmit}
-            disabled={!selectedCity}
+            disabled={!deliveryType}
             sx={{
               width: "91%",
               mt: 2,
               ml: 2,
+              mr: 2,
               height: "48px",
               borderRadius: "12px",
               bgcolor: "#D92531",
               "&:hover": { bgcolor: "#D92550" },
             }}
           >
-            Next
+            {isArabic ? "التالي" : "Next"}
           </Button>
         </Box>
       </motion.div>

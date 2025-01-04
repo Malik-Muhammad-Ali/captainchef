@@ -1,14 +1,11 @@
 import Typography from "@mui/material/Typography";
-import useAppStore from "../../store/store";
 import { Box } from "@mui/material";
+import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
   const { currentPlan, language, city } = useAppStore();
-  console.log(currentPlan.city);
-  const deliveryCharges =
-    currentPlan?.city.find((currentCity) => currentCity.city === city)
-      ?.delivery_charges || currentPlan?.city[0]?.delivery_charges;
 
+  // Icons
   const iconsMap = {
     meals: (
       <svg
@@ -107,10 +104,18 @@ const PlanDetailsCard = () => {
     ),
   };
 
+  // Calculate Delivery Charges
+  const deliveryCharges =
+    currentPlan?.city.find((currentCity) => currentCity.city === city)
+      ?.delivery_charges || currentPlan?.city[0]?.delivery_charges;
+
+  // Add Icons in the Plan
   const updatedItems = currentPlan?.no_of_items.items.map((item) => ({
     ...item,
     icon: iconsMap[item.name] || "❓",
   }));
+
+  // Component
   return (
     <>
       <div className="leftCard">
@@ -363,7 +368,9 @@ const PlanDetailsCard = () => {
           {/* Lower */}
           <div>
             <div>
-              <Typography variant="h6">Calories</Typography>
+              <Typography variant="h6">
+                {language === "en" ? "Calories" : "السعرات الحرارية"}
+              </Typography>
             </div>
             <div className="calInfo">
               <div style={{ textAlign: "center" }}>

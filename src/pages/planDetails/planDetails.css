@@ -344,9 +344,9 @@
     font-size: 15px;
   }
   .mealCardImg {
-    width: 80%;
+    /* width: 80%;
     height: 80%;
-    object-fit: cover;
+    object-fit: cover; */
   }
   .infoTagImg {
     top: 0px;

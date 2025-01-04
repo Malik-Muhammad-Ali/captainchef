@@ -1,11 +1,21 @@
-import { Box, Button, Grid2, TextField, Typography, IconButton } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Grid2,
+  TextField,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
+import useAppStore from "../../store/store";
 
 const RegeneratePassword = () => {
   const navigate = useNavigate();
+  const { language } = useAppStore();
+  const isArabic = language == "ar";
+
   return (
     <>
       <Grid2
@@ -14,6 +24,7 @@ const RegeneratePassword = () => {
           display: "flex",
           flexDirection: "column",
           height: "100%",
+          direction: isArabic ? "rtl" : "ltr", // Set text direction based on language
         }}
       >
         <IconButton
@@ -29,9 +40,16 @@ const RegeneratePassword = () => {
             transition: "transform 0.2s ease, box-shadow 0.2s ease",
             cursor: "pointer",
           }}
-          onClick={() => navigate('/authentication')}
+          onClick={() => navigate("/authentication")}
         >
-          <ArrowBackIosIcon sx={{ fontSize: "24px", ml: "7px" }} />
+          <ArrowBackIosIcon
+            sx={{
+              fontSize: "24px",
+              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease-in-out",
+            }}
+          />
         </IconButton>
         <motion.div
           initial={{ x: 100, opacity: 0 }}
@@ -65,7 +83,9 @@ const RegeneratePassword = () => {
                 fontSize: { lg: "32px", md: "32px", sm: "28px", xs: "24px" },
               }}
             >
-              Regenerate Your Password
+              {isArabic
+                ? "أعد إنشاء كلمة المرور الخاصة بك"
+                : "Regenerate Your Password"}
             </Typography>
 
             {/* Description */}
@@ -78,14 +98,18 @@ const RegeneratePassword = () => {
                 fontSize: "20px",
               }}
             >
-              Your Are Verified Customer, Please Regenerate Your Password
+              {isArabic
+                ? "أنت عميل تم التحقق منه، يرجى إعادة إنشاء كلمة المرور الخاصة بك"
+                : "You Are Verified Customer, Please Regenerate Your Password"}
             </Typography>
 
             {/* Phone Number TextField */}
             <TextField
               fullWidth
-              placeholder="Enter your password here"
-              label="New Password"
+              placeholder={
+                isArabic ? "أدخل كلمة المرور هنا" : "Enter your password here"
+              }
+              label={isArabic ? "كلمة المرور الجديدة" : "New Password"}
               variant="outlined"
               InputProps={{
                 sx: {
@@ -97,7 +121,6 @@ const RegeneratePassword = () => {
               InputLabelProps={{
                 shrink: true,
                 sx: {
-                  // color: "#444",
                   fontWeight: "500",
                 },
               }}
@@ -114,8 +137,12 @@ const RegeneratePassword = () => {
             />
             <TextField
               fullWidth
-              placeholder="Re enter your password here"
-              label="Confirm Password"
+              placeholder={
+                isArabic
+                  ? "أعد إدخال كلمة المرور هنا"
+                  : "Re enter your password here"
+              }
+              label={isArabic ? "تأكيد كلمة المرور" : "Confirm Password"}
               variant="outlined"
               InputProps={{
                 sx: {
@@ -154,11 +181,11 @@ const RegeneratePassword = () => {
                 width: { xs: "100%", sm: "360px", md: "512px" },
                 height: { xs: "56px", sm: "56px", md: "56px" },
                 cursor: "pointer",
-                boxShadow: 'none'
+                boxShadow: "none",
               }}
-              onClick={() => navigate('/authentication')}
+              onClick={() => navigate("/authentication")}
             >
-              Submit
+              {isArabic ? "إرسال" : "Submit"}
             </Button>
           </Box>
         </motion.div>

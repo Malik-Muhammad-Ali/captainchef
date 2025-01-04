@@ -3,8 +3,11 @@ import React from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 const BarCode = () => {
+  const { language } = useAppStore();
+  const isArabic = language === "ar";
   const navigate = useNavigate();
   return (
     <>
@@ -14,6 +17,7 @@ const BarCode = () => {
           display: "flex",
           flexDirection: "column",
           height: "100vh",
+          direction: isArabic ? "rtl" : "ltr", // Set direction conditionally
         }}
       >
         <IconButton
@@ -22,15 +26,22 @@ const BarCode = () => {
             height: { xs: "48px", sm: "56px" },
             display: "flex",
             alignItems: "center",
-            m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
             justifyContent: "center",
+            m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
             borderRadius: "20%",
             backgroundColor: "#fff",
-            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+            cursor: "pointer",
           }}
           onClick={() => navigate(-1)}
         >
-          <ArrowBackIosIcon sx={{ fontSize: "24px", ml: "7px" }} />
+          <ArrowBackIosIcon
+            sx={{
+              fontSize: "24px",
+              ml: language === "ar" ? "-7px" : "10px", // Adjust margin conditionally
+              transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease-in-out",
+            }}
+          />
         </IconButton>
 
         <motion.div
@@ -52,7 +63,7 @@ const BarCode = () => {
             <Box
               component="img"
               src="/barcode.png"
-              alt="Authentication Illustration"
+              alt={isArabic ? "توضيح المصادقة" : "Authentication Illustration"}
               sx={{
                 width: { xs: "60%", sm: "50%", md: "50%", lg: "420px" },
                 height: "auto",
@@ -69,7 +80,9 @@ const BarCode = () => {
                 fontSize: { lg: "32px", md: "32px", sm: "28px", xs: "20px" },
               }}
             >
-              Download Mobile App Now
+              {isArabic
+                ? "قم بتنزيل تطبيق الهاتف الآن"
+                : "Download Mobile App Now"}
             </Typography>
 
             {/* Description */}
@@ -83,8 +96,9 @@ const BarCode = () => {
                 fontSize: "20px",
               }}
             >
-              For Activation, Download the app Now. Go to my subscriptions and
-              schedule it.
+              {isArabic
+                ? "للتفعيل، قم بتنزيل التطبيق الآن. اذهب إلى اشتراكاتي وجدولها."
+                : "For Activation, Download the app Now. Go to my subscriptions and schedule it."}
             </Typography>
           </Box>
         </motion.div>

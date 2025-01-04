@@ -2,7 +2,7 @@ import React from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import NutritionalProgress from "./NutritionalProgress";
 
-const DataChart = () => {
+const DataChart = ({modalData}) => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -16,10 +16,10 @@ const DataChart = () => {
   else if (isLg) size = 100;
 
   const stats = [
-    { value: 80, label: "Protein", color: "green", maxValue: 100 },
-    { value: 50, label: "Carbs", color: "gold", maxValue: 150 },
-    { value: 586, label: "Fat", color: "red", maxValue: 1000 },
-    { value: 706, label: "Calories", color: "blue", maxValue: 2000 },
+    { value: modalData.protein, label: "Protein", color: "green", maxValue: 100 },
+    { value: modalData.carbs, label: "Carbs", color: "gold", maxValue: 100 },
+    { value: modalData.fats, label: "Fat", color: "red", maxValue: 100 },
+    { value: modalData.calories, label: "Calories", color: "blue", maxValue: 1000 },
   ];
 
   return (

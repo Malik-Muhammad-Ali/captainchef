@@ -3,10 +3,10 @@ import axios from "axios";
 const userSlice = (set) => ({
   user: null,
   authenticated: false,
-  planDetailUrl: null,
+  planDetailUrl: "/subscriptions",
   loginUser: async (email, password) => {
     const response = await axios.post(
-      `https://appv2.captainchef.net/AppV2/public/contacts/login?username=${email}&password=${password}`
+      `https://portal.captainchef.net/public/contacts/login?username=${email}&password=${password}`
     );
     console.log("Api Hit");
     if (response.data.status === "success") {
@@ -30,12 +30,12 @@ const userSlice = (set) => ({
     const countryCode = createUser.mobileNumber.substring(0, 3);
     if (countryCode !== "966") {
       return {
-        message: "Enter Correct Number with Country Code 966",
+        message: "Enter Correct Number",
         status: false,
       };
     }
     const response = await axios.post(
-      `https://appv2.captainchef.net/AppV2/public/api/ver2/contact/register?business_id=100&first_name=${createUser.firstName}&last_name=${createUser.lastName}&email=${createUser.email}&mobile=${createUser.mobileNumber}&password=${createUser.password}&country_code=${countryCode}`
+      `https://portal.captainchef.net/public/api/ver2/contact/register?business_id=100&first_name=${createUser.firstName}&last_name=${createUser.lastName}&email=${createUser.email}&mobile=${createUser.mobileNumber}&password=${createUser.password}&country_code=${countryCode}`
     );
     console.log(response);
     return {

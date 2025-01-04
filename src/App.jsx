@@ -24,11 +24,14 @@ import Checkout from "./pages/checkout/Checkout";
 import PickupAddress from "./pages/pickupAddress/PickupAddress";
 import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
 import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
+import MyCart from "./components/mycart/MyCart";
 
 // Components
 import Navbar from "./components/navbar/Navbar";
 import CityModal from "./components/cityModal/CityModal";
-import MyCart from "./components/mycart/MyCart";
+import AddDeliveryAddress from "./pages/deliveryAddress/AddDeliveryAddress";
+import PaymentModal from "./components/paymentModal/PaymentModal";
+import ErrorModal from "./components/errorModal/ErrorModal";
 
 // Create a custom theme
 const theme = createTheme({
@@ -205,6 +208,19 @@ const AnimatedRoutes = () => {
           }
         />
         <Route
+          path="/cart"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <MyCart />
+            </motion.div>
+          }
+        />
+        <Route
           path="/checkout"
           element={
             <motion.div
@@ -266,6 +282,45 @@ const AnimatedRoutes = () => {
               exit="exit"
             >
               <MyCart />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/addDeliveryAddress"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <AddDeliveryAddress />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <PaymentModal />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/error"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <ErrorModal />
             </motion.div>
           }
         />

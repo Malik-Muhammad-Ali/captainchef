@@ -18,14 +18,14 @@ export default function PlansCategoryCard({color , title , img , id , language }
     <Card
       sx={{
         maxWidth: {
-          xs: 147,
+          xs: 140,
           sm: 180,
           md: 200,
           lg: 250,
           xl: 320,
         },
         minWidth: {
-          xs: 135,
+          xs: 140,
           sm: 180,
           md: 200,
           lg: 250,

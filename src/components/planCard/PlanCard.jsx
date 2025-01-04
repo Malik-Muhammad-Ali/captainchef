@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import useAppStore from "../../store/store";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const getFilteredItems = (items) => {
   return items.filter((item) => Number(item.value) > 0);
@@ -18,22 +19,27 @@ const PlanCard = ({
   plan,
   planID,
   days,
-  items,
-  delivery,
   heading,
   language,
   freePlans,
   title,
 }) => {
-  const { setCurrentPlan, city } = useAppStore();
   const navigate = useNavigate();
   const { categoryId } = useParams();
+  const { setCurrentPlan, city, addToCart, user, setPlanAvailableDays } =
+    useAppStore();
   const isArabic = language === "ar";
 
+  // Calculate delivery charges
   const deliveryCharges =
     plan?.city.find((currentCity) => currentCity.city === city)
       ?.delivery_charges || plan?.city[0]?.delivery_charges;
 
+  // Set plan available days
+  
+  // setPlanAvailableDays(availableDays)
+
+  // Icons
   const iconsMap = {
     meals: (
       <svg
@@ -132,16 +138,36 @@ const PlanCard = ({
     ),
   };
 
+  // Cart Items
+  const cartItems = {
+    user_id: user?.id,
+    cart_details: [
+      {
+        plan_id: planID,
+        qty: 1,
+      },
+    ],
+  };
+
+  // Add to Cart Function
+  const handleAddToCart = () => {
+    addToCart(cartItems);
+  };
+
+  // Update Items with Icons
   const updatedItems = plan.no_of_items.items.map((item) => ({
     ...item,
     icon: iconsMap[item.name] || "❓",
   }));
 
+  // Handle Submit Function
   const handleSubmit = () => {
     setCurrentPlan(plan);
+    setPlanAvailableDays(plan.plan_available_days);
     navigate(`/subscriptions/category/${categoryId}/plans/${planID}`);
   };
 
+  // Component
   return (
     <Grid2
       sx={{
@@ -252,25 +278,39 @@ const PlanCard = ({
             </Typography>
 
             <Box sx={{ display: "flex", gap: "8px" }}>
-              <Typography
-                variant="body2"
-                sx={{
-                  textDecoration: "line-through",
-                  color: "gray",
-                  fontSize: "0.8rem",
-                }}
-              >
-                {plan.basic_amount}
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  color: "#D92531",
-                  fontSize: "1rem",
-                }}
-              >
-                {plan.basic_amount} SR
-              </Typography>
+              {plan.discount_offer_only === "no" ? (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "gray",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {plan.basic_amount} SR
+                </Typography>
+              ) : (
+                <>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      textDecoration: "line-through",
+                      color: "gray",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {plan.basic_amount}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#D92531",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {plan.discounted_amount} SR
+                  </Typography>
+                </>
+              )}
             </Box>
           </Box>
 
@@ -478,14 +518,23 @@ const PlanCard = ({
           </Box>
 
           {/* Button Section */}
-          <Box sx={{ textAlign: "center", mt: 1 }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              mt: 1,
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 1,
+              width: "100%",
+            }}
+          >
             <Button
               variant="contained"
               sx={{
                 bgcolor: "#D92531",
                 color: "#fff",
                 borderRadius: 3,
-                width: "100%",
+                width: "100%", // Adjusted width
                 py: 0.5,
                 fontSize: "0.8rem",
                 height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
@@ -496,6 +545,23 @@ const PlanCard = ({
             >
               {isArabic ? "عرض التفاصيل" : "See Details"}
             </Button>
+
+            {/* <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#3C3D37",
+                color: "#fff",
+                borderRadius: 3,
+                width: { sm: "20%", md: "10%", lg: "20%", xs: "20%" }, // Further reduced width for the cart button
+                py: 0.5,
+                height: { lg: "40px", md: "40px", sm: "50px", xs: "50px" },
+                boxShadow: "none",
+                minWidth: "40px", // Ensures it doesn't shrink too much
+              }}
+              onClick={() => handleAddToCart()}
+            >
+              <ShoppingCartIcon sx={{ fontSize: "1.2rem" }} />
+            </Button> */}
           </Box>
         </CardContent>
       </Card>

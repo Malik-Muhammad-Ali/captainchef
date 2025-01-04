@@ -2,53 +2,20 @@ import React, { useState } from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import useAppStore from "../../store/store";
 
-const CheckoutRightComponent = ({ couponData }) => {
+const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, subTotal }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  // console.log(discountedCart)
 
   const discountType = couponData?.data?.discount_type || "";
-  const discount = couponData?.data?.discount || 0;
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
-  const cart = [
-    {
-      planName: "2 Meals",
-      planPrice: 500,
-      deliveryCharges: 250,
-    },
-    {
-      planName: "3 Meals",
-      planPrice: 700,
-      deliveryCharges: 350,
-    },
-  ];
-
-  // Calculate the discounted price for each plan
-  const discountedCart = cart.map((item) => {
-    let discountedPrice = item.planPrice;
-    if (discountType === "percent") {
-      discountedPrice = item.planPrice - (item.planPrice * discount) / 100;
-    } else if (discountType === "flat") {
-      discountedPrice = item.planPrice - discount;
-    }
-    return {
-      ...item,
-      discountedPrice: Math.max(discountedPrice, 0), // Ensure no negative prices
-    };
-  });
-
-  // Calculate the total price with discounts applied
-  const totalPrice = discountedCart.reduce(
-    (total, item) => total + item.discountedPrice + item.deliveryCharges,
-    0
-  );
-
-  // VAT calculation
-  const VAT = 0.15 * totalPrice;
+  const { language } = useAppStore();
+  const isArabic = language == "ar";
 
   return (
     <Paper
@@ -68,18 +35,14 @@ const CheckoutRightComponent = ({ couponData }) => {
           height: { lg: "48px", sm: "24px", md: "48px", xs: "" },
           display: "flex",
           justifyContent: "space-between",
-          mb: "16px",
+          mb: { xs: "50px", sm: "20px", md: "0px", lg: "0px" },
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "20px",
-            fontWeight: "600",
-          }}
-        >
-          Order Summary
+        <Typography sx={{ fontSize: "20px", fontWeight: "600" }}>
+          {isArabic ? "ملخص الطلب" : "Order Summary"}
         </Typography>
-        <Box onClick={toggleCollapse} sx={{ cursor: "pointer", pl: "40px" }}>
+
+        <Box onClick={toggleCollapse} sx={{ cursor: "pointer", pl: "12px" }}>
           {isCollapsed ? (
             <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
           ) : (
@@ -102,17 +65,21 @@ const CheckoutRightComponent = ({ couponData }) => {
               sx={{
                 fontSize: "18px",
                 fontWeight: "500",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              Items
+              {isArabic ? "العناصر" : "Items"}
             </Typography>
             <Typography
               sx={{
                 fontSize: "18px",
                 fontWeight: "500",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              Price
+              {isArabic ? "السعر" : "Price"}
             </Typography>
           </Box>
           {discountedCart.map((item, index) => {
@@ -132,7 +99,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                       fontWeight: "400",
                     }}
                   >
-                    {item.planName}
+                    {isArabic ? item.planName_ar : item.planName}
                   </Typography>
                   <Typography
                     sx={{
@@ -170,7 +137,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                       fontWeight: "400",
                     }}
                   >
-                    Delivery Charges
+                    {isArabic ? "رسوم التوصيل" : "Delivery Charges"}
                   </Typography>
                   <Typography
                     sx={{
@@ -184,9 +151,9 @@ const CheckoutRightComponent = ({ couponData }) => {
                         marginRight: discountType ? "6px" : "0px",
                       }}
                     >
-                      {item.deliveryCharges} SR
+                      {item.delivery_charges} SR
                     </span>
-                    {removeDelivery === 'yes' && (
+                    {removeDelivery === "yes" && (
                       <span style={{ color: "green", marginLeft: "8px" }}>
                         0 SR
                       </span>
@@ -218,7 +185,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                 fontWeight: "400",
               }}
             >
-              Total
+              {isArabic ? "المجموع": "Total"}
             </Typography>
             <Typography
               sx={{
@@ -242,7 +209,7 @@ const CheckoutRightComponent = ({ couponData }) => {
                 fontWeight: "400",
               }}
             >
-              VAT(15%)
+              {isArabic ? "ضريبة القيمة المضافة (%15)" : "VAT(15%)"}
             </Typography>
             <Typography
               sx={{
@@ -274,18 +241,22 @@ const CheckoutRightComponent = ({ couponData }) => {
               sx={{
                 fontSize: "20px",
                 fontWeight: "600",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              Subtotal
+              {isArabic ? "المجموع الفرعي" : "Subtotal"}
             </Typography>
             <Typography
               sx={{
                 fontSize: "20px",
                 fontWeight: "600",
                 color: "red",
+                direction: isArabic ? "rtl" : "ltr",
+                textAlign: isArabic ? "right" : "left",
               }}
             >
-              {(totalPrice + VAT).toFixed(2)} SAR
+              {subTotal} SAR
             </Typography>
           </Box>
         </>

@@ -6,11 +6,10 @@ const subscriptionCategories =(set) =>({
     error:null,
     setCategoryId:()=>{},
     fetchCategories : async () => {
-        console.log('fetching categories');
         set({error:null});
         try {
             const response = await axios.get(
-                'https://appv2.captainchef.net/AppV2/public/get-subscription-categories'
+                'https://portal.captainchef.net/public/get-subscription-categories'
             );
             const data = response.data.data;
             set({categories: data});

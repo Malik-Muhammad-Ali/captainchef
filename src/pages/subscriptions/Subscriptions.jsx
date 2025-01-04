@@ -12,9 +12,8 @@ const Subscriptions = () => {
   const isRTL = language === "ar";
   const [loading, setLoading] = useState(true);
   const handleCityChange = () => {
-    useAppStore.setState({city: ''});
-
-  }
+    useAppStore.setState({ city: "" });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -35,6 +34,7 @@ const Subscriptions = () => {
     "#FD88BF",
   ];
 
+  // Component
   return (
     <>
       <Box
@@ -89,20 +89,33 @@ const Subscriptions = () => {
               {language === "en" ? "Plan Categories" : "أقسام الخطط "}
             </Typography>
           </Box>
-          <Typography
+          <Box
             sx={{
-              mb: {
-                xs: "25px",
-                sm: "20px",
-                md: "35px",
-              },
               display: "flex",
-              gap: "10px",
+              justifyContent: isRTL ? "flex-start" : "flex-end",
+              alignSelf: isRTL ? "flex-end" : "flex-start",
             }}
           >
-            <span>{city ? city : ''}</span>
-            <span style={{color: 'red', cursor: 'pointer'}} onClick={() => handleCityChange()}>Change City</span>
-          </Typography>
+            <Typography
+              sx={{
+                mb: {
+                  xs: "25px",
+                  sm: "20px",
+                  md: "35px",
+                },
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <span>{city ? city : ""}</span>
+              <span
+                style={{ color: "red", cursor: "pointer" }}
+                onClick={() => handleCityChange()}
+              >
+                {language === "en" ? "Change City" : "تغيير المدينة"}
+              </span>
+            </Typography>
+          </Box>
           {loading ? (
             <Loader />
           ) : (
@@ -116,8 +129,9 @@ const Subscriptions = () => {
                   sm: "620px",
                   md: "930px",
                   lg: "1180px",
-                  xl: "2000px",
+                  xl: "1640px",
                 },
+                justifyContent: "space-between",
                 direction: isRTL ? "rtl" : "ltr",
                 mb: { lg: "50px", md: "50px", sm: "30px", xs: "20px" },
               }}
@@ -156,7 +170,6 @@ const Subscriptions = () => {
           <CircularAvt />
         </Box>
       </Box>
-
     </>
   );
 };

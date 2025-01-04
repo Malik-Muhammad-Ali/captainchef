@@ -217,7 +217,7 @@ const Login = () => {
                     },
                   }}
                 />
-                <Typography
+                {/* <Typography
                   sx={{
                     alignSelf: "flex-end",
                     color: "#D92531",
@@ -227,7 +227,7 @@ const Login = () => {
                   dir={language === "ar" ? "rtl" : "ltr"}
                 >
                   {language === "en" ? "Forget Password" : "نسيت كلمة المرور"}
-                </Typography>
+                </Typography> */}
               </Box>
             </Box>
 

@@ -206,7 +206,7 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
                 disabled={selectedPayment === null ? true : false}
                 onClick={() => handleModal()}
               >
-                Pay {subTotal} Now
+                {language === 'en' ? `Pay ${subTotal} Now` : `ادفع ${subTotal} الآن` }
               </Button>
             </Box>
           </Paper>

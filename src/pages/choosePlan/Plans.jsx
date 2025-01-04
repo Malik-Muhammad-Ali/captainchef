@@ -72,7 +72,6 @@ const Plans = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              // m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
               borderRadius: "20%",
               backgroundColor: "#fff",
               cursor: "pointer",
@@ -81,7 +80,7 @@ const Plans = () => {
             <ArrowBackIosIcon
               sx={{
                 fontSize: "24px",
-                ml: language === "ar" ? "-10px" : "10px", // Adjust margin conditionally
+                ml: language === "ar" ? "-10px" : "10px",
                 transform:
                   language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
                 transition: "transform 0.3s ease-in-out",

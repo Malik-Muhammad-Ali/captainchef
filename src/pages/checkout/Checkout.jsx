@@ -51,6 +51,8 @@ const Checkout = () => {
   const [discount, setDiscount] = useState();
   const iframeRef = useRef(null);
   const intervalRef = useRef(null);
+  const [loadCount, setLoadCount] = useState(0);
+  const [noonOrderId, setNoonOrderId] = useState(null);
 
   const discountType = couponData?.data?.discount_type || "";
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
@@ -61,6 +63,7 @@ const Checkout = () => {
   // console.log(cartData[0].address.address);
   const cart = cartData.map((item) => ({
     planName: item.plan.title,
+    planName_ar: item.plan.title_ar,
     planPrice:
       item.plan.discount_offer_only === "yes"
         ? parseFloat(item.plan.discounted_amount)
@@ -80,6 +83,7 @@ const Checkout = () => {
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
   }));
+  console.log(cartData)
 
   // Calculate the discounted price for each plan
   const discountedCart = cart.map((item) => {
@@ -167,16 +171,15 @@ const Checkout = () => {
   const paymentStatusCheckFunction = async (noon_order_id) => {
     try {
       const response = await axios.get(
-        `http://localhost:6001/paymentStatusCheckAPI/${noon_order_id}`
+        `https://backend-api-captain-chef-production.up.railway.app/paymentStatusCheckAPI/${noon_order_id}`
       );
       console.log(response?.data?.result?.order?.status);
       if (response?.data?.result?.order?.status === "CAPTURED") {
         clearInterval(intervalRef);
         setPaymentResult("CAPTURED");
         navigate("/mysubscriptions");
-      }
-      if (response?.data?.result?.order?.status === "REJECTED") {
-        clearInterval(intervalRef);
+      }else{
+        // clearInterval(intervalRef);
         setPaymentResult("REJECTED");
         navigate("/mysubscriptions");
       }
@@ -189,16 +192,27 @@ const Checkout = () => {
     const { post_url, return_url, noon_order_id } = await paymentNoon(
       addedPlans,
       subTotal,
-      couponData
+      couponData,
+      user
     );
     setInternalPostUrl(post_url);
+    setNoonOrderId(noon_order_id);
     if (post_url) {
       setShowIframe(true);
     }
-    intervalRef.current = setInterval(() => {
-      paymentStatusCheckFunction(noon_order_id);
-    }, 3000);
+    // intervalRef.current = setInterval(() => {
+    //   paymentStatusCheckFunction(noon_order_id);
+    // }, 3000);
   };
+
+  const handleIframeLoad = () => {
+    setLoadCount(loadCount + 1);
+    if(loadCount > 0){
+      console.log('Redirect Now')
+      paymentStatusCheckFunction(noonOrderId);
+    }
+    console.log("Iframe loaded"+loadCount);
+  }
 
   // useEffect
   useEffect(() => {
@@ -745,6 +759,7 @@ const Checkout = () => {
             id="payment-iframe"
             src={internalPostUrl}
             title="Payment Iframe"
+            onLoad={handleIframeLoad}
             style={{ width: "100%", height: "500px", border: "none" }}
           ></iframe>
         </>

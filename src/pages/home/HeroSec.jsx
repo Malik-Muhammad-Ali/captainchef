@@ -87,7 +87,7 @@ const HeroSec = () => {
                 color: '#fff',
                 textTransform: 'none',
                 borderRadius: '8px',
-                width:{xs:"138px", sm:"200px",md:"200px"},
+                width:{xs:"140px", sm:"200px",md:"200px"},
                 height:{xs:"48px",sm:"50px",lg:"56px"},
                 fontSize:{xs:"11px",sm:"14px",md:"16px"},
                 flexGrow:1
@@ -108,7 +108,7 @@ const HeroSec = () => {
                 borderColor: '#D92531',
                 textTransform: 'none',
                 borderRadius: '8px',
-                width:{xs:"138px", sm:"200px",md:"200px"},
+                width:{xs:"140px", sm:"200px",md:"200px"},
                 height:{xs:"48px",sm:"50px",lg:"56px"},
                 fontSize:{xs:"12px",sm:"14px",md:"16px"},
               }}

@@ -33,6 +33,7 @@ const AddDeliveryAddress = () => {
   const [address, setAddress] = useState("");
   const [position, setPosition] = useState(null);
   const [isAvailable, setIsAvailable] = useState();
+  const [customText, setCustomText] = useState("");
 
   // Get the city ID
   const selectedCity = cities.find((cityName) => cityName.city_name === city);
@@ -118,6 +119,7 @@ const AddDeliveryAddress = () => {
   // handle selection
   const handleSelection = (text) => {
     setAddressType(text);
+    setCustomText(text);
     if (text === "Custom") {
       setIsTextFieldEnabled(true);
     } else {
@@ -239,10 +241,8 @@ const AddDeliveryAddress = () => {
             backgroundColor: "background.paper",
             pt: "4px",
             pb: "4px",
-            // padding: isMobile ? "24px" : "32px",
             direction: isArabic ? "rtl" : "ltr",
             width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
-            // border:"2px solid red"
           }}
         >
           <Typography
@@ -310,8 +310,6 @@ const AddDeliveryAddress = () => {
             flexDirection: "column",
             justifyContent: "center",
             width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
-            // padding: isMobile ? "24px" : "32px",
-            // border:"2px solid black",
           }}
         >
           <Typography
@@ -342,7 +340,7 @@ const AddDeliveryAddress = () => {
             }}
           >
             <Box
-              onClick={() => handleSelection("Home")}
+              onClick={() => handleSelection(language === 'en' ? "Home" : "بيت")}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -367,10 +365,10 @@ const AddDeliveryAddress = () => {
                   />
                 </svg>
               </Grid2>
-              <Typography>Home</Typography>
+              <Typography>{language === 'en' ? 'Home' : 'بيت'}</Typography>
             </Box>
             <Box
-              onClick={() => handleSelection("Work Place")}
+              onClick={() => handleSelection(language === 'en' ? "Work Place" : "مكان العمل")}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -398,10 +396,10 @@ const AddDeliveryAddress = () => {
                   />
                 </svg>
               </Grid2>
-              <Typography>Work Place</Typography>
+              <Typography>{language === 'en' ? 'Work Place' : 'مكان العمل'}</Typography>
             </Box>
             <Box
-              onClick={() => handleSelection("Custom")}
+              onClick={() => handleSelection(language === 'en' ? "Custom" : "مخصص")}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -425,7 +423,7 @@ const AddDeliveryAddress = () => {
                   <circle cx="16.5" cy="16.0001" r="4.83333" stroke="#0A0A0C" />
                 </svg>
               </Grid2>
-              <Typography>Custom</Typography>
+              <Typography>{language === 'en' ? 'Custom' : 'مخصص'}</Typography>
             </Box>
           </Box>
         </Box>
@@ -433,26 +431,22 @@ const AddDeliveryAddress = () => {
         <Box>
           <TextField
             fullWidth
-            placeholder="Custom Label"
-            label="Custom Label"
-            value={addressType}
-            onChange={(e) => setSelectedText(e.target.value)}
-            disabled={!isTextFieldEnabled}
-            variant="outlined"
-            InputProps={{
-              sx: {
-                '& input[type="text"]': {
-                  letterSpacing: "2px",
-                },
-              },
-            }}
+            placeholder={language === 'en' ? "Custom Label" : "تسمية مخصصة"}
+            label={language === 'en' ? "Custom Label" : "تسمية مخصصة"}
             InputLabelProps={{
               shrink: true,
               sx: {
                 color: "#444",
                 fontWeight: "500",
+                direction: language === 'en' ? 'ltr' : 'rtl',
+                '& input[type="text"]': {
+                  letterSpacing: "2px",
+                },
               },
             }}
+            value={customText}
+            onChange={(e) => setSelectedText(e.target.value)}
+            variant="outlined"
             sx={{
               width: { lg: "1100px", md: "920px", sm: "664px", xs: "311px" },
               marginBottom: "20px",
@@ -492,7 +486,7 @@ const AddDeliveryAddress = () => {
             <MapContainer
               center={position}
               zoom={13}
-              style={{ height: "100vh", width: "100%" }}
+              style={{ height: "60vh", width: "100%" }}
               whenCreated={(map) => map.flyTo(position)}
             >
               <TileLayer

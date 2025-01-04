@@ -9,10 +9,14 @@ import {
 import { motion } from "framer-motion";
 import DataChart from "./DataChart";
 import Rating from "./Rating";
+import useAppStore from "../../store/store";
 
 const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTablet = useMediaQuery("(max-width:900px) and (min-width:601px)");
+  const { language } = useAppStore();
+  const description = modalData?.description?.replace(/<\/?p>/g, '');
+  const arabicdescription = modalData?.arabicdescription?.replace(/<\/?p>/g, '');
 
   const modalProps = {
     disablePortal: true,
@@ -164,7 +168,7 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
                 <Typography
                   sx={{ fontSize: "12px", fontWeight: 200, color: "#20A00B" }}
                 >
-                  Non Alergic
+                  {language === "en" ? "Non Alergic" : "غير معرض للحساسية"}
                 </Typography>
               )}
               <Typography
@@ -174,7 +178,7 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
                   color: "#0F001A",
                 }}
               >
-                {modalData.name}
+                {language === "en" ? modalData.name : modalData.arabicName}
               </Typography>
               <Typography
                 sx={{
@@ -184,7 +188,7 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
                   textAlign: isMobile ? "center" : "left",
                 }}
               >
-                {modalData.description}
+                {language === "en" ? description : arabicdescription}
               </Typography>
             </Box>
             <Box>

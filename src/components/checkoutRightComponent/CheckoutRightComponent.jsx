@@ -6,7 +6,7 @@ import useAppStore from "../../store/store";
 
 const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, subTotal }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  // const { cartData } = useAppStore();
+  // console.log(discountedCart)
 
   const discountType = couponData?.data?.discount_type || "";
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
@@ -99,7 +99,7 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                       fontWeight: "400",
                     }}
                   >
-                    {item.planName}
+                    {isArabic ? item.planName_ar : item.planName}
                   </Typography>
                   <Typography
                     sx={{
@@ -137,7 +137,7 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                       fontWeight: "400",
                     }}
                   >
-                    Delivery Charges
+                    {isArabic ? "رسوم التوصيل" : "Delivery Charges"}
                   </Typography>
                   <Typography
                     sx={{
@@ -185,7 +185,7 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                 fontWeight: "400",
               }}
             >
-              Total
+              {isArabic ? "المجموع": "Total"}
             </Typography>
             <Typography
               sx={{
@@ -209,7 +209,7 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                 fontWeight: "400",
               }}
             >
-              VAT(15%)
+              {isArabic ? "ضريبة القيمة المضافة (%15)" : "VAT(15%)"}
             </Typography>
             <Typography
               sx={{

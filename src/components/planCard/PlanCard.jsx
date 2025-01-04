@@ -546,7 +546,7 @@ const PlanCard = ({
               {isArabic ? "عرض التفاصيل" : "See Details"}
             </Button>
 
-            <Button
+            {/* <Button
               variant="contained"
               sx={{
                 bgcolor: "#3C3D37",
@@ -561,7 +561,7 @@ const PlanCard = ({
               onClick={() => handleAddToCart()}
             >
               <ShoppingCartIcon sx={{ fontSize: "1.2rem" }} />
-            </Button>
+            </Button> */}
           </Box>
         </CardContent>
       </Card>

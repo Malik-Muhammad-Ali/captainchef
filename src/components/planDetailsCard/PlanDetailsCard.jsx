@@ -4,7 +4,6 @@ import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
   const { currentPlan, language, city } = useAppStore();
-  // console.log(currentPlan?.city);
 
   // Icons
   const iconsMap = {
@@ -369,7 +368,9 @@ const PlanDetailsCard = () => {
           {/* Lower */}
           <div>
             <div>
-              <Typography variant="h6">Calories</Typography>
+              <Typography variant="h6">
+                {language === "en" ? "Calories" : "السعرات الحرارية"}
+              </Typography>
             </div>
             <div className="calInfo">
               <div style={{ textAlign: "center" }}>

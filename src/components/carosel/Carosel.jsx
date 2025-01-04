@@ -54,28 +54,28 @@ const Carousel = () => {
       {/* Slides */}
       <SwiperSlide>
         <img
-          src="/herosecimg.png"
+          src="/BannerMain.png"
           alt="Slide 1"
           style={swiperStyle}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
-          src="/herosecimg.png"
+          src="/BannerMain.png"
           alt="Slide 2"
           style={swiperStyle}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
-          src="/herosecimg.png"
+          src="/BannerMain.png"
           alt="Slide 3"
           style={swiperStyle}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
-          src="/herosecimg.png"
+          src="/BannerMain.png"
           alt="Slide 4"
           style={swiperStyle}
         />

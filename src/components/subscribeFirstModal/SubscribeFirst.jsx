@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Box, Modal, Typography, Divider } from "@mui/material";
+import useAppStore from "../../store/store";
 
-const SubscribeFirst = ({subscribeFirstModalOpen, setSubscribeFirstModalOpen}) => {
-
+const SubscribeFirst = ({
+  subscribeFirstModalOpen,
+  setSubscribeFirstModalOpen,
+}) => {
   const handleClose = () => setSubscribeFirstModalOpen(false);
+  const { language } = useAppStore();
 
   return (
     <Modal
@@ -47,8 +51,9 @@ const SubscribeFirst = ({subscribeFirstModalOpen, setSubscribeFirstModalOpen}) =
             marginBottom: "16px",
           }}
         >
-          Subscribe Now,
-          <br /> Select Later
+          {language === "en" ? "Subscribe Now" : "اشترك الآن"}
+          <br />
+          {language === "en" ? "Select Later" : "اختر لاحقاً"}
         </Typography>
 
         <Divider
@@ -67,8 +72,9 @@ const SubscribeFirst = ({subscribeFirstModalOpen, setSubscribeFirstModalOpen}) =
             color: "#757575",
           }}
         >
-          You can not select meals before buying Plan subscription, To Select
-          meals, Subscribe the plan then select meals
+          {language === "en"
+            ? "You can not select meals before buying Plan subscription, To Select, meals Subscribe the plan then select meals"
+            : "لا يمكنك اختيار الوجبات قبل شراء اشتراك الخطة لاختيار الوجبات اشترك في الخطة ثم اختر الوجبات"}
         </Typography>
       </Box>
     </Modal>

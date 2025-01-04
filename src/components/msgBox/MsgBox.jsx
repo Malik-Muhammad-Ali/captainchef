@@ -40,7 +40,7 @@ const Msgbox = () => {
         },
       }}
     >
-      Help Me?
+      My Subscriptions
     </Box>
   )
 }

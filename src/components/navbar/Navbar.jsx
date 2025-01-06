@@ -1,21 +1,25 @@
 import * as React from "react";
 import { useState } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import EmailIcon from "@mui/icons-material/Email";
+import PersonSharpIcon from "@mui/icons-material/PersonSharp";
+import CallIcon from "@mui/icons-material/Call";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { Avatar, FormControl, InputLabel, Select } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
-import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
+// import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
 import useAppStore from "../../store/store";
 import Logo from "../../../public/logocaptainchef.png";
-import { ShoppingCart } from "@mui/icons-material";
+import AccountBalanceWalletSharpIcon from "@mui/icons-material/AccountBalanceWalletSharp";
+import { ShoppingCart, StarBorderRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -31,6 +35,7 @@ const Navbar = () => {
     // Your logout logic here
     console.log("Logged out!");
   };
+  const src = "/myimg.jpg"; // Replace with your image URL
 
   //   Flag Change
   const handleChange = (event) => {
@@ -230,17 +235,42 @@ const Navbar = () => {
                 <Box
                   onClick={() => setMenuOpen((prev) => !prev)} // Toggles the dropdown
                   sx={{
-                    width: "56px",
-                    height: "56px",
+                    width: "64px", // Box size
+                    height: "64px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: "20%",
-                    backgroundColor: "green",
+                    borderRadius: "50%", // Circular shape
                     cursor: "pointer",
                   }}
                 >
-                  <Person2OutlinedIcon sx={{ color: "white" }} />
+                  {/** Check if the image exists */}
+                  {src ? (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="myimg.jpg" // Replace with your dynamic `src` variable
+                      sx={{
+                        width: "52px", // Slightly larger avatar
+                        height: "52px",
+                      }}
+                    />
+                  ) : (
+                    <Avatar
+                      sx={{
+                        width: "52px",
+                        height: "52px",
+                        backgroundColor: "#fff", // White background
+                        color: "#000", // Icon color
+                        border: "2px solid #fff", // White outline
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <PersonSharpIcon sx={{ fontSize: "28px" }} />{" "}
+                      {/* Fallback icon */}
+                    </Avatar>
+                  )}
                 </Box>
 
                 {/* Dropdown */}
@@ -258,6 +288,135 @@ const Navbar = () => {
                       zIndex: 1000,
                     }}
                   >
+                    {/* Name and Avatar */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                    >
+                      <PersonSharpIcon
+                        sx={{ color: "black", marginRight: "8px" }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: "16px",
+                          fontWeight: "500",
+                          color: "black",
+                        }}
+                      >
+                        Malik Ali
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                      onClick={handleLogout} // Add your logout function here
+                    >
+                      <CallIcon sx={{ color: "black", marginRight: "8px" }} />
+                      <Typography
+                        sx={{
+                          color: "black",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        +966501729924
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                      onClick={handleLogout} // Add your logout function here
+                    >
+                      <EmailIcon sx={{ color: "black", marginRight: "8px" }} />
+                      <Typography
+                        sx={{
+                          color: "black",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        abdullah@gmail.com
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                      onClick={handleLogout} // Add your logout function here
+                    >
+                      <StarBorderRounded
+                        sx={{ color: "black", marginRight: "8px" }}
+                      />
+                      <Typography
+                        sx={{
+                          color: "black",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Loyalty Points
+                      </Typography>
+                    </Box>
+
+                    {/* Balance/Wallet */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
+                      }}
+                    >
+                      <AccountBalanceWalletSharpIcon
+                        sx={{ color: "black", marginRight: "8px" }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: "16px",
+                          fontWeight: "500",
+                          color: "black",
+                        }}
+                      >
+                        $1,250
+                      </Typography>
+                    </Box>
+
+                    {/* Logout */}
                     <Box
                       sx={{
                         display: "flex",
@@ -360,6 +519,7 @@ const Navbar = () => {
             padding: 2,
             display: "flex",
             flexDirection: "column",
+            direction: language === "ar" ? "rtl" : "ltr", // Adjust direction based on language
             gap: 2,
             height: "100%",
           }}
@@ -367,19 +527,47 @@ const Navbar = () => {
           <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
             {authenticated && (
               <Box
+                onClick={() => setMenuOpen((prev) => !prev)} // Toggles the dropdown
                 sx={{
-                  width: "56px",
-                  height: "56px",
+                  width: "64px", // Box size
+                  height: "64px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: "20%",
-                  backgroundColor: "green",
+                  borderRadius: "50%", // Circular shape
+                  cursor: "pointer",
                 }}
               >
-                <Person2OutlinedIcon sx={{ color: "white" }} />
+                {/** Check if the image exists */}
+                {src ? (
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="/myimg.jpg" // Replace with your dynamic `src` variable
+                    sx={{
+                      width: "52px", // Slightly larger avatar
+                      height: "52px",
+                    }}
+                  />
+                ) : (
+                  <Avatar
+                    sx={{
+                      width: "52px",
+                      height: "52px",
+                      backgroundColor: "#fff", // White background
+                      color: "#000", // Icon color
+                      border: "2px solid #fff", // White outline
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <PersonSharpIcon sx={{ fontSize: "28px" }} />{" "}
+                    {/* Fallback icon */}
+                  </Avatar>
+                )}
               </Box>
             )}
+
             {authenticated && (
               <Box
                 sx={{
@@ -407,7 +595,7 @@ const Navbar = () => {
               }}
               onClick={() => toggleDrawer()}
             >
-              Home
+              {language === "en" ? "Home" : "الرئيسية"}
             </Button>
           </Link>
           <Link to="/features">
@@ -421,7 +609,7 @@ const Navbar = () => {
               }}
               onClick={() => toggleDrawer()}
             >
-              Feature
+              {language === "en" ? "Features" : "الميزات"}
             </Button>
           </Link>
           <Link to="/subscriptions">
@@ -437,7 +625,7 @@ const Navbar = () => {
               }}
               onClick={() => toggleDrawer()}
             >
-              Subscriptions
+              {language === "en" ? "Subscriptions" : "الاشتراكات"}
             </Button>
           </Link>
           <FormControl
@@ -450,12 +638,16 @@ const Navbar = () => {
               id="language-select-label"
               sx={{
                 color: "black",
+                left: language === "ar" ? "50px" : "auto", // Align to the right for Arabic
+
+                direction: language === "ar" ? "rtl" : "ltr",
+
                 "&.Mui-focused": {
                   color: "black",
                 },
               }}
             >
-              Lang
+              {language === "en" ? "Lang" : "اللغة"}
             </InputLabel>
             <Select
               labelId="language-select-label"
@@ -482,7 +674,7 @@ const Navbar = () => {
                 <Box display="flex" alignItems="center" gap={1}>
                   <img src={flag} alt={language} width="20" height="15" />
                   <Typography>
-                    {language === "en" ? "English" : "Arabic"}
+                    {language === "en" ? "English" : "العربية"}
                   </Typography>
                 </Box>
               )}
@@ -522,28 +714,158 @@ const Navbar = () => {
               boxShadow: "none",
             }}
           >
-            Download App
+            {language === "en" ? "Download App" : "تحميل التطبيق"}
           </Button>
-          <Box sx={{ flexGrow: 1 }} />
+          <Box
+            sx={{
+              flexGrow: 1,
+            }}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+          >
+            <PersonSharpIcon sx={{ color: "black", marginRight: "8px" }} />
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: "500",
+                color: "black",
+              }}
+            >
+              Malik Ali
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+            onClick={handleLogout} // Add your logout function here
+          >
+            <CallIcon sx={{ color: "black", marginRight: "8px" }} />
+            <Typography
+              sx={{
+                color: "black",
+                fontSize: "16px",
+                fontWeight: "500",
+              }}
+            >
+              +966501729924
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+            onClick={handleLogout} // Add your logout function here
+          >
+            <EmailIcon sx={{ color: "black", marginRight: "8px" }} />
+            <Typography
+              sx={{
+                color: "black",
+                fontSize: "16px",
+                fontWeight: "500",
+              }}
+            >
+              abdullah@gmail.com
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+            onClick={handleLogout} // Add your logout function here
+          >
+            <StarBorderRounded sx={{ color: "black", marginRight: "8px" }} />
+            <Typography
+              sx={{
+                color: "black",
+                fontSize: "16px",
+                fontWeight: "500",
+              }}
+            >
+              Loyalty Points
+            </Typography>
+          </Box>
+
+          {/* Balance/Wallet */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
+            }}
+          >
+            <AccountBalanceWalletSharpIcon
+              sx={{ color: "black", marginRight: "8px" }}
+            />
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: "500",
+                color: "black",
+              }}
+            >
+              $1,250
+            </Typography>
+          </Box>
           {/* Logout Section */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 2,
-              padding: "16px 0",
-              borderTop: "1px solid #ccc",
-              direction: language === "ar" ? "rtl" : "ltr",
+              padding: "8px 12px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+              },
             }}
+            onClick={handleLogout} // Add your logout function here
           >
-            <LogoutIcon sx={{ color: "#CE2729", cursor: "pointer" }} />
+            <LogoutIcon sx={{ color: "red", marginRight: "8px" }} />
             <Typography
-              variant="body2"
               sx={{
-                color: "#656565",
+                color: "red",
+                fontSize: "16px",
+                fontWeight: "500",
               }}
             >
-              {language === "ar" ? "تسجيل الخروج" : "Logout"}
+              Logout
             </Typography>
           </Box>
         </Box>

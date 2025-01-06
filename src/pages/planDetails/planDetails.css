@@ -3,7 +3,7 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 260px);
+  height: calc(100vh - 200px);
   overflow-y: scroll;
 }
 .planDetails {
@@ -176,18 +176,18 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 50px;
+  height: 0px;
 }
 .subscribeButton {
   background-color: #d92531;
   color: white;
   padding: 10px 20px;
   border-radius: 12px;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-size: 18px;
   font-weight: 300;
   cursor: pointer;
-  margin-top: 40px;
+  margin-top: 80px;
 }
 .weekday {
   border: 1px solid #0f001a;

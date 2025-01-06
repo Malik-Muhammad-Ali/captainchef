@@ -14,7 +14,6 @@ const cartSlice = (set) => ({
           },
         }
       );
-      console.log(response.data.data);
       const data = response.data.data;
       set({ cartData: data });
       console.log(response.data.data);

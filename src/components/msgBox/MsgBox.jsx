@@ -11,11 +11,12 @@ const Msgbox = () => {
           xs:"35px"
         },
         width: {
-          lg:"172px",
-          md:"172px",
-          sm:"150px",
-          xs:"100px",
+          lg:"180px",
+          md:"180px",
+          sm:"160px",
+          xs:"150px",
         },
+        padding: '20px',
         display: 'flex', // Flexbox for centering
         justifyContent: 'center', // Center text horizontally
         alignItems: 'center', // Center text vertically

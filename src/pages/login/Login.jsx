@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -17,24 +16,25 @@ import useAppStore from "../../store/store";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loginUser, user, authenticated, planDetailUrl, language } =
-    useAppStore();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { loginUser, planDetailUrl, language } = useAppStore();
+  const [mobileNumber, setMobileNumber] = useState("");
   const [error, setError] = useState(false);
-  // const [language, setLanguage] = useState("en"); // 'en' for English, 'ar' for Arabic
 
   const handleSubmit = async () => {
-    const user_info = await loginUser(email, password);
-    console.log(user_info);
-    if (user_info) {
-      console.log("True Condition");
-      setError(false);
-      navigate(planDetailUrl, { replace: true });
-    } else {
-      console.log("False Condition");
+
+    if (!mobileNumber.startsWith("5")) {
       setError(true);
+      return;
     }
+
+    let updatedMobileNumber = mobileNumber;
+    if (!mobileNumber.startsWith("966")) {
+      updatedMobileNumber = `966${mobileNumber}`;
+      setMobileNumber(updatedMobileNumber);
+    }
+    await loginUser(updatedMobileNumber);
+    setError(false)
+    navigate("/otp");
   };
 
   return (
@@ -64,7 +64,7 @@ const Login = () => {
           <ArrowBackIosIcon
             sx={{
               fontSize: "24px",
-              ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+              ml: language === "ar" ? "-7px" : "7px",
               transform: language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform 0.3s ease-in-out",
             }}
@@ -121,26 +121,26 @@ const Login = () => {
               dir={language === "ar" ? "rtl" : "ltr"}
             >
               {language === "en"
-                ? "Please Enter Your Username and Password Before Further Move."
-                : "يرجى إدخال اسم المستخدم وكلمة المرور قبل المتابعة."}
+                ? "Please Enter Your Mobile Number Before Further Move."
+                : "الرجاء إدخال رقم هاتفك المحمول قبل الانتقال إلى مكان آخر."}
             </Typography>
 
-            {/* Email TextField */}
+            {/* Mobile Number TextField */}
             <TextField
               fullWidth
               error={error}
               helperText={
                 error
                   ? language === "en"
-                    ? "Please Enter a Valid Email"
-                    : "يرجى إدخال بريد إلكتروني صالح"
+                    ? "Enter a Mobile Number that starts with 5"
+                    : "أدخل رقم الجوال الذي يبدأ بـ 5"
                   : ""
               }
               placeholder={language === "en" ? "" : "البريد الإلكتروني"}
-              label={language === "en" ? "Email" : "البريد الإلكتروني"}
+              label={language === "en" ? "Mobile Number" : "رقم الهاتف المحمول"}
               variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -163,74 +163,6 @@ const Login = () => {
               }}
             />
 
-            {/* Password TextField */}
-
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  width: { xs: "100%", sm: "360px", md: "512px" },
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                }}
-              >
-                <TextField
-                  fullWidth
-                  error={error}
-                  helperText={
-                    error
-                      ? language === "en"
-                        ? "Please Enter Correct Password"
-                        : "يرجى إدخال كلمة مرور صحيحة"
-                      : ""
-                  }
-                  placeholder={language === "en" ? "" : "كلمة المرور"}
-                  label={language === "en" ? "Password" : "كلمة المرور"}
-                  variant="outlined"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon sx={{ color: "#666" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  sx={{
-                    width: "100%",
-                    marginBottom: "6px",
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      "&.Mui-focused fieldset": {
-                        border: "2px solid grey",
-                      },
-                    },
-                  }}
-                />
-                {/* <Typography
-                  sx={{
-                    alignSelf: "flex-end",
-                    color: "#D92531",
-                    cursor: "pointer",
-                    fontWeight: "Bold",
-                  }}
-                  dir={language === "ar" ? "rtl" : "ltr"}
-                >
-                  {language === "en" ? "Forget Password" : "نسيت كلمة المرور"}
-                </Typography> */}
-              </Box>
-            </Box>
-
             {/* Submit Button */}
             <Button
               variant="contained"
@@ -249,22 +181,6 @@ const Login = () => {
             >
               {language === "en" ? "Submit" : "إرسال"}
             </Button>
-            <Box
-              sx={{ display: "flex", gap: "6px" }}
-              dir={language === "ar" ? "rtl" : "ltr"}
-            >
-              <Typography>
-                {language === "en"
-                  ? "Don't Have any Account?"
-                  : "ليس لديك أي حساب؟"}
-              </Typography>
-              <Typography
-                sx={{ cursor: "Pointer", color: "#D92531", fontWeight: "Bold" }}
-                onClick={() => navigate("/createaccount")}
-              >
-                {language === "en" ? "Create Account" : "إنشاء حساب"}
-              </Typography>
-            </Box>
           </Box>
         </motion.div>
       </Grid2>

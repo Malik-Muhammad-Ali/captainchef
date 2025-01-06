@@ -28,13 +28,11 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleLogout = () => {
-    // Your logout logic here
     console.log("Logged out!");
   };
 
   //   Flag Change
   const handleChange = (event) => {
-    console.log(event.target.value);
     setLanguage(event.target.value);
     if (event.target.value === "en") {
       setLanguage("en");
@@ -49,6 +47,7 @@ const Navbar = () => {
     setDrawerOpen(open);
   };
 
+  // Component
   return (
     <AppBar
       position="static"

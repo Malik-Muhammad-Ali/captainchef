@@ -14,13 +14,13 @@ import useAppStore from "../../store/store";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
-  const { registerUser, language } = useAppStore();
+  const { registerUser, language, mobile_number, planDetailUrl } = useAppStore();
   const [error, setError] = useState("");
   const [createUser, setCreateUser] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    mobileNumber: "966",
+    mobileNumber: mobile_number,
     password: "",
     confirmPassword: "",
   });
@@ -39,17 +39,14 @@ const CreateAccount = () => {
     if (!createUser.email.trim()) {
       errors.email = "Email a valid email";
     }
-    if (!createUser.mobileNumber.startsWith("9665")) {
-      errors.mobileNumber = "Enter a valid number";
-    }
     if (!createUser.password.trim()) {
       errors.password = "Password is required";
     }
-    if (createUser.password !== createUser.confirmPassword) {
-      errors.confirmPassword = "Passwords do not match";
-    }
     if (createUser.confirmPassword !== createUser.confirmPassword) {
       errors.confirmPassword = "Confirm Password is required";
+    }
+    if (createUser.password !== createUser.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
     }
 
     // If there are errors, set them and return
@@ -64,7 +61,7 @@ const CreateAccount = () => {
       setError({ general: registrationResponse.message });
     }
     if (registrationResponse.status === true) {
-      navigate("/login");
+      navigate(planDetailUrl);
     }
   };
 
@@ -74,7 +71,7 @@ const CreateAccount = () => {
         backgroundColor: "#f5f5f5",
         display: "flex",
         flexDirection: "column",
-        direction: language === "ar" ? "rtl" : "ltr", // Set text direction based on language
+        direction: language === "ar" ? "rtl" : "ltr",
       }}
     >
       {/* <Box
@@ -289,7 +286,7 @@ const CreateAccount = () => {
           />
 
           {/* Mobile Number */}
-          <TextField
+          {/* <TextField
             fullWidth
             placeholder={
               isArabic
@@ -328,7 +325,7 @@ const CreateAccount = () => {
                 borderRadius: "12px",
               },
             }}
-          />
+          /> */}
 
           {/* Password */}
           <TextField
@@ -436,26 +433,6 @@ const CreateAccount = () => {
             >
               {isArabic ? "تسجيل" : "Register"}
             </Button>
-
-            <Box
-              sx={{
-                display: "flex",
-                gap: "6px",
-                paddingBottom: "20px",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography>
-                {isArabic ? "هل لديك حساب بالفعل؟" : "Already Have an Account?"}
-              </Typography>
-              <Typography
-                sx={{ cursor: "pointer", color: "#D92531", fontWeight: "bold" }}
-                onClick={() => navigate("/login")}
-              >
-                {isArabic ? "تسجيل الدخول" : "Login"}
-              </Typography>
-            </Box>
           </div>
         </Box>
       </motion.div>

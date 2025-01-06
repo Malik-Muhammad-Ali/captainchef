@@ -67,6 +67,7 @@ const useAppStore = create(
         meals: state.meals,
         mealsByDay: state.mealsByDay,
         finalDeliveryType: state.finalDeliveryType,
+        mobile_number: state.mobile_number,
       }),
     }
   )

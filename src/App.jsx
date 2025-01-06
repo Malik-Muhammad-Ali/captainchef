@@ -7,38 +7,54 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import useAppStore from "./store/store";
+import { CssBaseline } from "@mui/material";
+import React, { Suspense } from "react";
 
-// Pages
+// Lazy-loaded pages
 import Home from "./pages/home/Home";
-import Features from "./pages/features/Features";
-import Subscriptions from "./pages/subscriptions/Subscriptions";
-import Login from "./pages/login/Login";
-import CreateAccount from "./pages/createAccount/CreateAccount";
-import ForgotPassword from "./pages/forgetPassword/ForgotPassword";
-import BarCode from "./pages/barcode/BarCode";
-import PlanDetails from "./pages/planDetails/PlanDetails";
-import Plans from "./pages/choosePlan/Plans";
-import DeliveryAddress from "./pages/deliveryAddress/DeliveryAddress";
-import RegeneratePassowrd from "./pages/regeneratePassword/RegeneratePassword";
-import Checkout from "./pages/checkout/Checkout";
-import PickupAddress from "./pages/pickupAddress/PickupAddress";
-import MySubscriptions from "./pages/mySubscriptions/MySubscriptions";
-import NotRegisterYet from "./components/notRegisterYet/NotRegisterYet";
-import MyCart from "./components/mycart/MyCart";
-
-// Components
-import Navbar from "./components/navbar/Navbar";
-import CityModal from "./components/cityModal/CityModal";
-import AddDeliveryAddress from "./pages/deliveryAddress/AddDeliveryAddress";
-import PaymentModal from "./components/paymentModal/PaymentModal";
-import ErrorModal from "./components/errorModal/ErrorModal";
-
-// Create a custom theme
-const theme = createTheme({
-  typography: {
-    fontFamily: `'Poppins', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
-  },
-});
+const Features = React.lazy(() => import("./pages/features/Features"));
+const Subscriptions = React.lazy(() =>
+  import("./pages/subscriptions/Subscriptions")
+);
+const Login = React.lazy(() => import("./pages/login/Login"));
+const CreateAccount = React.lazy(() =>
+  import("./pages/createAccount/CreateAccount")
+);
+const ForgotPassword = React.lazy(() =>
+  import("./pages/forgetPassword/ForgotPassword")
+);
+const BarCode = React.lazy(() => import("./pages/barcode/BarCode"));
+const PlanDetails = React.lazy(() => import("./pages/planDetails/PlanDetails"));
+const Plans = React.lazy(() => import("./pages/choosePlan/Plans"));
+const DeliveryAddress = React.lazy(() =>
+  import("./pages/deliveryAddress/DeliveryAddress")
+);
+const RegeneratePassword = React.lazy(() =>
+  import("./pages/regeneratePassword/RegeneratePassword")
+);
+const Checkout = React.lazy(() => import("./pages/checkout/Checkout"));
+const PickupAddress = React.lazy(() =>
+  import("./pages/pickupAddress/PickupAddress")
+);
+const MySubscriptions = React.lazy(() =>
+  import("./pages/mySubscriptions/MySubscriptions")
+);
+const NotRegisterYet = React.lazy(() =>
+  import("./components/notRegisterYet/NotRegisterYet")
+);
+const MyCart = React.lazy(() => import("./components/mycart/MyCart"));
+const AddDeliveryAddress = React.lazy(() =>
+  import("./pages/deliveryAddress/AddDeliveryAddress")
+);
+const PaymentModal = React.lazy(() =>
+  import("./components/paymentModal/PaymentModal")
+);
+const ErrorModal = React.lazy(() =>
+  import("./components/errorModal/ErrorModal")
+);
+const Navbar = React.lazy(() => import("./components/navbar/Navbar"));
+const CityModal = React.lazy(() => import("./components/cityModal/CityModal"));
 
 // Animation Variants
 const pageVariants = {
@@ -67,147 +83,169 @@ const AnimatedRoutes = () => {
         <Route
           path="/"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Home />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Home />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/features"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Features />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Features />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/subscriptions"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Subscriptions />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Subscriptions />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/subscriptions/category/:categoryId"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Plans />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Plans />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/subscriptions/category/:categoryId/plans/:planId"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <PlanDetails />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <PlanDetails />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/login"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Login />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Login />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/createaccount"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <CreateAccount />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <CreateAccount />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/deliveryaddress"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <DeliveryAddress />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <DeliveryAddress />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/pickupaddress"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <PickupAddress />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <PickupAddress />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/forgotpassword"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <ForgotPassword />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <ForgotPassword />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/regeneratepassword"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <RegeneratePassowrd />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <RegeneratePassword />
+              </motion.div>
+            </Suspense>
           }
         />
-        <Route
+        {/* <Route
           path="/cart"
           element={
             <motion.div
@@ -219,109 +257,125 @@ const AnimatedRoutes = () => {
               <MyCart />
             </motion.div>
           }
-        />
+        /> */}
         <Route
           path="/checkout"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Checkout />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Checkout />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/mysubscriptions"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <MySubscriptions />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <MySubscriptions />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/downloadapp"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <BarCode />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <BarCode />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/otp"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <NotRegisterYet />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <NotRegisterYet />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/cart"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <MyCart />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <MyCart />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/addDeliveryAddress"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <AddDeliveryAddress />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <AddDeliveryAddress />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/payment"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <PaymentModal />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <PaymentModal />
+              </motion.div>
+            </Suspense>
           }
         />
         <Route
           path="/error"
           element={
-            <motion.div
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <ErrorModal />
-            </motion.div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <ErrorModal />
+              </motion.div>
+            </Suspense>
           }
         />
       </Routes>
@@ -330,8 +384,20 @@ const AnimatedRoutes = () => {
 };
 
 function App() {
+  const { language } = useAppStore();
+  const font = language === "en" ? "Poppins" : "NoorRegular";
+
+  // Create a custom theme
+  const theme = createTheme({
+    typography: {
+      // fontFamily: 'Poppins',
+      fontFamily: font,
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Router>
         <Navbar />
         <CityModal />

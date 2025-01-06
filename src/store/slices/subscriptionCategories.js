@@ -6,6 +6,7 @@ const subscriptionCategories =(set) =>({
     error:null,
     setCategoryId:()=>{},
     fetchCategories : async () => {
+        console.log("Categories API Hit")
         set({error:null});
         try {
             const response = await axios.get(

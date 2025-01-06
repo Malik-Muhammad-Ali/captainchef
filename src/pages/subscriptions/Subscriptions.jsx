@@ -14,6 +14,7 @@ const Subscriptions = () => {
   const handleCityChange = () => {
     useAppStore.setState({ city: "" });
   };
+  // console.log(categories)
 
   useEffect(() => {
     setLoading(true);
@@ -40,11 +41,11 @@ const Subscriptions = () => {
       <Box
         sx={{
           display: "flex",
-          marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "150px" },
+          marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "200px" },
           flexDirection: "column",
           alignItems: "center",
-          height: "calc(100vh - 200px)",
-          overflowY: "scroll",
+          backgroundColor: "#f5f5f5",
+          height: "100vh",
         }}
       >
         <Carousel />

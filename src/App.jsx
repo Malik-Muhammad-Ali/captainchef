@@ -32,6 +32,10 @@ import CityModal from "./components/cityModal/CityModal";
 import AddDeliveryAddress from "./pages/deliveryAddress/AddDeliveryAddress";
 import PaymentModal from "./components/paymentModal/PaymentModal";
 import ErrorModal from "./components/errorModal/ErrorModal";
+import VideoModal from "./pages/home/VideoModal";
+import Terms from "./pages/home/Terms";
+import PrivacyPolicy from "./pages/home/PrivacyPolicy";
+import Contactus from "./pages/home/Contactus";
 
 // Create a custom theme
 const theme = createTheme({
@@ -321,6 +325,58 @@ const AnimatedRoutes = () => {
               exit="exit"
             >
               <ErrorModal />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/videoModal"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <VideoModal videoId="bHauDmejB5g" />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/termsandconditions"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Terms/>
+            </motion.div>
+          }
+        />
+        <Route
+          path="/privacyPolicy"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <PrivacyPolicy/>
+            </motion.div>
+          }
+        />
+        <Route
+          path="/contactus"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Contactus/>
             </motion.div>
           }
         />

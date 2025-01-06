@@ -10,7 +10,6 @@ const NotRegisterYet = () => {
   const { otp, message, planDetailUrl } = useAppStore();
   const [pin, setPin] = useState(["", "", "", ""]);
   const [error, setError] = useState();
-  console.log(otp)
 
   useEffect(() => {
     if(!otp){

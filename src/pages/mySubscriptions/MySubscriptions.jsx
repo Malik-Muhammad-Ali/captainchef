@@ -40,7 +40,7 @@ const MySubscriptions = () => {
     ],
     others: [
       { name: "Payment Pending", name_ar: "الدفع معلق" },
-      { name: "Completed", name_ar: "Completed" },
+      { name: "Completed", name_ar: "مكتمل " },
     ],
   };
 
@@ -146,7 +146,7 @@ const MySubscriptions = () => {
       const response = await axios.get(
         `https://portal.captainchef.net/public/contact/get-purchased-subscription?user_id=${user?.id}`
       );
-      // console.log(response?.data?.data[0]);
+      console.log(response?.data?.data);
       // setOrderDetails(response?.data?.data);
       setSubscribedPlans(response?.data?.data);
       const updatedPlans = response?.data?.data.filter((plan) => {
@@ -177,32 +177,44 @@ const MySubscriptions = () => {
   // Component
   return (
     <>
-      <Box sx={{ px: { xs: 1, sm: 2, md: 4 }, backgroundColor: "#F8F8F8" }}>
+      <Box
+        sx={{
+          px: { xs: 1, sm: 2, md: 4 },
+          backgroundColor: "#F8F8F8",
+          direction: language === "ar" ? "rtl" : "ltr",
+        }}
+      >
         {/* Back Button */}
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "start",
             justifyContent: "start",
-            ml: { xs: 1, sm: 2 },
+            // ml: { xs: 1, sm: 2 },
           }}
         >
           <IconButton
             sx={{
-              border: "2px solid #f5f5f5",
+              width: { xs: "48px", sm: "56px" },
+              height: { xs: "48px", sm: "56px" },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              m: { xs: "8px", md: "12px", sm: "16px", lg: "20px" },
               borderRadius: "20%",
-              backgroundColor: "#ffffff",
-              width: { xs: "40px", sm: "48px" },
-              height: { xs: "40px", sm: "48px" },
-              mt: "10px",
-              "&:hover": {
-                backgroundColor: "#f0f0f0",
-              },
+              backgroundColor: "#fff",
+              cursor: "pointer",
             }}
             onClick={() => navigate(-1)}
           >
             <ArrowBackIosIcon
-              sx={{ color: "#000", fontSize: { xs: 16, sm: 20 }, ml: "10px" }}
+              sx={{
+                fontSize: "24px",
+                ml: language === "ar" ? "-7px" : "7px", // Adjust margin conditionally
+                transform:
+                  language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease-in-out",
+              }}
             />
           </IconButton>
         </Box>
@@ -342,7 +354,7 @@ const MySubscriptions = () => {
                 },
               }}
             >
-              Running
+              {language === "ar" ? "جاري" : "Running"}
             </Button>
             <Button
               onClick={() => {
@@ -360,7 +372,7 @@ const MySubscriptions = () => {
                 },
               }}
             >
-              Others
+              {language === "ar" ? "أخرى" : "Others"}
             </Button>
           </Box>
 
@@ -513,10 +525,11 @@ const MySubscriptions = () => {
           <Box
             sx={{
               maxHeight: { lg: "475px", xl: "475px", md: "475px" },
-              minHeight: { lg: "475px", xl: "475px", md: "475px" },
+              minHeight: { lg: "400px", xl: "400px", md: "400px" },
               backgroundColor: "white",
               padding: "16px",
               width: "350px",
+              mb: "5px",
               ml: { xs: "10px" },
               mr: { lg: "40px", md: "40px", xs: "10px", xl: "40px" },
               display: {
@@ -627,9 +640,9 @@ const MySubscriptions = () => {
 
             {isPlanStatusExpanded && selectedPlanType && (
               <Box>
-                {planStatusOptions[selectedPlanType].map((status) => (
+                {planStatusOptions[selectedPlanType].map((status, index) => (
                   <Box
-                    key={status}
+                    key={index}
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -652,7 +665,7 @@ const MySubscriptions = () => {
                       }}
                     />
                     <Typography sx={{ fontSize: "14px", ml: 1 }}>
-                      {language === 'en' ? status.name : status.name_ar}
+                      {language === "en" ? status.name : status.name_ar}
                     </Typography>
                   </Box>
                 ))}

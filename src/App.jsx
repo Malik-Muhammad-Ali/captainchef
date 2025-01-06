@@ -17,6 +17,7 @@ const Features = React.lazy(() => import("./pages/features/Features"));
 const Subscriptions = React.lazy(() =>
   import("./pages/subscriptions/Subscriptions")
 );
+const Contactus = React.lazy(() => import("./pages/home/Contactus"));
 const Login = React.lazy(() => import("./pages/login/Login"));
 const CreateAccount = React.lazy(() =>
   import("./pages/createAccount/CreateAccount")
@@ -55,6 +56,8 @@ const ErrorModal = React.lazy(() =>
 );
 const Navbar = React.lazy(() => import("./components/navbar/Navbar"));
 const CityModal = React.lazy(() => import("./components/cityModal/CityModal"));
+const Terms = React.lazy(() => import("./pages/home/Terms"));
+const PrivacyPolicy = React.lazy(() => import("./pages/home/PrivacyPolicy"));
 
 // Animation Variants
 const pageVariants = {
@@ -378,6 +381,116 @@ const AnimatedRoutes = () => {
             </Suspense>
           }
         />
+        {/* <Route
+          path="/videoModal"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <VideoModal videoId="bHauDmejB5g" />
+            </motion.div>
+          }
+        /> */}
+        <Route
+          path="/termsandconditions"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Terms />
+              </motion.div>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/privacyPolicy"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <PrivacyPolicy />
+              </motion.div>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/contactus"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Contactus />
+              </motion.div>
+            </Suspense>
+          }
+        />
+        {/* <Route
+          path="/videoModal"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <VideoModal videoId="bHauDmejB5g" />
+            </motion.div>
+          }
+        /> */}
+        <Route
+          path="/termsandconditions"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Terms />
+            </motion.div>
+          }
+        />
+        {/* <Route
+          path="/privacyPolicy"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <PrivacyPolicy />
+            </motion.div>
+          }
+        /> */}
+        {/* <Route
+          path="/contactus"
+          element={
+            <motion.div
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Contactus />
+            </motion.div>
+          }
+        /> */}
       </Routes>
     </AnimatePresence>
   );

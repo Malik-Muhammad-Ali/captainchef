@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Box,
   Button,
   IconButton,
   Paper,
-  Radio,
   TextField,
   Typography,
 } from "@mui/material";
@@ -83,7 +82,7 @@ const Checkout = () => {
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
   }));
-  console.log(cartData)
+  console.log(cartData);
 
   // Calculate the discounted price for each plan
   const discountedCart = cart.map((item) => {
@@ -178,7 +177,7 @@ const Checkout = () => {
         clearInterval(intervalRef);
         setPaymentResult("CAPTURED");
         navigate("/mysubscriptions");
-      }else{
+      } else {
         // clearInterval(intervalRef);
         setPaymentResult("REJECTED");
         navigate("/mysubscriptions");
@@ -207,12 +206,12 @@ const Checkout = () => {
 
   const handleIframeLoad = () => {
     setLoadCount(loadCount + 1);
-    if(loadCount > 0){
-      console.log('Redirect Now')
+    if (loadCount > 0) {
+      console.log("Redirect Now");
       paymentStatusCheckFunction(noonOrderId);
     }
-    console.log("Iframe loaded"+loadCount);
-  }
+    console.log("Iframe loaded" + loadCount);
+  };
 
   // useEffect
   useEffect(() => {
@@ -307,7 +306,7 @@ const Checkout = () => {
                 justifyContent: "center",
                 flexDirection: {
                   xs: "column",
-                  sm: "row",
+                  sm: "column",
                   md: "row",
                   lg: "row",
                 },
@@ -347,9 +346,9 @@ const Checkout = () => {
                     sx={{
                       padding: "16px",
                       width: {
-                        lg: "560px",
+                        lg: "600px",
                         md: "480px",
-                        sm: "331px",
+                        sm: "600px",
                         xs: "345px",
                       },
                       height: isCollapsed ? "auto" : "164px", // Adjust height dynamically
@@ -441,17 +440,27 @@ const Checkout = () => {
                     )}
                   </Paper>
                 )}
+              </Box>
 
-                {/*paper 3 of apply couon*/}
-
+              {/*paper 3 of apply couon*/}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: { xs: "28px", sm: "-170px", md: "0", lg: "0" },
+                  height: "auto",
+                  gap: "40px",
+                  mb: { sm: "10px", md: "0", xs: "0", lg: "0" },
+                }}
+              >
                 <Paper
                   elevation={0}
                   sx={{
                     padding: "16px",
                     width: {
-                      lg: "560px",
+                      lg: "600px",
                       md: "480px",
-                      sm: "331px",
+                      sm: "600px",
                       xs: "345px",
                     },
                     height: isCollapsed1 ? "auto" : "164px", // Adjust height dynamically
@@ -549,7 +558,7 @@ const Checkout = () => {
                           width: {
                             lg: "530px",
                             md: "450px",
-                            sm: "335px",
+                            sm: "420px",
                             xs: "313px",
                           },
                           height: {
@@ -576,7 +585,7 @@ const Checkout = () => {
                           width: {
                             lg: "193px",
                             md: "193px",
-                            sm: "80px",
+                            sm: "150px",
                             xs: "",
                           },
                           height: "60px",
@@ -605,9 +614,9 @@ const Checkout = () => {
                   sx={{
                     padding: "16px",
                     width: {
-                      lg: "560px",
+                      lg: "600px",
                       md: "480px",
-                      sm: "331px",
+                      sm: "600px",
                       xs: "345px",
                     },
                     height: "auto",
@@ -619,7 +628,7 @@ const Checkout = () => {
                     bottom: "40px",
                     left: "32px",
                     // mb: "30px",
-                    pb: "20px",
+                    // pb: "20px",
                   }}
                 >
                   <Box
@@ -697,7 +706,7 @@ const Checkout = () => {
                           width: {
                             lg: "530px",
                             md: "450px",
-                            sm: "300px",
+                            sm: "560px",
                             xs: "313px",
                           },
                           minHeight: {

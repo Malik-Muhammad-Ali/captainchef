@@ -4,7 +4,13 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import useAppStore from "../../store/store";
 
-const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, subTotal }) => {
+const CheckoutRightComponent = ({
+  couponData,
+  discountedCart,
+  totalPrice,
+  VAT,
+  subTotal,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   // console.log(discountedCart)
 
@@ -22,7 +28,8 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
       elevation={0}
       sx={{
         padding: "16px",
-        width: { lg: "560px", md: "480px", sm: "331px", xs: "345px" },
+
+        width: { lg: "600px", md: "480px", sm: "600px", xs: "345px" },
         height: "auto",
         margin: "0 auto",
         borderRadius: "24px",
@@ -185,7 +192,7 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                 fontWeight: "400",
               }}
             >
-              {isArabic ? "المجموع": "Total"}
+              {isArabic ? "المجموع" : "Total"}
             </Typography>
             <Typography
               sx={{

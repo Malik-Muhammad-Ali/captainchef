@@ -21,19 +21,13 @@ const Login = () => {
   const [error, setError] = useState(false);
 
   const handleSubmit = async () => {
-
     if (!mobileNumber.startsWith("5")) {
       setError(true);
       return;
     }
 
-    let updatedMobileNumber = mobileNumber;
-    if (!mobileNumber.startsWith("966")) {
-      updatedMobileNumber = `966${mobileNumber}`;
-      setMobileNumber(updatedMobileNumber);
-    }
-    await loginUser(updatedMobileNumber);
-    setError(false)
+    await loginUser(mobileNumber);
+    setError(false);
     navigate("/otp");
   };
 

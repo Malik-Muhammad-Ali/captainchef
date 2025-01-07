@@ -25,7 +25,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { authenticated, language, setLanguage } = useAppStore();
+  const { authenticated, language, setLanguage, user } = useAppStore();
   const location = useLocation();
   const [flag, setFlag] = useState("https://flagcdn.com/w40/us.png");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -34,7 +34,7 @@ const Navbar = () => {
   const handleLogout = () => {
     console.log("Logged out!");
   };
-  const src = "/myimg.jpg"; // Replace with your image URL
+  const src = "";
 
   //   Flag Change
   const handleChange = (event) => {
@@ -95,7 +95,7 @@ const Navbar = () => {
             }}
           >
             {/* Pages */}
-            <Link to="/">
+            {/* <Link to="/">
               <Button
                 sx={{
                   fontSize: "16px",
@@ -105,9 +105,9 @@ const Navbar = () => {
               >
                 Home
               </Button>
-            </Link>
+            </Link> */}
 
-            <Link to="/features">
+            {/* <Link to="/features">
               <Button
                 sx={{
                   fontSize: "16px",
@@ -118,14 +118,14 @@ const Navbar = () => {
               >
                 Features
               </Button>
-            </Link>
+            </Link> */}
 
-            <Link to="/subscriptions">
+            <Link to="/">
               <Button
                 sx={{
                   fontSize: "16px",
                   fontWeight: "400",
-                  color: location.pathname.startsWith("/subscriptions")
+                  color: location.pathname.startsWith("/subscriptions") || location.pathname.startsWith("/")
                     ? "#CE2729"
                     : "#656565",
                 }}
@@ -258,9 +258,9 @@ const Navbar = () => {
                       sx={{
                         width: "52px",
                         height: "52px",
-                        backgroundColor: "#fff", // White background
-                        color: "#000", // Icon color
-                        border: "2px solid #fff", // White outline
+                        backgroundColor: "#fff",
+                        color: "#000",
+                        border: "2px solid #fff",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -310,7 +310,7 @@ const Navbar = () => {
                           color: "black",
                         }}
                       >
-                        Malik Ali
+                        {user?.name}
                       </Typography>
                     </Box>
                     <Box
@@ -334,7 +334,7 @@ const Navbar = () => {
                           fontWeight: "500",
                         }}
                       >
-                        +966501729924
+                        {user?.mobile}
                       </Typography>
                     </Box>
                     <Box
@@ -358,7 +358,7 @@ const Navbar = () => {
                           fontWeight: "500",
                         }}
                       >
-                        abdullah@gmail.com
+                        {user?.email}
                       </Typography>
                     </Box>
                     <Box
@@ -384,7 +384,7 @@ const Navbar = () => {
                           fontWeight: "500",
                         }}
                       >
-                        Loyalty Points
+                        {user?.loyalty_point}
                       </Typography>
                     </Box>
 
@@ -411,7 +411,7 @@ const Navbar = () => {
                           color: "black",
                         }}
                       >
-                        $1,250
+                        {user?.wallet_balance}
                       </Typography>
                     </Box>
 

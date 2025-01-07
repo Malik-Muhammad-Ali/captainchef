@@ -1,4 +1,5 @@
 import axios from "axios";
+const BASE_URL = "https://portal.captainchef.net/public";
 
 const userSlice = (set) => ({
   user: null,
@@ -7,9 +8,8 @@ const userSlice = (set) => ({
   mobile_number: null,
   planDetailUrl: "/subscriptions",
   loginUser: async (mobileNumber) => {
-    console.log(mobileNumber);
     const response = await axios.post(
-      `https://portal.captainchef.net/public/api/webapi/check-contact-exists-or-not`,
+      `${BASE_URL}/api/webapi/check-contact-exists-or-not`,
       {
         mobile_number: mobileNumber,
       }
@@ -35,8 +35,9 @@ const userSlice = (set) => ({
       planDetailUrl: route,
     })),
   registerUser: async (createUser) => {
+
     const response = await axios.post(
-      `https://portal.captainchef.net/public/api/ver2/contact/register`,
+      `${BASE_URL}/api/ver2/contact/register`,
       {
         first_name: createUser.firstName,
         last_name: createUser.lastName,

@@ -26,13 +26,14 @@ const Checkout = () => {
     language,
     paymentNoon,
     cartData,
-    selectedDeliveryAddress,
+    // selectedDeliveryAddress,
     cities,
-    totalPriceWithVAT,
-    postUrl,
-    returnUrl,
-    selectedPickupAddress,
+    // totalPriceWithVAT,
+    // postUrl,
+    // returnUrl,
+    // selectedPickupAddress,
     setPaymentResult,
+    paymentWallet,
   } = useAppStore();
   const isArabic = language === "ar";
 
@@ -47,12 +48,13 @@ const Checkout = () => {
   const [internalPostUrl, setInternalPostUrl] = useState("");
   const [showIframe, setShowIframe] = useState(false);
   const [paymentModal, setPaymentModal] = useState(false);
-  const [status, setStatus] = useState("");
+  // const [status, setStatus] = useState("");
   const [discount, setDiscount] = useState();
   const iframeRef = useRef(null);
   const intervalRef = useRef(null);
   const [loadCount, setLoadCount] = useState(0);
   const [noonOrderId, setNoonOrderId] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(null);
 
   const discountType = couponData?.data?.discount_type || "";
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
@@ -60,7 +62,6 @@ const Checkout = () => {
     (currentCity) => currentCity.city_name === city
   );
 
-  // console.log(cartData[0].address.address);
   const cart = cartData.map((item) => ({
     planName: item.plan.title,
     planName_ar: item.plan.title_ar,
@@ -83,7 +84,7 @@ const Checkout = () => {
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
   }));
-  console.log(cartData)
+  console.log(cartData);
 
   // Calculate the discounted price for each plan
   const discountedCart = cart.map((item) => {
@@ -154,6 +155,7 @@ const Checkout = () => {
     }
   };
 
+  console.log(discountedCart);
   const addedPlans = discountedCart.map((SinglePlan) => ({
     plan_id: SinglePlan?.plan_id, //done
     addon_ids: [], //done
@@ -165,7 +167,8 @@ const Checkout = () => {
     delivery_address: SinglePlan?.delivery_address, //done
     branch_id: SinglePlan?.branch_id, //done
     branch_name: SinglePlan?.branch_name, //done
-    paid_amount_for_plan: SinglePlan?.paid_amount_for_plan, //done
+    paid_amount_for_plan: SinglePlan?.paid_amount_for_plan, //
+    // discount_amount_for_plan: SinglePlan?.discountedPrice, //done
   }));
 
   const paymentStatusCheckFunction = async (noon_order_id) => {
@@ -178,7 +181,7 @@ const Checkout = () => {
         clearInterval(intervalRef);
         setPaymentResult("CAPTURED");
         navigate("/mysubscriptions");
-      }else{
+      } else {
         // clearInterval(intervalRef);
         setPaymentResult("REJECTED");
         navigate("/mysubscriptions");
@@ -189,30 +192,30 @@ const Checkout = () => {
   };
 
   const handlePayment = async () => {
-    const { post_url, return_url, noon_order_id } = await paymentNoon(
-      addedPlans,
-      subTotal,
-      couponData,
-      user
-    );
-    setInternalPostUrl(post_url);
-    setNoonOrderId(noon_order_id);
-    if (post_url) {
-      setShowIframe(true);
+    if (paymentMethod === "master") {
+      const { post_url, noon_order_id } = await paymentNoon(
+        addedPlans,
+        subTotal,
+        couponData,
+        user
+      );
+      setInternalPostUrl(post_url);
+      setNoonOrderId(noon_order_id);
+      if (post_url) {
+        setShowIframe(true);
+      }
+    } else if (paymentMethod === "wallet") {
+      await paymentWallet(addedPlans, subTotal, couponData, user);
+      // console.log(paymentMethod);
     }
-    // intervalRef.current = setInterval(() => {
-    //   paymentStatusCheckFunction(noon_order_id);
-    // }, 3000);
   };
 
   const handleIframeLoad = () => {
     setLoadCount(loadCount + 1);
-    if(loadCount > 0){
-      console.log('Redirect Now')
+    if (loadCount > 0) {
       paymentStatusCheckFunction(noonOrderId);
     }
-    console.log("Iframe loaded"+loadCount);
-  }
+  };
 
   // useEffect
   useEffect(() => {
@@ -746,6 +749,8 @@ const Checkout = () => {
           </Box>
           <PaymentModal
             paymentModal={paymentModal}
+            setPaymentMethod={setPaymentMethod}
+            paymentMethod={paymentMethod}
             setPaymentModal={setPaymentModal}
             setShowIframe={setShowIframe}
             handlePayment={handlePayment}

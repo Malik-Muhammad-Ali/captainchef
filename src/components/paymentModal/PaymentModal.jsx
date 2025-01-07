@@ -16,9 +16,17 @@ import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
 import LockIcon from "@mui/icons-material/Lock";
 
-const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePayment, subTotal }) => {
+const PaymentModal = ({
+  paymentModal,
+  setPaymentModal,
+  setShowIframe,
+  handlePayment,
+  subTotal,
+  setPaymentMethod,
+  paymentMethod,
+}) => {
   const theme = useTheme();
-  const { language, totalPriceWithVAT } = useAppStore();
+  const { language, user } = useAppStore();
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -53,13 +61,16 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
   // handle Payment Method Selection
   const handleSelection = (paymentMethod) => {
     setSelectedPayment(paymentMethod);
+    setPaymentMethod(paymentMethod);
   };
 
   const handleModal = () => {
-    setPaymentModal(false)
-    handlePayment()
-    setShowIframe(true)
-  }
+    setPaymentModal(false);
+    handlePayment();
+    if (paymentMethod === "master") {
+      setShowIframe(true);
+    }
+  };
 
   // payment modal props
   const modalProps = {
@@ -120,9 +131,6 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
               borderTopLeftRadius: isMobile ? "10px" : "0px",
               borderTopRightRadius: isMobile ? "10px" : "20px",
               borderRadius: isMobile ? "10px 10px 0 0" : "20px",
-
-              //   overflowY: "scroll",
-              //   overflow: "hidden",
             }}
           >
             <Box component="form" noValidate autoComplete="off">
@@ -197,7 +205,7 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
                   height: "48px",
                   marginTop: "10px",
                   borderRadius: "16px",
-                  background: selectedPayment === null ? 'gray' : '#D92531',
+                  background: selectedPayment === null ? "gray" : "#D92531",
                   color: "white",
                   fontSize: "22px",
                   fontWeight: "400",
@@ -206,7 +214,9 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
                 disabled={selectedPayment === null ? true : false}
                 onClick={() => handleModal()}
               >
-                {language === 'en' ? `Pay ${subTotal} Now` : `ادفع ${subTotal} الآن` }
+                {language === "en"
+                  ? `Pay ${subTotal} Now`
+                  : `ادفع ${subTotal} الآن`}
               </Button>
             </Box>
           </Paper>

@@ -93,12 +93,12 @@ const AnimatedRoutes = () => {
                 animate="animate"
                 exit="exit"
               >
-                <Home />
+                <Subscriptions />
               </motion.div>
             </Suspense>
           }
         />
-        <Route
+        {/* <Route
           path="/features"
           element={
             <Suspense fallback={<div>Loading...</div>}>
@@ -112,7 +112,7 @@ const AnimatedRoutes = () => {
               </motion.div>
             </Suspense>
           }
-        />
+        /> */}
         <Route
           path="/subscriptions"
           element={

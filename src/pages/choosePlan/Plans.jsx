@@ -12,8 +12,9 @@ const Plans = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const [selectedPlan, setSelectedPlan] = useState("monthly");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { fetchPlans, plans, language } = useAppStore();
+  console.log(plans);
 
   const filteredPlans = useMemo(() => {
     return plans.filter((plan) => plan.plan_type_range === selectedPlan);
@@ -22,11 +23,13 @@ const Plans = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      fetchPlans(categoryId);
-      setLoading(false);
+      const message = await fetchPlans(categoryId);
+      if (message === "success") {
+        setLoading(false);
+      }
     };
 
-    fetchData();
+      fetchData();
   }, [categoryId]);
   const isArabic = language === "ar";
   // console.log(plans);

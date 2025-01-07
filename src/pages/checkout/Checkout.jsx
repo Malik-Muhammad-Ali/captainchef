@@ -84,7 +84,7 @@ const Checkout = () => {
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
   }));
-  console.log(cartData);
+  // console.log(cartData);
 
   // Calculate the discounted price for each plan
   const discountedCart = cart.map((item) => {
@@ -155,7 +155,7 @@ const Checkout = () => {
     }
   };
 
-  console.log(discountedCart);
+  // console.log(discountedCart);
   const addedPlans = discountedCart.map((SinglePlan) => ({
     plan_id: SinglePlan?.plan_id, //done
     addon_ids: [], //done

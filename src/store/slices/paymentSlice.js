@@ -71,16 +71,17 @@ const paymentSlice = (set) => ({
     }
   },
   paymentWallet: async (addedPlans, totalPaid, couponData, user) => {
-    console.log(addedPlans);
+    console.log(user?.wallet_balance, totalPaid);
+    console.log("Wallet Payment")
     try {
       const response = await axios.post(
         `${BASE_URL}/api/ver2/save-purchased-subscription-with-noon`,
         {
           user_id: 5,
-          total_amount: 0.12,
+          total_amount: totalPaid,
           payment_mode: "wallet",
           tabby_percentage: null,
-          total_paid: 0.12,
+          total_paid: totalPaid,
           added_palns: [
             {
               plan_id: 5,
@@ -101,7 +102,7 @@ const paymentSlice = (set) => ({
             },
           ],
           status: "inactive",
-          wallet_amount: 0.12,
+          wallet_amount: user?.wallet_balance,
           transaction_channel: "buy_subscription",
           coupon_code: "zt1",
           coupon_name: "Test Coupon",

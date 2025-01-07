@@ -55,7 +55,13 @@ export default function PlansCategoryCard({color , title , img , id , language }
         borderColor: color,
         flexGrow: 1,
         cursor: "pointer",
-        boxShadow: 'none'
+        boxShadow: 'none',
+        '@media (min-width: 391px) and (max-width:440px)': {
+          minWidth:"160px",
+          maxWidth:"160px",
+          minHeight:"200px",
+          maxHeight:"200px",
+        },
       }}
       onClick={() => navigate(`/subscriptions/category/${id}`)}
     >

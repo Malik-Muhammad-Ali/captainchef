@@ -41,7 +41,7 @@ const Subscriptions = () => {
       <Box
         sx={{
           display: "flex",
-          marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "200px" },
+          marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "160px" },
           flexDirection: "column",
           alignItems: "center",
           backgroundColor: "#f5f5f5",
@@ -134,7 +134,13 @@ const Subscriptions = () => {
                 },
                 justifyContent: "space-between",
                 direction: isRTL ? "rtl" : "ltr",
-                mb: { lg: "50px", md: "50px", sm: "30px", xs: "20px" },
+                mb: { lg: "90px", md: "80px", sm: "30px", xs: "60px" },
+                '@media (min-width: 391px) and (max-width:440px)': {
+                    // minWidth:"390px",
+                    maxWidth:"360px",
+                    gap:"22px",
+                    mb:"60px",
+                },
               }}
             >
               {categories.map((data, index) => (
@@ -157,8 +163,8 @@ const Subscriptions = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 55,
-            right: 20,
+            bottom: {lg:40, md:30, sm:20, xs:15},
+            right: {lg:20, md:20, sm:10, xs:5},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

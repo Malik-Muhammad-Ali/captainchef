@@ -71,8 +71,11 @@ const paymentSlice = (set) => ({
     }
   },
   paymentWallet: async (addedPlans, totalPaid, couponData, user) => {
-    console.log(user?.wallet_balance, totalPaid);
-    console.log("Wallet Payment")
+    console.log(addedPlans);
+    console.log(totalPaid);
+    if(user?.wallet_balance < totalPaid){
+      return "failed";
+    }
     try {
       const response = await axios.post(
         `${BASE_URL}/api/ver2/save-purchased-subscription-with-noon`,
@@ -104,8 +107,8 @@ const paymentSlice = (set) => ({
           status: "inactive",
           wallet_amount: user?.wallet_balance,
           transaction_channel: "buy_subscription",
-          coupon_code: "zt1",
-          coupon_name: "Test Coupon",
+          coupon_code: couponData?.data?.code,
+          coupon_name: couponData?.data?.title,
           discount_via: "default",
           comment: "",
           payment_status: "paid",
@@ -124,6 +127,7 @@ const paymentSlice = (set) => ({
     } catch (error) {
       console.log(error);
     }
+    return "success";
   },
 });
 

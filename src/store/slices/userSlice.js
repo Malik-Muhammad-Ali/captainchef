@@ -14,7 +14,6 @@ const userSlice = (set) => ({
         mobile_number: mobileNumber,
       }
     );
-    console.log(response.data);
     if (response.data.status === "success") {
       set(() => ({
         user: response.data.data,

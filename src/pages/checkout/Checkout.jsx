@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Box,
   Button,
   IconButton,
   Paper,
-  Radio,
   TextField,
   Typography,
 } from "@mui/material";
@@ -26,12 +25,7 @@ const Checkout = () => {
     language,
     paymentNoon,
     cartData,
-    // selectedDeliveryAddress,
     cities,
-    // totalPriceWithVAT,
-    // postUrl,
-    // returnUrl,
-    // selectedPickupAddress,
     setPaymentResult,
     paymentWallet,
   } = useAppStore();
@@ -48,13 +42,14 @@ const Checkout = () => {
   const [internalPostUrl, setInternalPostUrl] = useState("");
   const [showIframe, setShowIframe] = useState(false);
   const [paymentModal, setPaymentModal] = useState(false);
-  // const [status, setStatus] = useState("");
   const [discount, setDiscount] = useState();
   const iframeRef = useRef(null);
   const intervalRef = useRef(null);
   const [loadCount, setLoadCount] = useState(0);
   const [noonOrderId, setNoonOrderId] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [couponButton, setCouponButton] = useState(false);
 
   const discountType = couponData?.data?.discount_type || "";
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
@@ -84,22 +79,44 @@ const Checkout = () => {
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
   }));
-  // console.log(cartData);
 
   // Calculate the discounted price for each plan
-  const discountedCart = cart.map((item) => {
-    let discountedPrice = item.planPrice;
-    if (discountType === "percent") {
-      discountedPrice = item.planPrice - (item.planPrice * discount) / 100;
-    } else if (discountType === "fixed") {
-      discountedPrice =
-        item.planPrice - parseFloat(item.plan.discounted_amount);
+  const discountedCart = cartData.map((item) => {
+    let planPrice =
+      item.plan.discount_offer_only === "yes"
+        ? parseFloat(item.plan.discounted_amount)
+        : parseFloat(item.plan.basic_amount);
+
+    let discountedPrice = planPrice;
+    if (item?.plan?.coupon_apply === "yes" && discountType === "percent") {
+      discountedPrice = (planPrice - (planPrice * discount) / 100).toFixed(2);
+    } else if (item?.plan?.coupon_apply === "yes" && discountType === "fixed") {
+      discountedPrice = (
+        planPrice - parseFloat(item.plan.discounted_amount)
+      ).toFixed(2);
     }
     return {
-      ...item,
+      planName: item.plan.title,
+      planName_ar: item.plan.title_ar,
+      planPrice: planPrice,
+      delivery_charges:
+        (item.delivery_charges && parseFloat(item.delivery_charges)) || 0,
+      plan_id: item?.plan_id,
+      delivery_type: item?.delivery_type,
+      delivery_address_id: item?.delivery_address_id,
+      delivery_address: item?.address?.address,
+      branch_id: item?.branch_id,
+      branch_name: item?.branch?.branch_name,
+      city: city,
+      city_id: selectedCity?.id,
+      paid_amount_for_plan: discountedPrice,
       discountedPrice: Math.max(discountedPrice, 0),
+      coupon_apply: item?.plan?.coupon_apply,
     };
   });
+  // console.log(discountedCart);
+  // console.log(couponData);
+  console.log(cartData);
 
   // Calculate the total price with discounts applied
   const totalPrice = discountedCart.reduce((total, item, index) => {
@@ -141,11 +158,19 @@ const Checkout = () => {
         "https://portal.captainchef.net/public/connector/api/coupon/apply",
         dataSend
       );
-      if (response.data.status === "success") {
+      let min_cart_amount = parseFloat(response.data.data.min_cart_amount) || 0;
+      if (response.data.status === "success" && subTotal >= min_cart_amount) {
         setCouponError();
         setCouponData(response.data);
         setFreePlan(false);
         setDiscount(response.data.data.discount);
+        setCouponButton(true);
+      } else if (
+        response.data.status === "success" &&
+        subTotal < min_cart_amount
+      ) {
+        setCouponError("Cart amount is less");
+        setCouponData();
       } else {
         setCouponData();
         setCouponError("Enter a Valid Coupon Code");
@@ -155,7 +180,6 @@ const Checkout = () => {
     }
   };
 
-  // console.log(discountedCart);
   const addedPlans = discountedCart.map((SinglePlan) => ({
     plan_id: SinglePlan?.plan_id, //done
     addon_ids: [], //done
@@ -171,6 +195,7 @@ const Checkout = () => {
     // discount_amount_for_plan: SinglePlan?.discountedPrice, //done
   }));
 
+  // Payment Status Check Function For Noor
   const paymentStatusCheckFunction = async (noon_order_id) => {
     try {
       const response = await axios.get(
@@ -191,6 +216,7 @@ const Checkout = () => {
     }
   };
 
+  // Handle Payment
   const handlePayment = async () => {
     if (paymentMethod === "master") {
       const { post_url, noon_order_id } = await paymentNoon(
@@ -205,11 +231,20 @@ const Checkout = () => {
         setShowIframe(true);
       }
     } else if (paymentMethod === "wallet") {
-      await paymentWallet(addedPlans, subTotal, couponData, user);
+      const result = await paymentWallet(
+        addedPlans,
+        subTotal,
+        couponData,
+        user
+      );
+      if (result) {
+        setLoading(false);
+      }
       // console.log(paymentMethod);
     }
   };
 
+  // Handle Iframe Load
   const handleIframeLoad = () => {
     setLoadCount(loadCount + 1);
     if (loadCount > 0) {
@@ -310,7 +345,7 @@ const Checkout = () => {
                 justifyContent: "center",
                 flexDirection: {
                   xs: "column",
-                  sm: "row",
+                  sm: "column",
                   md: "row",
                   lg: "row",
                 },
@@ -350,9 +385,9 @@ const Checkout = () => {
                     sx={{
                       padding: "16px",
                       width: {
-                        lg: "560px",
+                        lg: "600px",
                         md: "480px",
-                        sm: "331px",
+                        sm: "600px",
                         xs: "345px",
                       },
                       height: isCollapsed ? "auto" : "164px", // Adjust height dynamically
@@ -444,17 +479,27 @@ const Checkout = () => {
                     )}
                   </Paper>
                 )}
+              </Box>
 
-                {/*paper 3 of apply couon*/}
-
+              {/*paper 3 of apply couon*/}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: { xs: "28px", sm: "-170px", md: "0", lg: "0" },
+                  height: "auto",
+                  gap: "40px",
+                  mb: { sm: "10px", md: "0", xs: "0", lg: "0" },
+                }}
+              >
                 <Paper
                   elevation={0}
                   sx={{
                     padding: "16px",
                     width: {
-                      lg: "560px",
+                      lg: "600px",
                       md: "480px",
-                      sm: "331px",
+                      sm: "600px",
                       xs: "345px",
                     },
                     height: isCollapsed1 ? "auto" : "164px", // Adjust height dynamically
@@ -552,7 +597,7 @@ const Checkout = () => {
                           width: {
                             lg: "530px",
                             md: "450px",
-                            sm: "335px",
+                            sm: "420px",
                             xs: "313px",
                           },
                           height: {
@@ -579,12 +624,16 @@ const Checkout = () => {
                           width: {
                             lg: "193px",
                             md: "193px",
-                            sm: "80px",
+                            sm: "150px",
                             xs: "",
                           },
                           height: "60px",
                           marginLeft: "8px",
-                          border: code ? "0.5px solid red" : "none",
+                          border: code
+                          ? couponButton
+                            ? "none" // If `code` is true and `couponButton` is true
+                            : "0.5px solid red" // If `code` is true but `couponButton` is false
+                          : "none", // If `code` is false
                           backgroundColor: "white",
                           color: "#D92531",
                           textTransform: "none",
@@ -593,7 +642,7 @@ const Checkout = () => {
                           borderRadius: "10px",
                         }}
                         onClick={() => handleCoupon()}
-                        disabled={!code} // Disable button if no code is entered
+                        disabled={!code || couponButton} // Disable button if no code is entered
                       >
                         {isArabic ? "تطبيق" : "Apply"}
                       </Button>
@@ -608,9 +657,9 @@ const Checkout = () => {
                   sx={{
                     padding: "16px",
                     width: {
-                      lg: "560px",
+                      lg: "600px",
                       md: "480px",
-                      sm: "331px",
+                      sm: "600px",
                       xs: "345px",
                     },
                     height: "auto",
@@ -622,7 +671,7 @@ const Checkout = () => {
                     bottom: "40px",
                     left: "32px",
                     // mb: "30px",
-                    pb: "20px",
+                    // pb: "20px",
                   }}
                 >
                   <Box
@@ -700,7 +749,7 @@ const Checkout = () => {
                           width: {
                             lg: "530px",
                             md: "450px",
-                            sm: "300px",
+                            sm: "560px",
                             xs: "313px",
                           },
                           minHeight: {
@@ -748,6 +797,8 @@ const Checkout = () => {
             </Button>
           </Box>
           <PaymentModal
+            loading={loading}
+            setLoading={setLoading}
             paymentModal={paymentModal}
             setPaymentMethod={setPaymentMethod}
             paymentMethod={paymentMethod}

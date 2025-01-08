@@ -24,12 +24,7 @@ const MyCart = () => {
   const [loading, setLoading] = useState(true);
   console.log(cartData);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchCartData(user?.id);
-    setLoading(false);
-  }, []);
-
+  // handle delete meal from cart
   const handleDelete = async (productId) => {
     try {
       await axios.get(
@@ -47,6 +42,12 @@ const MyCart = () => {
       console.error("Error deleting item:", error);
     }
   };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchCartData(user?.id);
+    setLoading(false);
+  }, []);
 
   // Component
   return (

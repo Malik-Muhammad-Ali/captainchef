@@ -817,7 +817,7 @@ const Checkout = () => {
             src={internalPostUrl}
             title="Payment Iframe"
             onLoad={handleIframeLoad}
-            style={{ width: "100%", height: "500px", border: "none" }}
+            style={{ width: "100%", height: "100vh", border: "none" }}
           ></iframe>
         </>
       )}

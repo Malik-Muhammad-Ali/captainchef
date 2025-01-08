@@ -7,7 +7,7 @@ import useAppStore from "../../store/store";
 
 const NotRegisterYet = () => {
   const navigate = useNavigate();
-  const { otp, message, planDetailUrl } = useAppStore();
+  const { otp, message, planDetailUrl, setAuthenticated } = useAppStore();
   const [pin, setPin] = useState(["", "", "", ""]);
   const [error, setError] = useState();
   console.log(otp)
@@ -34,6 +34,7 @@ const NotRegisterYet = () => {
     const pinValue = pin.join("");
     if (pinValue === otp && message === 'Exists') {
       setError(null);
+      setAuthenticated(true);
       navigate(planDetailUrl);
     } else if(pinValue === otp && message === 'Not Exists') {
       setError(null);

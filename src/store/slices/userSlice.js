@@ -7,6 +7,7 @@ const userSlice = (set) => ({
   otp: null,
   mobile_number: null,
   planDetailUrl: "/subscriptions",
+  setAuthenticated: (authenticated) => set({ authenticated }),
   loginUser: async (mobileNumber) => {
     const response = await axios.post(
       `${BASE_URL}/api/webapi/check-contact-exists-or-not`,
@@ -34,24 +35,19 @@ const userSlice = (set) => ({
       planDetailUrl: route,
     })),
   registerUser: async (createUser) => {
-
-    const response = await axios.post(
-      `${BASE_URL}/api/ver2/contact/register`,
-      {
-        first_name: createUser.firstName,
-        last_name: createUser.lastName,
-        email: createUser.email,
-        mobile: createUser.mobileNumber,
-        password: createUser.password,
-        country_code: 966,
-        business_id: 100,
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/api/ver2/contact/register`, {
+      first_name: createUser.firstName,
+      last_name: createUser.lastName,
+      email: createUser.email,
+      mobile: createUser.mobileNumber,
+      password: createUser.password,
+      country_code: 966,
+      business_id: 100,
+    });
     console.log(response.data);
     if (response.data.status === "success") {
       set(() => ({
         user: response.data.user_info,
-        authenticated: true,
       }));
       return {
         message: "Registration Successful!",

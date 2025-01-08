@@ -14,7 +14,7 @@ import useAppStore from "../../store/store";
 
 const CreateAccount = () => {
   const navigate = useNavigate();
-  const { registerUser, language, mobile_number, planDetailUrl } = useAppStore();
+  const { registerUser, language, mobile_number, planDetailUrl, setAuthenticated } = useAppStore();
   const [error, setError] = useState("");
   const [createUser, setCreateUser] = useState({
     firstName: "",
@@ -61,6 +61,7 @@ const CreateAccount = () => {
       setError({ general: registrationResponse.message });
     }
     if (registrationResponse.status === true) {
+      setAuthenticated(true);
       navigate(planDetailUrl);
     }
   };

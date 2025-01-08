@@ -13,6 +13,7 @@ import React, { Suspense } from "react";
 
 // Lazy-loaded pages
 import Home from "./pages/home/Home";
+import SuspenceLoader from "./components/suspenseLoader/SuspenceLoader";
 const Features = React.lazy(() => import("./pages/features/Features"));
 const Subscriptions = React.lazy(() =>
   import("./pages/subscriptions/Subscriptions")
@@ -86,7 +87,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -116,7 +117,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/subscriptions"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -131,7 +132,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/subscriptions/category/:categoryId"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -146,7 +147,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/subscriptions/category/:categoryId/plans/:planId"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -161,7 +162,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/login"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -176,7 +177,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/createaccount"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -191,7 +192,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/deliveryaddress"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -206,7 +207,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/pickupaddress"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -221,7 +222,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/forgotpassword"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -236,7 +237,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/regeneratepassword"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -264,7 +265,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/checkout"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -279,7 +280,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/mysubscriptions"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -294,7 +295,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/downloadapp"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -309,7 +310,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/otp"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -324,7 +325,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/cart"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -339,7 +340,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/addDeliveryAddress"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -354,7 +355,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/payment"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -369,7 +370,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/error"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -397,7 +398,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/termsandconditions"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -412,7 +413,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/privacyPolicy"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"
@@ -427,7 +428,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/contactus"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenceLoader />}>
               <motion.div
                 variants={pageVariants}
                 initial="initial"

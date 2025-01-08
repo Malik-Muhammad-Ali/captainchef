@@ -36,7 +36,6 @@ const paymentSlice = (set) => ({
       ) {
         console.log("Success");
         const post_url = response?.data?.data?.checkout_data?.postUrl;
-        const return_url = response?.data?.data?.return_url;
         const noon_order_id = response.data.data.noon_order_id;
         console.log(noon_order_id);
         set({ postUrl: response?.data?.data?.checkout_data?.postUrl });
@@ -73,7 +72,7 @@ const paymentSlice = (set) => ({
   paymentWallet: async (addedPlans, totalPaid, couponData, user) => {
     console.log(addedPlans);
     console.log(totalPaid);
-    if(user?.wallet_balance < totalPaid){
+    if (user?.wallet_balance < totalPaid) {
       return "failed";
     }
     try {

@@ -116,7 +116,7 @@ const Checkout = () => {
   });
   // console.log(discountedCart);
   // console.log(couponData);
-  console.log(cartData);
+  // console.log(cartData);
 
   // Calculate the total price with discounts applied
   const totalPrice = discountedCart.reduce((total, item, index) => {
@@ -180,6 +180,7 @@ const Checkout = () => {
     }
   };
 
+  console.log(discountedCart)
   const addedPlans = discountedCart.map((SinglePlan) => ({
     plan_id: SinglePlan?.plan_id, //done
     addon_ids: [], //done
@@ -631,9 +632,9 @@ const Checkout = () => {
                           marginLeft: "8px",
                           border: code
                           ? couponButton
-                            ? "none" // If `code` is true and `couponButton` is true
-                            : "0.5px solid red" // If `code` is true but `couponButton` is false
-                          : "none", // If `code` is false
+                            ? "none"
+                            : "0.5px solid red"
+                          : "none",
                           backgroundColor: "white",
                           color: "#D92531",
                           textTransform: "none",

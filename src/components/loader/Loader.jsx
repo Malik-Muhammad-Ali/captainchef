@@ -1,4 +1,5 @@
 import { CircularProgress, Box, Typography } from "@mui/material";
+import { calcLength } from "framer-motion";
 
 const Loader = () => {
   // const [showLoader, setShowLoader] = useState(true);
@@ -18,7 +19,7 @@ const Loader = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        // height: "100vh",
+        height: "calc(100vh - 170px)", // Full screen height
         background: "#f7f7f7", // Light background for contrast
       }}
     >

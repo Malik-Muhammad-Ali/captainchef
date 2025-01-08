@@ -122,9 +122,11 @@ const Navbar = () => {
                 sx={{
                   fontSize: "16px",
                   fontWeight: "400",
-                  color: location.pathname.startsWith("/subscriptions") || location.pathname.startsWith("/")
-                    ? "#CE2729"
-                    : "#656565",
+                  color:
+                    location.pathname.startsWith("/subscriptions") ||
+                    location.pathname.startsWith("/")
+                      ? "#CE2729"
+                      : "#656565",
                 }}
               >
                 Subscriptions
@@ -842,7 +844,7 @@ const Navbar = () => {
                 ml: "5px",
               }}
             >
-              Malik Ali
+              {user?.name}
             </Typography>
           </Box>
           <Box
@@ -879,7 +881,7 @@ const Navbar = () => {
                 ml: "5px",
               }}
             >
-              +966501729924
+              {user?.mobile}
             </Typography>
           </Box>
           <Box
@@ -921,7 +923,7 @@ const Navbar = () => {
                 fontWeight: "500",
               }}
             >
-              abdullah@gmail.com
+              {user?.email}
             </Typography>
           </Box>
           <Box
@@ -959,7 +961,7 @@ const Navbar = () => {
                 fontWeight: "500",
               }}
             >
-              Loyalty Points
+              {user?.loyalty_point}
             </Typography>
           </Box>
 
@@ -1010,7 +1012,7 @@ const Navbar = () => {
                 color: "black",
               }}
             >
-              $1,250
+              {user?.wallet_balance}
             </Typography>
           </Box>
           {/* Logout Section */}

@@ -7,10 +7,11 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import useAppStore from "../../store/store";
 
 const MySubscriptionCard = memo(({ plan }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const {selectedColor}= useAppStore();
   const icons = [
     `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
        <path d="M17 3L17 7" stroke="#1F1F1F" strokeWidth="0.5" stroke-linecap="round"/>
@@ -103,7 +104,7 @@ const MySubscriptionCard = memo(({ plan }) => {
             position: "absolute",
             top: 20,
             left: 22,
-            backgroundColor: "#D92531",
+            backgroundColor: selectedColor,
             color: "#fff",
             padding: "2px 8px",
             borderRadius: "6px",
@@ -261,7 +262,7 @@ const MySubscriptionCard = memo(({ plan }) => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: "#D92531",
+              bgcolor: selectedColor,
               color: "#fff",
               borderRadius: 2,
               width: "100%",

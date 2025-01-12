@@ -5,12 +5,18 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "../../store/store";
 
 export default function PlansCategoryCard({ color, title, img, id, language }) {
+  const { setSelectedColor } = useAppStore();
   const navigate = useNavigate();
   const nameArray = title.split(" ");
   const isRTL = language === "ar";
   const [isLoaded, setIsLoaded] = useState(false);
+  const handleCardClick = () => {
+    setSelectedColor(color); // Set the selected color in the store
+    navigate(`/subscriptions/category/${id}`); // Navigate to the desired route
+  };
 
   // Adjust the title arrangement for RTL and LTR
   const titleText =
@@ -66,7 +72,7 @@ export default function PlansCategoryCard({ color, title, img, id, language }) {
           maxHeight: "200px",
         },
       }}
-      onClick={() => navigate(`/subscriptions/category/${id}`)}
+      onClick={handleCardClick}
     >
       {isLoaded === true ? (
         <CardMedia

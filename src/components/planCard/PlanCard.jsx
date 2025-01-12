@@ -20,7 +20,7 @@ const PlanCard = memo(
   ({ plan, planID, days, heading, language, freePlans, title }) => {
     const navigate = useNavigate();
     const { categoryId } = useParams();
-    const { setCurrentPlan, city, addToCart, user, setPlanAvailableDays } =
+    const { setCurrentPlan, city, addToCart, user, setPlanAvailableDays,selectedColor } =
       useAppStore();
     const isArabic = language === "ar";
     const [isLoaded, setIsLoaded] = useState(false);
@@ -206,7 +206,7 @@ const PlanCard = memo(
                 position: "absolute",
                 top: { lg: 5, md: 5, sm: 5, xs: 15 },
                 left: { lg: 5, md: 5, sm: 5, xs: 14 },
-                backgroundColor: "#D92531",
+                backgroundColor: selectedColor,
                 color: "#fff",
                 padding: "2px 8px",
                 borderRadius: "10px",
@@ -538,7 +538,7 @@ const PlanCard = memo(
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: "#D92531",
+                  bgcolor: selectedColor,
                   color: "#fff",
                   borderRadius: 3,
                   width: "100%", // Adjusted width

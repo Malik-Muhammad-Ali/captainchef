@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
-  const { currentPlan, language, city } = useAppStore();
+  const { currentPlan, language, city , selectedColor } = useAppStore();
 
   // Icons
   const iconsMap = {
@@ -127,7 +127,7 @@ const PlanDetailsCard = () => {
             className="leftCardImg"
             width="100%"
           />
-          <p className="categoryName">
+          <p className="categoryName" style={{backgroundColor:selectedColor}}>
             {language === "en"
               ? currentPlan?.subscription_cat_name
               : currentPlan?.subscription_cat_name_ar}

@@ -13,7 +13,7 @@ const Plans = () => {
   const { categoryId } = useParams();
   const [selectedPlan, setSelectedPlan] = useState();
   const [loading, setLoading] = useState(false);
-  const { fetchPlans, plans, language } = useAppStore();
+  const { fetchPlans, plans, language, selectedColor } = useAppStore();
   const [filteredPlans, setFilteredPlans] = useState([]);
 
   const handleFilterPlans = (type) => {
@@ -196,7 +196,7 @@ const Plans = () => {
               flex: 1,
               textAlign: "center",
               backgroundColor:
-                selectedPlan === "weekly" ? "#D92531" : "transparent",
+                selectedPlan === "weekly" ? selectedColor : "transparent",
               color: selectedPlan === "weekly" ? "#fff" : "#000",
               padding: {
                 xs: "18px 2px",
@@ -221,7 +221,7 @@ const Plans = () => {
               flex: 1,
               textAlign: "center",
               backgroundColor:
-                selectedPlan === "monthly" ? "#D92531" : "transparent",
+                selectedPlan === "monthly" ? selectedColor : "transparent",
               color: selectedPlan === "monthly" ? "#fff" : "#000",
               padding: {
                 xs: "18px 10px",

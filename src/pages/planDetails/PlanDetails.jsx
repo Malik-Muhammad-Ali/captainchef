@@ -33,6 +33,7 @@ const PlanDetails = () => {
     language,
     currentPlan,
     planAvailableDays,
+    selectedColor,
   } = useAppStore();
 
   // States
@@ -444,7 +445,7 @@ const PlanDetails = () => {
                       style={{
                         border:
                           selectedIndex === index
-                            ? "1px solid #D92531"
+                            ? `1px solid ${selectedColor}`
                             : "1px solid black",
                         cursor: "pointer",
                       }}
@@ -453,7 +454,7 @@ const PlanDetails = () => {
                         className="weekdayFirstDiv"
                         style={{
                           backgroundColor:
-                            selectedIndex === index ? "#D92531" : "white",
+                            selectedIndex === index ? selectedColor : "white",
                         }}
                       >
                         <Typography
@@ -697,7 +698,7 @@ const PlanDetails = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        bgcolor: "#D92531",
+                        bgcolor: selectedColor,
                         color: "#fff",
                         borderRadius: 2,
                         width: "160px",
@@ -735,7 +736,7 @@ const PlanDetails = () => {
         className="subscribeButtonContainer"
         onClick={() => handleNavigation()}
       >
-        <div className="subscribeButton">
+        <div className="subscribeButton" style={{backgroundColor:selectedColor}}>
           {language === "en"
             ? "Subscribe Now, Schedule Later"
             : "اشترك الآن، حدد موعدًا لاحقًا"}

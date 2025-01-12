@@ -28,7 +28,7 @@
 }
 .categoryName {
   font-family: "Poppins";
-  background-color: #d92531;
+  /* background-color: black; */
   color: white;
   padding: 4px 6px;
   border-radius: 5px;
@@ -186,7 +186,7 @@
   height: 0px;
 }
 .subscribeButton {
-  background-color: #d92531;
+  /* background-color: black; */
   color: white;
   padding: 10px 20px;
   border-radius: 12px;

@@ -30,6 +30,7 @@ const Carousel = () => {
     <Box sx={{
       width:"100%",
       height:"auto",
+      bgcolor:"none",
     }}>
     <Swiper
       modules={[Navigation, Pagination, Scrollbar, A11y]}

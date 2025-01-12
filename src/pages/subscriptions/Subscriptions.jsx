@@ -55,15 +55,15 @@ const Subscriptions = () => {
 
   // Component
   return (
-    <>
+    <Box sx={{bgcolor:"#f5f5f5"}}>
       <Box
         sx={{
           display: "flex",
           marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "160px" },
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "#f5f5f5",
-          height: "100vh",
+          bgcolor:"none",
+          boxShadow:"none"
         }}
       >
         <Carousel />
@@ -72,9 +72,10 @@ const Subscriptions = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-start",
+            alignItems: "center",
             justifyContent: "center",
             padding: { lg: "20px", md: "20px", sm: "20px", xs: "5px" },
+            boxShadow:"none"
           }}
         >
           <Box
@@ -84,8 +85,9 @@ const Subscriptions = () => {
                 sm: "20px",
                 md: "35px",
               },
+              width:"90vw",
               display: "flex",
-              justifyContent: isRTL ? "flex-start" : "flex-end",
+              justifyContent: isRTL ? "flex-end" : "flex-start",
               alignSelf: isRTL ? "flex-end" : "flex-start",
             }}
           >
@@ -143,14 +145,15 @@ const Subscriptions = () => {
                 display: "flex",
                 flexWrap: "wrap",
                 gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
+                bgcolor:"none",
                 maxWidth: {
                   xs: "300px",
                   sm: "620px",
                   md: "930px",
                   lg: "1180px",
-                  xl: "1640px",
+                  xl: "1430px",
                 },
-                justifyContent: "space-between",
+                justifyContent: {xs:"space-between", sm:"center",md:"flex-start",lg:"flex-start",xl:"flex-start"},
                 direction: isRTL ? "rtl" : "ltr",
                 mb: { lg: "90px", md: "80px", sm: "30px", xs: "60px" },
                 '@media (min-width: 391px) and (max-width:440px)': {
@@ -197,7 +200,7 @@ const Subscriptions = () => {
           <CircularAvt />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

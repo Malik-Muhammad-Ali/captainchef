@@ -140,8 +140,11 @@ const PickupAddress = () => {
             >
               <ArrowBackIosIcon
                 sx={{
-                  paddingLeft: { xs: "5px", sm: "8px" },
-                  fontSize: { xs: "1.3rem", sm: "1.5rem", md: "1.8rem" },
+                  fontSize: "24px",
+                ml: language === "ar" ? "-7px" : "7px",
+                transform:
+                  language === "ar" ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s ease-in-out",
                 }}
               />
             </IconButton>

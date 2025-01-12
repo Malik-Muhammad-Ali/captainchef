@@ -4,7 +4,7 @@ import { useState } from "react";
 import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
-  const { currentPlan, language, city } = useAppStore();
+  const { currentPlan, language, city , selectedColor } = useAppStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Icons

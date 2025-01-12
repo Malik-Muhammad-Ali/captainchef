@@ -4,7 +4,7 @@ import { useState } from "react";
 import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
-  const { currentPlan, language, city , selectedColor } = useAppStore();
+  const { currentPlan, language, city, selectedColor } = useAppStore();
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Icons
@@ -142,7 +142,7 @@ const PlanDetailsCard = () => {
             />
           ) : (
             <img
-              src='/Banner.png'
+              src="/Banner.png"
               alt="Plan"
               className="leftCardImg"
               width="100%"
@@ -421,25 +421,31 @@ const PlanDetailsCard = () => {
                 <Typography sx={{ color: "#399272" }}>
                   {currentPlan?.estimate.protein}g
                 </Typography>
-                <Typography>Protein</Typography>
+                <Typography>
+                  {language === "en" ? "Protein" : "بروتين"}
+                </Typography>
               </div>
               <div style={{ textAlign: "center" }}>
                 <Typography sx={{ color: "#F7BE67" }}>
                   {currentPlan?.estimate.carbs}g
                 </Typography>
-                <Typography>Crab</Typography>
+                <Typography>
+                  {language === "en" ? "Carb" : "الكربوهيدرات"}
+                </Typography>
               </div>
               <div style={{ textAlign: "center" }}>
                 <Typography sx={{ color: "#A4131E" }}>
                   {currentPlan?.estimate.fats}g
                 </Typography>
-                <Typography>Fat</Typography>
+                <Typography>{language === "en" ? "Fat" : "سمين"}</Typography>
               </div>
               <div style={{ textAlign: "center" }}>
                 <Typography sx={{ color: "#FFDA7C" }}>
                   {currentPlan?.estimate.calorie}g
                 </Typography>
-                <Typography>Calories</Typography>
+                <Typography>
+                  {language === "en" ? "Calories" : "سعرات حرارية"}
+                </Typography>
               </div>
             </div>
           </div>

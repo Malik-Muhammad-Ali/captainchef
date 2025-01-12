@@ -32,6 +32,9 @@ const PaymentModal = ({
   // States
   const [selectedPayment, setSelectedPayment] = useState(null);
   const navigate = useNavigate();
+  console.log(subTotal);
+  console.log(parseFloat(user?.wallet_balance) < subTotal);
+  console.log(selectedPayment);
 
   const isArabic = language === "ar";
   const paymentOptions = [
@@ -185,6 +188,8 @@ const PaymentModal = ({
                       />
                       <Typography variant="body1" sx={{ flexGrow: 1 }}>
                         {isArabic ? option.label.ar : option.label.en}
+                        <br />
+                        {option.id === 'wallet' && `Wallet Amount: ${parseFloat(user?.wallet_balance)}`}
                       </Typography>
                       <Box
                         sx={{
@@ -215,7 +220,7 @@ const PaymentModal = ({
                         selectedPayment === null
                           ? "gray"
                           : selectedPayment === "wallet" &&
-                            user?.wallet_balance < subTotal
+                            parseFloat(user?.wallet_balance) < subTotal
                           ? "gray"
                           : "#D92531",
                       color: "white",
@@ -224,12 +229,9 @@ const PaymentModal = ({
                       textTransform: "none",
                     }}
                     disabled={
-                      selectedPayment === null
-                        ? true
-                        : selectedPayment === "wallet" &&
-                          user?.wallet_balance < subTotal
-                        ? true
-                        : false
+                      !selectedPayment ||
+                      (selectedPayment === "wallet" &&
+                        parseFloat(user?.wallet_balance) < subTotal)
                     }
                     onClick={() => handleModal()}
                   >

@@ -637,8 +637,11 @@ const PlanDetails = () => {
                       <div
                         style={{
                           cursor: "pointer",
+                          borderWidth: '3px',
+                          backgroundColor: selectedFoodType === item ? selectedColor : "white",
+                          color: selectedFoodType === item ? "white" : "black",
                           borderColor:
-                            selectedFoodType === item ? "#D92531" : "black",
+                            selectedFoodType === item ? selectedColor : "black",
                         }}
                         key={index}
                         onClick={() => handleFoodType(item)}

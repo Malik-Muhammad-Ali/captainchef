@@ -30,10 +30,6 @@ const PlanCard = memo(
       plan?.city.find((currentCity) => currentCity.city === city)
         ?.delivery_charges || plan?.city[0]?.delivery_charges;
 
-    // Set plan available days
-
-    // setPlanAvailableDays(availableDays)
-
     // Icons
     const iconsMap = {
       meals: (
@@ -215,7 +211,7 @@ const PlanCard = memo(
                 top: { lg: 5, md: 5, sm: 5, xs: 15 },
                 left: language === 'en' && { lg: 5, md: 5, sm: 5, xs: 14 },
                 right: language !== 'en' && { lg: 5, md: 5, sm: 5, xs: 14 },
-                backgroundColor: "#D92531",
+                backgroundColor: selectedColor,
                 color: "#fff",
                 padding: "2px 8px",
                 borderRadius: "10px",

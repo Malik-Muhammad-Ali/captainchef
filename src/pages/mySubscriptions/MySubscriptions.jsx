@@ -106,7 +106,6 @@ const MySubscriptions = () => {
 
   // fetch My Subscriptions
   const fetchMySubscriptions = async () => {
-    console.log("Api Hit");
     try {
       const response = await axios.get(
         `https://portal.captainchef.net/public/contact/get-purchased-subscription?user_id=${user?.id}`

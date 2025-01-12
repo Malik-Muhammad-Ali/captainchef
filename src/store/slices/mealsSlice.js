@@ -11,7 +11,6 @@ const mealsSlice = (set) => ({
     set({ mealsByDay: meals });
   },
   fetchMeals: async (mealList) => { 
-    console.log('Fetching Meals')
     const response = await axios.get(
       `https://portal.captainchef.net/public/get-meal/${mealList}`
     );
@@ -23,7 +22,7 @@ const mealsSlice = (set) => ({
       meals: selectedProductsDetails,
       mealsByDay: mealsForToday,
     });
-    return {message: "success"}
+    return {message: "success", data: mealsForToday};
   },
 });
 

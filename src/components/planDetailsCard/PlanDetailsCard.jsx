@@ -1,9 +1,11 @@
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
+import { useState } from "react";
 import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
   const { currentPlan, language, city } = useAppStore();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Icons
   const iconsMap = {
@@ -104,6 +106,13 @@ const PlanDetailsCard = () => {
     ),
   };
 
+  const itemsArabic = {
+    meals: "وجبات",
+    snacks: "وجبات خفيفة",
+    juice: "عصير",
+    "Big Salad": "سلطة كبيرة",
+  };
+
   // Calculate Delivery Charges
   const deliveryCharges =
     currentPlan?.city.find((currentCity) => currentCity.city === city)
@@ -112,6 +121,7 @@ const PlanDetailsCard = () => {
   // Add Icons in the Plan
   const updatedItems = currentPlan?.no_of_items.items.map((item) => ({
     ...item,
+    arabicName: itemsArabic[item.name] || "",
     icon: iconsMap[item.name] || "❓",
   }));
 
@@ -121,13 +131,33 @@ const PlanDetailsCard = () => {
       <div className="leftCard">
         {/* Image */}
         <div style={{ position: "relative" }}>
-          <img
-            src="/Banner.png"
-            alt="Plan"
-            className="leftCardImg"
-            width="100%"
-          />
-          <p className="categoryName">
+          {isLoaded === true ? (
+            <img
+              src={currentPlan.plan_image}
+              alt="Plan"
+              className="leftCardImg"
+              width="100%"
+              height="250px"
+              onLoad={() => setIsLoaded(true)}
+            />
+          ) : (
+            <img
+              src='/Banner.png'
+              alt="Plan"
+              className="leftCardImg"
+              width="100%"
+              height="250px"
+            />
+          )}
+          <p
+            className="categoryName"
+            style={{
+              position: "absolute",
+              top: "0px",
+              left: language === "en" && "10px",
+              right: language === "ar" && "10px",
+            }}
+          >
             {language === "en"
               ? currentPlan?.subscription_cat_name
               : currentPlan?.subscription_cat_name_ar}
@@ -139,7 +169,12 @@ const PlanDetailsCard = () => {
           <div>
             {/* Title */}
             <div className="planTitle">
-              <Typography variant="h6" sx={{ fontSize: "18px" }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: "18px",
+                }}
+              >
                 {language === "en" ? currentPlan?.title : currentPlan?.title_ar}
               </Typography>
               <div
@@ -150,16 +185,23 @@ const PlanDetailsCard = () => {
                   marginTop: "4px",
                 }}
               >
-                <Typography sx={{ color: "gray" }}>
+                <Typography sx={{ color: "black" }}>
                   {currentPlan?.discount_offer_only == "no" ? (
-                    <span>{currentPlan?.basic_amount} SR</span>
+                    <span>
+                      {currentPlan?.basic_amount}{" "}
+                      {language === "en" ? "SR" : "ريال"}
+                    </span>
                   ) : (
-                    <strike>{currentPlan?.basic_amount} SR</strike>
+                    <strike>
+                      {currentPlan?.basic_amount}{" "}
+                      {language === "en" ? "SR" : "ريال"}
+                    </strike>
                   )}
                 </Typography>
                 {currentPlan?.discount_offer_only == "yes" && (
                   <Typography sx={{ color: "#D92531", fontWeight: "500" }}>
-                    {currentPlan?.discounted_amount} SR
+                    {currentPlan?.discounted_amount}{" "}
+                    {language === "en" ? "SR" : "ريال"}
                   </Typography>
                 )}
               </div>
@@ -252,7 +294,8 @@ const PlanDetailsCard = () => {
                   variant="body2"
                   sx={{ fontSize: "0.8rem", textAlign: "center" }}
                 >
-                  {currentPlan?.total_days} Days
+                  {currentPlan?.total_days}{" "}
+                  {language === "en" ? "Days" : "أيام"}
                 </Typography>
               </Box>
               {/* KCal */}
@@ -340,7 +383,7 @@ const PlanDetailsCard = () => {
                   variant="body2"
                   sx={{ fontSize: "0.8rem", textAlign: "center" }}
                 >
-                  {deliveryCharges} SR
+                  {deliveryCharges} {language === "en" ? "SR" : "ريال"}
                 </Typography>
               </Box>
 
@@ -359,7 +402,8 @@ const PlanDetailsCard = () => {
                       {item.icon}
                     </Box>
                     <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                      {item.value} {item.name}
+                      {item.value}{" "}
+                      {language === "en" ? item.name : item.arabicName}
                     </Typography>
                   </Box>
                 ))}

@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
 import { useTheme } from "@emotion/react";
+import Loader from "../../components/loader/Loader";
 
 const PickupAddress = () => {
   const navigate = useNavigate();
@@ -68,7 +68,11 @@ const PickupAddress = () => {
     }
   };
   useEffect(() => {
-    fetchPickupAddress();
+    const fetchData = async () => {
+      const { message } = await fetchPickupAddress();
+      if (message === "success") setLoading(false);
+    };
+    fetchData();
   }, []);
   const getTodaysTimings = (timings) => {
     const daysMap = [

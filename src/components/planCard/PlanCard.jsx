@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import useAppStore from "../../store/store";
-import { memo } from "react";
+import { memo, useState } from "react";
 // import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const getFilteredItems = (items) => {
@@ -23,6 +23,7 @@ const PlanCard = memo(
     const { setCurrentPlan, city, addToCart, user, setPlanAvailableDays } =
       useAppStore();
     const isArabic = language === "ar";
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Calculate delivery charges
     const deliveryCharges =
@@ -183,12 +184,22 @@ const PlanCard = memo(
         >
           {/* Image Section */}
           <Box sx={{ position: "relative" }}>
-            <CardMedia
-              component="img"
-              alt="Plan Image"
-              height="140"
-              image={plan.plan_image}
-            />
+            {isLoaded === true ? (
+              <CardMedia
+                component="img"
+                alt="Plan Image"
+                height="140"
+                image={plan.plan_image}
+              />
+            ) : (
+              <CardMedia
+                component="img"
+                alt="Plan Image"
+                height="140"
+                image='/Banner.png'
+                onLoad={() => setIsLoaded(true)}
+              />
+            )}
             {/* Top Left Typo */}
             <Typography
               sx={{

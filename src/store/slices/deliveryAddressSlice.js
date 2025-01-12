@@ -5,11 +5,11 @@ const deliveryAddressSlice = (set) => ({
   selectedDeliveryAddress: null,
   setSelectedDeliveryAddress: (deliveryAddressId, deliveryAddress) => {
     set({
-      selectedDeliveryAddress: {deliveryAddressId, deliveryAddress},
+      selectedDeliveryAddress: { deliveryAddressId, deliveryAddress },
     });
   },
   setAddress: (updatedAddress) => {
-    console.log(updatedAddress)
+    console.log(updatedAddress);
     set({
       address: updatedAddress,
     });
@@ -20,12 +20,12 @@ const deliveryAddressSlice = (set) => ({
       `https://portal.captainchef.net/public/contact/get-contact-addresses?contact_id=${userId}`
     );
     const data = await response.data.data;
-    console.log(data)
     if (response.data.status === "success") {
       set({
         address: data,
       });
     }
+    return { message: "success" };
   },
   deleteAddress: async (contactId, addressId) => {
     try {

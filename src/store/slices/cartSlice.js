@@ -5,7 +5,6 @@ const cartSlice = (set) => ({
   cartData: [],
   totalPrice: 0,
   fetchCartData: async (userId) => {
-    console.log("Inside Fetch Cart Data");
     try {
       const response = await axios.get(`${BASE_URL}/api/ver2/get-cart`, {
         params: {
@@ -14,7 +13,6 @@ const cartSlice = (set) => ({
       });
       const data = response.data.data;
       set({ cartData: data });
-      console.log(response.data.data);
       // Calculate total price here
       const total = data.reduce((acc, item) => {
         const basicAmount = parseFloat(item.plan.basic_amount);
@@ -27,6 +25,7 @@ const cartSlice = (set) => ({
       }, 0);
 
       set({ totalPrice: total.toFixed(2) });
+      return { message: "success" };
     } catch (error) {
       console.error(error);
     }

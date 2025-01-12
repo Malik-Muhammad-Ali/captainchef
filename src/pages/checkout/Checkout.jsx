@@ -51,6 +51,11 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [couponButton, setCouponButton] = useState(false);
 
+  const freePlans = cartData
+    .map((plan) => plan?.free_plans)
+    .filter((freePlan) => freePlan !== undefined && freePlan !== null)
+    .flat();
+
   const discountType = couponData?.data?.discount_type || "";
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
   const selectedCity = cities.find(
@@ -114,9 +119,6 @@ const Checkout = () => {
       coupon_apply: item?.plan?.coupon_apply,
     };
   });
-  // console.log(discountedCart);
-  // console.log(couponData);
-  // console.log(cartData);
 
   // Calculate the total price with discounts applied
   const totalPrice = discountedCart.reduce((total, item, index) => {
@@ -180,7 +182,6 @@ const Checkout = () => {
     }
   };
 
-  console.log(discountedCart)
   const addedPlans = discountedCart.map((SinglePlan) => ({
     plan_id: SinglePlan?.plan_id, //done
     addon_ids: [], //done
@@ -192,8 +193,11 @@ const Checkout = () => {
     delivery_address: SinglePlan?.delivery_address, //done
     branch_id: SinglePlan?.branch_id, //done
     branch_name: SinglePlan?.branch_name, //done
-    paid_amount_for_plan: SinglePlan?.paid_amount_for_plan, //
-    // discount_amount_for_plan: SinglePlan?.discountedPrice, //done
+    paid_amount_for_plan: SinglePlan?.paid_amount_for_plan, //done
+    discount_amount_for_plan: SinglePlan?.discountedPrice, //done
+    coupon_name_applied_for_plan: couponData?.data?.title, //done
+    coupon_percent_for_plan: couponData?.data?.discount, //done
+    coupon_id: couponData?.data?.id, //done
   }));
 
   // Payment Status Check Function For Noor
@@ -204,7 +208,6 @@ const Checkout = () => {
       );
       console.log(response?.data?.result?.order?.status);
       if (response?.data?.result?.order?.status === "CAPTURED") {
-        clearInterval(intervalRef);
         setPaymentResult("CAPTURED");
         navigate("/mysubscriptions");
       } else {
@@ -232,16 +235,21 @@ const Checkout = () => {
         setShowIframe(true);
       }
     } else if (paymentMethod === "wallet") {
-      const result = await paymentWallet(
+      const { message } = await paymentWallet(
         addedPlans,
         subTotal,
         couponData,
         user
       );
-      if (result) {
+      if (message) {
         setLoading(false);
       }
-      // console.log(paymentMethod);
+      if(message === "success"){
+        setPaymentResult("CAPTURED");
+      }else if (message === "failed"){
+        setPaymentResult("REJECTED");
+      }
+      navigate("/mysubscriptions");
     }
   };
 
@@ -356,6 +364,7 @@ const Checkout = () => {
                   sm: "750px",
                   xs: "400px",
                 },
+                marginBottom: "30px",
               }}
             >
               <Box
@@ -380,7 +389,7 @@ const Checkout = () => {
 
                 {/*paper 2 of 2nd container free plan*/}
 
-                {freePlan && (
+                {freePlans.length > 0 && freePlan && (
                   <Paper
                     elevation={0}
                     sx={{
@@ -631,10 +640,10 @@ const Checkout = () => {
                           height: "60px",
                           marginLeft: "8px",
                           border: code
-                          ? couponButton
-                            ? "none"
-                            : "0.5px solid red"
-                          : "none",
+                            ? couponButton
+                              ? "none"
+                              : "0.5px solid red"
+                            : "none",
                           backgroundColor: "white",
                           color: "#D92531",
                           textTransform: "none",

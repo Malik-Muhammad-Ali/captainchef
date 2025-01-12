@@ -23,6 +23,7 @@ const mealsSlice = (set) => ({
       meals: selectedProductsDetails,
       mealsByDay: mealsForToday,
     });
+    return {message: "success"}
   },
 });
 

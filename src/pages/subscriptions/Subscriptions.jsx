@@ -15,18 +15,20 @@ const Subscriptions = () => {
     useAppStore.setState({ city: "" });
   };
 
-  // const jsonForm = JSON.stringify({user_id: 5, total_amount: 0.03, payment_mode: noon, tabby_percentage: null, total_paid: 0.03, added_palns: [{plan_id: 72, addon_ids: [], delivery_type: delivery, city: Madina, city_id: 2, delivery_charges: 0.0, delivery_address_id: 66506, delivery_address: 6311 , Madinah Principality , SA, branch_id: null, branch_name: null, paid_amount_for_plan: 0.03129999999998745, discount_amount_for_plan: 312.9687, coupon_name_applied_for_plan: zt1, coupon_percent_for_plan: 99.99, coupon_id: 2}], status: waiting_for_payment, wallet_amount: null, transaction_channel: null, coupon_code: zt1, coupon_name: Test Coupon, discount_via: default, comment: , payment_status: unpaid, discount: 0.0, locale: en, noon_category: pay, payment_token: null})
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const message = await fetchCategories();
-      if (message === "success") setLoading(false);
-    };
-    if (categories.length === 0) {
-      setLoading(true);
-      fetchData();
+  const getCityArabic = (cuurrentCity) => {
+    switch (cuurrentCity) {
+      case "Riyadh":
+        return "الرياض";
+      case "Jeddah":
+        return "جدة";
+      case "Makkah":
+        return "مكة";
+      case "Madinah":
+        return "المدينة";
+      default:
+        return cuurrentCity;
     }
-  }, []);
+  }
 
   const getTextColor = [
     "#FFCA44",
@@ -38,6 +40,18 @@ const Subscriptions = () => {
     "#2A70B6",
     "#FD88BF",
   ];
+
+  // useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      const message = await fetchCategories();
+      if (message === "success") setLoading(false);
+    };
+    if (categories.length === 0) {
+      setLoading(true);
+      fetchData();
+    }
+  }, []);
 
   // Component
   return (
@@ -112,7 +126,7 @@ const Subscriptions = () => {
                 gap: "10px",
               }}
             >
-              <span>{city ? city : ""}</span>
+              <span>{city && (language === 'en' ? city : getCityArabic(city))}</span>
               <span
                 style={{ color: "red", cursor: "pointer" }}
                 onClick={() => handleCityChange()}
@@ -168,13 +182,15 @@ const Subscriptions = () => {
           sx={{
             position: "fixed",
             bottom: {lg:40, md:30, sm:20, xs:15},
-            right: {lg:20, md:20, sm:10, xs:5},
+            right: !isRTL && {lg:20, md:20, sm:10, xs:5},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             gap: { lg: "30px", md: "30px", sm: "18px", xs: "17px" },
             zIndex: 1000,
             height: "50px",
+            left: isRTL && 0,
+            direction: isRTL ? "rtl" : "ltr",
           }}
         >
           <Msgbox />

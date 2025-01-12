@@ -235,14 +235,19 @@ const PlanDetails = () => {
 
   // useEfffect
   useEffect(() => {
-    setLoading(true);
     if (!currentPlan) {
       navigate("/subscriptions", { replace: true });
       return;
     }
-    fetchMeals(currentPlan.meal_list);
+    const fetchData = async () => {
+      const { message } = await fetchMeals(currentPlan.meal_list);
+      console.log(message);
+      if (message === "success") {
+        setLoading(false);
+      }
+    };
+    fetchData();
     setSelectedIndex(0);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -500,7 +505,7 @@ const PlanDetails = () => {
           </div>
         </div>
         {loading ? (
-          <Loader />
+          <Loader title='Meals' />
         ) : (
           <div className="meals">
             <p>{language === "en" ? "Select Meals" : "اختر الوجبات"}</p>
@@ -509,6 +514,32 @@ const PlanDetails = () => {
                 <div key={index} className="mealCard">
                   {/* Image & Tags */}
                   <div style={{ position: "relative", textAlign: "center" }}>
+                    {/* {isLoaded === true ? (
+                      <img
+                        className="mealCardImg"
+                        src={meal?.detail?.image_url}
+                        alt="Meal"
+                        style={{
+                          borderRadius: "50%",
+                          width: "160px",
+                          height: "160px",
+                          objectFit: "cover",
+                        }}
+                        onLoad={() => setIsLoaded(true)}
+                      />
+                    ) : (
+                      <img
+                        className="mealCardImg"
+                        src="/Banner.png"
+                        alt="Meal"
+                        style={{
+                          borderRadius: "50%",
+                          width: "160px",
+                          height: "160px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )} */}
                     <img
                       className="mealCardImg"
                       src={meal?.detail?.image_url}
@@ -519,6 +550,7 @@ const PlanDetails = () => {
                         height: "160px",
                         objectFit: "cover",
                       }}
+                      // onLoad={() => setIsLoaded(true)}
                     />
                     {/* Info Tag */}
                     <svg

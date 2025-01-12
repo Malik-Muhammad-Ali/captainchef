@@ -70,7 +70,6 @@ const paymentSlice = (set) => ({
     }
   },
   paymentWallet: async (addedPlans, totalPaid, couponData, user) => {
-    console.log(addedPlans);
     console.log(totalPaid);
     if (user?.wallet_balance < totalPaid) {
       return "failed";
@@ -84,27 +83,9 @@ const paymentSlice = (set) => ({
           payment_mode: "wallet",
           tabby_percentage: null,
           total_paid: totalPaid,
-          added_palns: [
-            {
-              plan_id: 5,
-              addon_ids: [],
-              delivery_type: "pickup",
-              city: "Madina",
-              city_id: 2,
-              delivery_charges: 0.0,
-              delivery_address_id: null,
-              delivery_address: null,
-              branch_id: 3,
-              branch_name: "Sultanah Branch",
-              paid_amount_for_plan: 1376,
-              discount_amount_for_plan: 1376,
-              coupon_name_applied_for_plan: "zt1",
-              coupon_percent_for_plan: 99.99,
-              coupon_id: 2,
-            },
-          ],
+          added_palns: addedPlans,
           status: "inactive",
-          wallet_amount: user?.wallet_balance,
+          wallet_amount: totalPaid,
           transaction_channel: "buy_subscription",
           coupon_code: couponData?.data?.code,
           coupon_name: couponData?.data?.title,
@@ -120,13 +101,15 @@ const paymentSlice = (set) => ({
       console.log(response.data);
       if (response.data.status === "success") {
         console.log("Success");
+        return { message: "success" };
       } else {
         console.log("No Resoponse");
+        return { message: "failed" };
       }
     } catch (error) {
       console.log(error);
+      return { message: "failed" };
     }
-    return "success";
   },
 });
 

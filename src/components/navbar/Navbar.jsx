@@ -129,7 +129,7 @@ const Navbar = () => {
                       : "#656565",
                 }}
               >
-                Subscriptions
+                {language === 'en' ? 'Subscriptions' : 'الاشتراكات'}
               </Button>
             </Link>
 
@@ -150,7 +150,7 @@ const Navbar = () => {
                   },
                 }}
               >
-                Lang
+                {language === "en" ? "Lang" : "اللغة"}
               </InputLabel>
               <Select
                 labelId="language-select-label"
@@ -190,7 +190,7 @@ const Navbar = () => {
                       width="20"
                       height="15"
                     />
-                    <Typography>English</Typography>
+                    <Typography>{language === 'en' ? 'English' : 'إنجليزي'}</Typography>
                   </Box>
                 </MenuItem>
                 <MenuItem value="ar">
@@ -201,7 +201,7 @@ const Navbar = () => {
                       width="20"
                       height="15"
                     />
-                    <Typography>Arabic</Typography>
+                    <Typography>{language === 'en' ? 'Arabic' : 'عربي'}</Typography>
                   </Box>
                 </MenuItem>
               </Select>
@@ -220,7 +220,7 @@ const Navbar = () => {
               }}
               onClick={() => navigate("/downloadapp")}
             >
-              Download App
+              {language === 'en' ? 'Download App' : 'تنزيل التطبيق'}
             </Button>
 
             {/* Account Icon */}

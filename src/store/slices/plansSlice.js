@@ -16,11 +16,11 @@ const PlansSlice = (set) => ({
             const response = await axios.get(`https://portal.captainchef.net/public/get-plans?subscription_cat=${cat_id}`);
             const data = response.data.data;
             set({ plans: data });
+            return {data: data, message: 'success'};
         } catch (error) {
             console.log('Error')
             set({ error: error.message });
         }
-        return 'success';
     },
 });
 

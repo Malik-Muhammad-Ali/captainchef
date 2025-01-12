@@ -11,29 +11,36 @@ import { useNavigate } from "react-router-dom";
 const Plans = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
+  const [selectedPlan, setSelectedPlan] = useState();
   const [loading, setLoading] = useState(false);
   const { fetchPlans, plans, language } = useAppStore();
-  console.log(plans);
+  const [filteredPlans, setFilteredPlans] = useState([]);
 
-  const filteredPlans = useMemo(() => {
-    return plans.filter((plan) => plan.plan_type_range === selectedPlan);
-  }, [plans, selectedPlan]);
+  const handleFilterPlans = (type) => {
+    setFilteredPlans(
+      plans.filter((plan) => plan.plan_type_range === type)
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const message = await fetchPlans(categoryId);
+      const { data, message } = await fetchPlans(categoryId);
+      console.log(data);
+      setFilteredPlans(
+        data.filter((plan) => plan.plan_type_range === "monthly")
+      );
+      setSelectedPlan("monthly");
       if (message === "success") {
         setLoading(false);
       }
     };
 
-      fetchData();
-  }, [categoryId]);
+    fetchData();
+  }, []);
   const isArabic = language === "ar";
-  // console.log(plans);
 
+  // Component
   return (
     <Box
       sx={{
@@ -181,7 +188,10 @@ const Plans = () => {
         >
           {/* Weekly Option */}
           <Box
-            onClick={() => setSelectedPlan("weekly")}
+            onClick={() => {
+              setSelectedPlan("weekly");
+              handleFilterPlans("weekly");
+            }}
             sx={{
               flex: 1,
               textAlign: "center",
@@ -203,7 +213,10 @@ const Plans = () => {
 
           {/* Monthly Option */}
           <Box
-            onClick={() => setSelectedPlan("monthly")}
+            onClick={() => {
+              setSelectedPlan("monthly");
+              handleFilterPlans("monthly");
+            }}
             sx={{
               flex: 1,
               textAlign: "center",
@@ -227,7 +240,7 @@ const Plans = () => {
 
       {/* Conditional Rendering: Show Loading or Content */}
       {loading ? (
-        <Loader />
+        <Loader title="Plans" />
       ) : (
         <Grid2
           container

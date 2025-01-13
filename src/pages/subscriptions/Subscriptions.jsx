@@ -10,18 +10,25 @@ import Loader from "../../components/loader/Loader";
 const Subscriptions = () => {
   const { fetchCategories, categories, language, city } = useAppStore();
   const isRTL = language === "ar";
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const handleCityChange = () => {
     useAppStore.setState({ city: "" });
   };
 
-  useEffect(() => {
-    setLoading(true);
-    if (categories.length === 0) {
-      fetchCategories();
+  const getCityArabic = (cuurrentCity) => {
+    switch (cuurrentCity) {
+      case "Riyadh":
+        return "الرياض";
+      case "Jeddah":
+        return "جدة";
+      case "Makkah":
+        return "مكة";
+      case "Madinah":
+        return "المدينة";
+      default:
+        return cuurrentCity;
     }
-    setLoading(false);
-  }, []);
+  }
 
   const getTextColor = [
     "#FFCA44",
@@ -34,17 +41,29 @@ const Subscriptions = () => {
     "#FD88BF",
   ];
 
+  // useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      const message = await fetchCategories();
+      if (message === "success") setLoading(false);
+    };
+    if (categories.length === 0) {
+      setLoading(true);
+      fetchData();
+    }
+  }, []);
+
   // Component
   return (
-    <>
+    <Box sx={{bgcolor:"#f5f5f5"}}>
       <Box
         sx={{
           display: "flex",
-          marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "150px" },
+          marginBottom: { lg: "80px", md: "70px", sm: "160px", xs: "160px" },
           flexDirection: "column",
           alignItems: "center",
-          height: "calc(100vh - 200px)",
-          overflowY: "scroll",
+          bgcolor:"none",
+          boxShadow:"none"
         }}
       >
         <Carousel />
@@ -53,9 +72,10 @@ const Subscriptions = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-start",
+            alignItems: "center",
             justifyContent: "center",
             padding: { lg: "20px", md: "20px", sm: "20px", xs: "5px" },
+            boxShadow:"none"
           }}
         >
           <Box
@@ -65,8 +85,9 @@ const Subscriptions = () => {
                 sm: "20px",
                 md: "35px",
               },
+              width:"90vw",
               display: "flex",
-              justifyContent: isRTL ? "flex-start" : "flex-end",
+              justifyContent: isRTL ? "flex-end" : "flex-start",
               alignSelf: isRTL ? "flex-end" : "flex-start",
             }}
           >
@@ -107,7 +128,7 @@ const Subscriptions = () => {
                 gap: "10px",
               }}
             >
-              <span>{city ? city : ""}</span>
+              <span>{city && (language === 'en' ? city : getCityArabic(city))}</span>
               <span
                 style={{ color: "red", cursor: "pointer" }}
                 onClick={() => handleCityChange()}
@@ -124,16 +145,23 @@ const Subscriptions = () => {
                 display: "flex",
                 flexWrap: "wrap",
                 gap: { xs: "10px", sm: "32px", lg: "50px", xl: "70px" },
+                bgcolor:"none",
                 maxWidth: {
                   xs: "300px",
                   sm: "620px",
                   md: "930px",
                   lg: "1180px",
-                  xl: "1640px",
+                  xl: "1430px",
                 },
-                justifyContent: "space-between",
+                justifyContent: {xs:"space-between", sm:"center",md:"flex-start",lg:"flex-start",xl:"flex-start"},
                 direction: isRTL ? "rtl" : "ltr",
-                mb: { lg: "50px", md: "50px", sm: "30px", xs: "20px" },
+                mb: { lg: "90px", md: "80px", sm: "30px", xs: "60px" },
+                '@media (min-width: 391px) and (max-width:440px)': {
+                    // minWidth:"390px",
+                    maxWidth:"360px",
+                    gap:"22px",
+                    mb:"60px",
+                },
               }}
             >
               {categories.map((data, index) => (
@@ -156,21 +184,23 @@ const Subscriptions = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 55,
-            right: 20,
+            bottom: {lg:40, md:30, sm:20, xs:15},
+            right: !isRTL && {lg:20, md:20, sm:10, xs:5},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             gap: { lg: "30px", md: "30px", sm: "18px", xs: "17px" },
             zIndex: 1000,
             height: "50px",
+            left: isRTL && 0,
+            direction: isRTL ? "rtl" : "ltr",
           }}
         >
           <Msgbox />
           <CircularAvt />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

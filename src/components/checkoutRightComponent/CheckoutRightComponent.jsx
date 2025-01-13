@@ -4,7 +4,13 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import useAppStore from "../../store/store";
 
-const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, subTotal }) => {
+const CheckoutRightComponent = ({
+  couponData,
+  discountedCart,
+  totalPrice,
+  VAT,
+  subTotal,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   // console.log(discountedCart)
 
@@ -22,7 +28,8 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
       elevation={0}
       sx={{
         padding: "16px",
-        width: { lg: "560px", md: "480px", sm: "331px", xs: "345px" },
+
+        width: { lg: "600px", md: "480px", sm: "600px", xs: "345px" },
         height: "auto",
         margin: "0 auto",
         borderRadius: "24px",
@@ -109,13 +116,19 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                   >
                     <span
                       style={{
-                        color: discountType ? "gray" : "black",
-                        marginRight: discountType ? "6px" : "0px",
+                        color:
+                          discountType && item?.coupon_apply === "yes"
+                            ? "gray"
+                            : "black",
+                        marginRight:
+                          discountType && item?.coupon_apply === "yes"
+                            ? "6px"
+                            : "0px",
                       }}
                     >
                       {item.planPrice} SR
                     </span>
-                    {discountType && (
+                    {discountType && item?.coupon_apply === "yes" && (
                       <span style={{ color: "green", marginLeft: "8px" }}>
                         {item.discountedPrice.toFixed(2)} SR
                       </span>
@@ -147,13 +160,13 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                   >
                     <span
                       style={{
-                        color: discountType ? "gray" : "black",
-                        marginRight: discountType ? "6px" : "0px",
+                        color: (discountType && item.coupon_apply === "yes") ? "gray" : "black",
+                        marginRight: (discountType && item.coupon_apply === "yes") ? "6px" : "0px",
                       }}
                     >
                       {item.delivery_charges} SR
                     </span>
-                    {removeDelivery === "yes" && (
+                    {removeDelivery === "yes" && item.coupon_apply === "yes" && (
                       <span style={{ color: "green", marginLeft: "8px" }}>
                         0 SR
                       </span>
@@ -185,7 +198,7 @@ const CheckoutRightComponent = ({ couponData, discountedCart, totalPrice, VAT, s
                 fontWeight: "400",
               }}
             >
-              {isArabic ? "المجموع": "Total"}
+              {isArabic ? "المجموع" : "Total"}
             </Typography>
             <Typography
               sx={{

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 import { Box, Grid2, IconButton, Typography } from "@mui/material";
@@ -11,18 +11,36 @@ import { useNavigate } from "react-router-dom";
 const Plans = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
-  const [selectedPlan, setSelectedPlan] = useState("weekly");
-  const [loading, setLoading] = useState(true);
-  const { fetchPlans, plans, language } = useAppStore();
+  const [selectedPlan, setSelectedPlan] = useState();
+  const [loading, setLoading] = useState(false);
+  const { fetchPlans, plans, language, selectedColor } = useAppStore();
+  const [filteredPlans, setFilteredPlans] = useState([]);
+
+  const handleFilterPlans = (type) => {
+    setFilteredPlans(
+      plans.filter((plan) => plan.plan_type_range === type)
+    );
+  };
 
   useEffect(() => {
-    setLoading(true);
-    fetchPlans(categoryId);
-    setLoading(false);
-  }, [categoryId]);
-  const isArabic = language === "ar";
-  // console.log(plans);
+    const fetchData = async () => {
+      setLoading(true);
+      const { data, message } = await fetchPlans(categoryId);
+      console.log(data);
+      setFilteredPlans(
+        data.filter((plan) => plan.plan_type_range === "monthly")
+      );
+      setSelectedPlan("monthly");
+      if (message === "success") {
+        setLoading(false);
+      }
+    };
 
+    fetchData();
+  }, []);
+  const isArabic = language === "ar";
+
+  // Component
   return (
     <Box
       sx={{
@@ -109,7 +127,7 @@ const Plans = () => {
             >
               {isArabic ? "اختر خطة" : "Choose Plan"}
             </Typography>
-            <Box sx={{}}>
+            {/* <Box sx={{}}>
               <Typography
                 sx={{
                   color: "#D92531",
@@ -120,7 +138,7 @@ const Plans = () => {
               >
                 {isArabic ? "خطة مخصصة" : "Custom Plan"}
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
 
           {/* Box for larger screens */}
@@ -141,7 +159,7 @@ const Plans = () => {
             >
               {isArabic ? "اختر خطة" : "Choose Plan"}
             </Typography>
-            <Typography
+            {/* <Typography
               sx={{
                 color: "#D92531",
                 textDecoration: "underline",
@@ -151,7 +169,7 @@ const Plans = () => {
               }}
             >
               {isArabic ? "خطة مخصصة" : "Custom Plan"}
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
         {/* Second Child Box */}
@@ -170,12 +188,15 @@ const Plans = () => {
         >
           {/* Weekly Option */}
           <Box
-            onClick={() => setSelectedPlan("weekly")}
+            onClick={() => {
+              setSelectedPlan("weekly");
+              handleFilterPlans("weekly");
+            }}
             sx={{
               flex: 1,
               textAlign: "center",
               backgroundColor:
-                selectedPlan === "weekly" ? "#D92531" : "transparent",
+                selectedPlan === "weekly" ? selectedColor : "transparent",
               color: selectedPlan === "weekly" ? "#fff" : "#000",
               padding: {
                 xs: "18px 2px",
@@ -192,12 +213,15 @@ const Plans = () => {
 
           {/* Monthly Option */}
           <Box
-            onClick={() => setSelectedPlan("monthly")}
+            onClick={() => {
+              setSelectedPlan("monthly");
+              handleFilterPlans("monthly");
+            }}
             sx={{
               flex: 1,
               textAlign: "center",
               backgroundColor:
-                selectedPlan === "monthly" ? "#D92531" : "transparent",
+                selectedPlan === "monthly" ? selectedColor : "transparent",
               color: selectedPlan === "monthly" ? "#fff" : "#000",
               padding: {
                 xs: "18px 10px",
@@ -216,7 +240,7 @@ const Plans = () => {
 
       {/* Conditional Rendering: Show Loading or Content */}
       {loading ? (
-        <Loader />
+        <Loader title="Plans" />
       ) : (
         <Grid2
           container
@@ -235,37 +259,31 @@ const Plans = () => {
             width: { lg: "1270px", sm: "630px" },
           }}
         >
-          {plans.filter((plan) => plan.plan_type_range === selectedPlan)
-            .length > 0 ? (
-            plans
-              .filter((plan) => plan.plan_type_range === selectedPlan)
-              .map((plan) => (
-                <Grid2
-                  xs={12}
-                  sm={6}
-                  md={3}
-                  key={plan.id}
-                  id={plan.id}
-                  sx={{
-                    display: "flex",
-                  }}
-                >
-                  <PlanCard
-                    plan={plan}
-                    range={plan.plan_type_range}
-                    title={isArabic ? plan.title_ar : plan.title}
-                    heading={
-                      isArabic
-                        ? plan.subscription_cat_name_ar
-                        : plan.subscription_cat_name
-                    }
-                    planID={plan.id}
-                    days={plan.total_days}
-                    freePlans={plan.free_plans || []}
-                    language={language}
-                  />
-                </Grid2>
-              ))
+          {filteredPlans.length > 0 ? (
+            filteredPlans.map((plan) => (
+              <Grid2
+                xs={12}
+                sm={6}
+                md={3}
+                key={plan.id}
+                sx={{ display: "flex" }}
+              >
+                <PlanCard
+                  plan={plan}
+                  range={plan.plan_type_range}
+                  title={isArabic ? plan.title_ar : plan.title}
+                  heading={
+                    isArabic
+                      ? plan.subscription_cat_name_ar
+                      : plan.subscription_cat_name
+                  }
+                  planID={plan.id}
+                  days={plan.total_days}
+                  freePlans={plan.free_plans || []}
+                  language={language}
+                />
+              </Grid2>
+            ))
           ) : (
             <Grid2
               xs={12}

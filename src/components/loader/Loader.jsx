@@ -1,47 +1,41 @@
-import { CircularProgress, Box, Typography } from "@mui/material";
+import React from "react";
+import Lottie from "lottie-react";
+import mealAnimation from '../../lottie/meal.json'
 
 const Loader = () => {
-  // const [showLoader, setShowLoader] = useState(true);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setShowLoader(false); // Hide the loader after 2 seconds
-  //   }, 2000);
-
-  //   return () => clearTimeout(timer); // Cleanup the timer
-  // }, []);
-
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        // height: "100vh",
-        background: "#f7f7f7", // Light background for contrast
+        height: "50vh",
       }}
     >
-      <CircularProgress
-        sx={{
-          color: "#d92531", // Vibrant red loader
+      <Lottie
+        animationData={mealAnimation}
+        loop
+        autoplay
+        style={{
+          height: 400,
+          width: 400,
         }}
-        size={60}
-        thickness={5}
       />
-      <Typography
-        variant="h6"
-        sx={{
-          marginTop: 2,
+      <p
+        style={{
           fontSize: "1.2rem",
-          color: "#d92531", // Matching text color
+          color: "#d92531",
           fontWeight: "bold",
+          textAlign: "center",
         }}
       >
-        Loading, please wait...
-      </Typography>
-    </Box>
-  ); // Hide the loader completely
+        Please wait...
+        <br />
+        We are Preparing Your Meal
+      </p>
+    </div>
+  );
 };
 
 export default Loader;

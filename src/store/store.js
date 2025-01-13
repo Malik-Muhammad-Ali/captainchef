@@ -10,6 +10,7 @@ import deliveryAddressSlice from "./slices/deliveryAddressSlice";
 import cartSlice from "./slices/cartSlice";
 import pickupSlice from "./slices/pickupSlice";
 import paymentSlice from "./slices/paymentSlice";
+import colorSlice from "./slices/colorSlice";
 
 const useAppStore = create(
   persist(
@@ -24,7 +25,11 @@ const useAppStore = create(
       ...pickupSlice(set),
       ...cartSlice(set, get),
       ...paymentSlice(set, get),
+      ...colorSlice(set,get),
     }),
+    {
+      name: "app-storage", // Name of localStorage or sessionStorage key
+    },
     {
       name: "app-session",
       storage: {
@@ -67,6 +72,7 @@ const useAppStore = create(
         meals: state.meals,
         mealsByDay: state.mealsByDay,
         finalDeliveryType: state.finalDeliveryType,
+        mobile_number: state.mobile_number,
       }),
     }
   )

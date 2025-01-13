@@ -1,7 +1,9 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{
         bgcolor:"#FF9700"
@@ -97,10 +99,10 @@ const Footer = () => {
                 }}>Quick Links</Typography>
             </Box>
             <Box>
-                <Typography sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>Contact us</Typography>
-                <Typography sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>Terms & Conditions</Typography>
-                <Typography sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>Refund Policy</Typography>
-                <Typography sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>FAQs</Typography>
+                <Typography onClick={()=> navigate("/contactus")} sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>Contact us</Typography>
+                <Typography onClick={()=> navigate("/termsandconditions")} sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>Terms & Conditions</Typography>
+                <Typography onClick={()=> navigate("/privacyPolicy")} sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>Privacy Policy</Typography>
+                {/* <Typography sx={{fontSize:{lg:"18px"},fontWeight:400,cursor:"pointer"}}>FAQs</Typography> */}
             </Box>
         </Box>
         <Box sx={{

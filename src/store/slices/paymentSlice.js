@@ -1,48 +1,48 @@
 import axios from "axios";
+const BASE_URL = "https://portal.captainchef.net/public";
 
 const paymentSlice = (set) => ({
   postUrl: "",
-  returnUrl: "",
   paymentResult: "",
   setPaymentResult: (result) => set({ paymentResult: result }),
   paymentNoon: async (addedPlans, totalPaid, couponData, user) => {
     try {
       const response = await axios.post(
-        "https://portal.captainchef.net/public/api/ver2/save-purchased-subscription-with-noon",
+        `${BASE_URL}/api/ver2/save-purchased-subscription-with-noon`,
         {
           user_id: user?.id,
           total_amount: totalPaid,
           payment_mode: "noon",
+          tabby_percentage: null,
           total_paid: totalPaid,
           added_palns: addedPlans,
           status: "waiting_for_payment",
-          wallet_amount: "0",
-          //   transaction_channel: "buy_subscription",
+          wallet_amount: null,
+          transaction_channel: null,
           coupon_code: couponData?.data?.code,
           coupon_name: couponData?.data?.title,
+          discount_via: "default",
+          comment: "",
           payment_status: "unpaid",
-          discount: null,
+          discount: 0.0,
           locale: "en",
           noon_category: "pay",
+          payment_token: null,
         }
       );
-      // console.log(response.data.data.noon_order_id);
       if (
         response.data.status === "success" &&
         response.data.data.status === "INITIATED"
       ) {
         console.log("Success");
         const post_url = response?.data?.data?.checkout_data?.postUrl;
-        const return_url = response?.data?.data?.return_url;
         const noon_order_id = response.data.data.noon_order_id;
         console.log(noon_order_id);
         set({ postUrl: response?.data?.data?.checkout_data?.postUrl });
-        set({ returnUrl: response?.data?.data?.return_url });
-        return { post_url, return_url, noon_order_id };
+        return { post_url, noon_order_id };
       } else {
         console.log("No Resoponse");
         set({ postUrl: "" });
-        set({ returnUrl: "" });
       }
       // console.log(response.data.data.checkout_data.postUrl);
     } catch (error) {
@@ -52,7 +52,7 @@ const paymentSlice = (set) => ({
   paymentNoonSuccess: async (noon_order_id) => {
     try {
       const response = await axios.post(
-        "https://portal.captainchef.net/public/api/ver2/save-purchased-subscription-with-noon",
+        `${BASE_URL}/api/ver2/save-purchased-subscription-with-noon`,
         {
           noon_order_id: noon_order_id,
           status: "completed",
@@ -67,6 +67,48 @@ const paymentSlice = (set) => ({
       }
     } catch (error) {
       console.log(error);
+    }
+  },
+  paymentWallet: async (addedPlans, totalPaid, couponData, user) => {
+    console.log(totalPaid);
+    if (user?.wallet_balance < totalPaid) {
+      return "failed";
+    }
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/ver2/save-purchased-subscription-with-noon`,
+        {
+          user_id: 5,
+          total_amount: totalPaid,
+          payment_mode: "wallet",
+          tabby_percentage: null,
+          total_paid: totalPaid,
+          added_palns: addedPlans,
+          status: "inactive",
+          wallet_amount: totalPaid,
+          transaction_channel: "buy_subscription",
+          coupon_code: couponData?.data?.code,
+          coupon_name: couponData?.data?.title,
+          discount_via: "default",
+          comment: "",
+          payment_status: "paid",
+          discount: 0.0,
+          locale: "en",
+          noon_category: null,
+          payment_token: null,
+        }
+      );
+      console.log(response.data);
+      if (response.data.status === "success") {
+        console.log("Success");
+        return { message: "success" };
+      } else {
+        console.log("No Resoponse");
+        return { message: "failed" };
+      }
+    } catch (error) {
+      console.log(error);
+      return { message: "failed" };
     }
   },
 });

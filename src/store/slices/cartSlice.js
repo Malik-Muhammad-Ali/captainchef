@@ -1,23 +1,18 @@
 import axios from "axios";
+const BASE_URL = "https://portal.captainchef.net/public";
 
 const cartSlice = (set) => ({
   cartData: [],
   totalPrice: 0,
   fetchCartData: async (userId) => {
-    console.log("Inside Fetch Cart Data")
     try {
-      const response = await axios.get(
-        "https://portal.captainchef.net/public/api/ver2/get-cart",
-        {
-          params: {
-            user_id: userId,
-          },
-        }
-      );
-      console.log(response.data.data);
+      const response = await axios.get(`${BASE_URL}/api/ver2/get-cart`, {
+        params: {
+          user_id: userId,
+        },
+      });
       const data = response.data.data;
       set({ cartData: data });
-      console.log(response.data.data);
       // Calculate total price here
       const total = data.reduce((acc, item) => {
         const basicAmount = parseFloat(item.plan.basic_amount);
@@ -30,6 +25,7 @@ const cartSlice = (set) => ({
       }, 0);
 
       set({ totalPrice: total.toFixed(2) });
+      return { message: "success" };
     } catch (error) {
       console.error(error);
     }
@@ -37,7 +33,7 @@ const cartSlice = (set) => ({
   addToCart: async (cartItems) => {
     try {
       const response = await axios.post(
-        "https://portal.captainchef.net/public/api/ver2/add-to-cart",
+        `${BASE_URL}/api/ver2/add-to-cart`,
         cartItems,
         {
           headers: {

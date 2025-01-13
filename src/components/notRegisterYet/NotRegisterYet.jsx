@@ -1,5 +1,5 @@
 import { Box, Button, Grid2, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,17 @@ import useAppStore from "../../store/store";
 
 const NotRegisterYet = () => {
   const navigate = useNavigate();
-  const { otp } = useAppStore();
+  const { otp, message, planDetailUrl, setAuthenticated, language } =
+    useAppStore();
   const [pin, setPin] = useState(["", "", "", ""]);
   const [error, setError] = useState();
+  console.log(otp);
+
+  useEffect(() => {
+    if (!otp) {
+      navigate("/login");
+    }
+  });
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/\D/g, "");
@@ -17,7 +25,6 @@ const NotRegisterYet = () => {
       const newPin = [...pin];
       newPin[index] = value;
       setPin(newPin);
-      // Automatically focus on the next field
       if (value && index < 3) {
         document.getElementById(`pin-${index + 1}`).focus();
       }
@@ -26,7 +33,11 @@ const NotRegisterYet = () => {
 
   const handleSubmit = () => {
     const pinValue = pin.join("");
-    if (pinValue === otp) {
+    if (pinValue === otp && message === "Exists") {
+      setError(null);
+      setAuthenticated(true);
+      navigate(planDetailUrl);
+    } else if (pinValue === otp && message === "Not Exists") {
       setError(null);
       navigate("/createaccount");
     } else {
@@ -47,7 +58,6 @@ const NotRegisterYet = () => {
           backgroundColor: "#f5f5f5",
           display: "flex",
           flexDirection: "column",
-          height: "100vh",
         }}
       >
         <Box
@@ -97,7 +107,7 @@ const NotRegisterYet = () => {
                 fontSize: { lg: "32px", md: "32px", sm: "28px", xs: "24px" },
               }}
             >
-              Not Registered Yet?
+              {language === "en" ? "Enter OTP" : "أدخل كلمة المرور لمرة واحدة"}
             </Typography>
             {/* Description */}
             <Typography
@@ -110,8 +120,13 @@ const NotRegisterYet = () => {
                 fontSize: "20px",
               }}
             >
-              Don’t Worry, We Have Sent a OTP On You Provided Number <br />{" "}
-              +96653226457895. Please Enter The Code Below
+              {language === "en"
+                ? "We have sent an OTP to your provided number."
+                : "لقد أرسلنا كلمة مرور لمرة واحدة (OTP) إلى الرقم الذي قدمته."}{" "}
+              <br />{" "}
+              {language === "en"
+                ? "Enter that OTP to procceed further."
+                : "أدخل كلمة المرور لمرة واحدة (OTP) للمضي قدمًا."}
             </Typography>
 
             {/* Password TextField */}
@@ -184,7 +199,7 @@ const NotRegisterYet = () => {
                 }}
                 onClick={() => handleSubmit()}
               >
-                Submit
+                {language === "en" ? "Submit" : "يُقدِّم"}
               </Button>
             </Box>
           </Box>

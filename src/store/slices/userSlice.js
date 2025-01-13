@@ -1,21 +1,29 @@
 import axios from "axios";
+const BASE_URL = "https://portal.captainchef.net/public";
 
 const userSlice = (set) => ({
   user: null,
   authenticated: false,
+  otp: null,
+  mobile_number: null,
   planDetailUrl: "/subscriptions",
-  loginUser: async (email, password) => {
+  setAuthenticated: (authenticated) => set({ authenticated }),
+  loginUser: async (mobileNumber) => {
     const response = await axios.post(
-      `https://portal.captainchef.net/public/contacts/login?username=${email}&password=${password}`
+      `${BASE_URL}/api/webapi/check-contact-exists-or-not`,
+      {
+        mobile_number: mobileNumber,
+      }
     );
-    console.log("Api Hit");
     if (response.data.status === "success") {
       set(() => ({
-        user: response.data.user_info,
+        user: response.data.data,
+        otp: response.data.otp,
+        message: response.data.message,
         authenticated: true,
+        mobile_number: mobileNumber,
       }));
     }
-    return response.data.user_info;
   },
   logout: () =>
     set(() => ({
@@ -27,21 +35,25 @@ const userSlice = (set) => ({
       planDetailUrl: route,
     })),
   registerUser: async (createUser) => {
-    const countryCode = createUser.mobileNumber.substring(0, 3);
-    if (countryCode !== "966") {
+    const response = await axios.post(`${BASE_URL}/api/ver2/contact/register`, {
+      first_name: createUser.firstName,
+      last_name: createUser.lastName,
+      email: createUser.email,
+      mobile: createUser.mobileNumber,
+      password: createUser.password,
+      country_code: 966,
+      business_id: 100,
+    });
+    console.log(response.data);
+    if (response.data.status === "success") {
+      set(() => ({
+        user: response.data.user_info,
+      }));
       return {
-        message: "Enter Correct Number",
-        status: false,
+        message: "Registration Successful!",
+        status: true,
       };
     }
-    const response = await axios.post(
-      `https://portal.captainchef.net/public/api/ver2/contact/register?business_id=100&first_name=${createUser.firstName}&last_name=${createUser.lastName}&email=${createUser.email}&mobile=${createUser.mobileNumber}&password=${createUser.password}&country_code=${countryCode}`
-    );
-    console.log(response);
-    return {
-      message: "Registration Successful!",
-      status: true,
-    };
   },
 });
 

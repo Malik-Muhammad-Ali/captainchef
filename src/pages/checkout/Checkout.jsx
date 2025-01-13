@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Box,
   Button,
   IconButton,
   Paper,
-  Radio,
   TextField,
   Typography,
 } from "@mui/material";
@@ -26,13 +25,9 @@ const Checkout = () => {
     language,
     paymentNoon,
     cartData,
-    selectedDeliveryAddress,
     cities,
-    totalPriceWithVAT,
-    postUrl,
-    returnUrl,
-    selectedPickupAddress,
     setPaymentResult,
+    paymentWallet,
   } = useAppStore();
   const isArabic = language === "ar";
 
@@ -47,12 +42,18 @@ const Checkout = () => {
   const [internalPostUrl, setInternalPostUrl] = useState("");
   const [showIframe, setShowIframe] = useState(false);
   const [paymentModal, setPaymentModal] = useState(false);
-  const [status, setStatus] = useState("");
   const [discount, setDiscount] = useState();
   const iframeRef = useRef(null);
-  const intervalRef = useRef(null);
   const [loadCount, setLoadCount] = useState(0);
   const [noonOrderId, setNoonOrderId] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [couponButton, setCouponButton] = useState(false);
+
+  const freePlans = cartData
+    .map((plan) => plan?.free_plans)
+    .filter((freePlan) => freePlan !== undefined && freePlan !== null)
+    .flat();
 
   const discountType = couponData?.data?.discount_type || "";
   const removeDelivery = couponData?.data?.remove_delivery_charges || "no";
@@ -60,7 +61,6 @@ const Checkout = () => {
     (currentCity) => currentCity.city_name === city
   );
 
-  // console.log(cartData[0].address.address);
   const cart = cartData.map((item) => ({
     planName: item.plan.title,
     planName_ar: item.plan.title_ar,
@@ -83,20 +83,39 @@ const Checkout = () => {
         ? parseFloat(item.plan.discounted_amount)
         : parseFloat(item.plan.basic_amount),
   }));
-  console.log(cartData)
 
   // Calculate the discounted price for each plan
-  const discountedCart = cart.map((item) => {
-    let discountedPrice = item.planPrice;
-    if (discountType === "percent") {
-      discountedPrice = item.planPrice - (item.planPrice * discount) / 100;
-    } else if (discountType === "fixed") {
-      discountedPrice =
-        item.planPrice - parseFloat(item.plan.discounted_amount);
+  const discountedCart = cartData.map((item) => {
+    let planPrice =
+      item.plan.discount_offer_only === "yes"
+        ? parseFloat(item.plan.discounted_amount)
+        : parseFloat(item.plan.basic_amount);
+
+    let discountedPrice = planPrice;
+    if (item?.plan?.coupon_apply === "yes" && discountType === "percent") {
+      discountedPrice = (planPrice - (planPrice * discount) / 100).toFixed(2);
+    } else if (item?.plan?.coupon_apply === "yes" && discountType === "fixed") {
+      discountedPrice = (
+        planPrice - parseFloat(item.plan.discounted_amount)
+      ).toFixed(2);
     }
     return {
-      ...item,
+      planName: item.plan.title,
+      planName_ar: item.plan.title_ar,
+      planPrice: planPrice,
+      delivery_charges:
+        (item.delivery_charges && parseFloat(item.delivery_charges)) || 0,
+      plan_id: item?.plan_id,
+      delivery_type: item?.delivery_type,
+      delivery_address_id: item?.delivery_address_id,
+      delivery_address: item?.address?.address,
+      branch_id: item?.branch_id,
+      branch_name: item?.branch?.branch_name,
+      city: city,
+      city_id: selectedCity?.id,
+      paid_amount_for_plan: discountedPrice,
       discountedPrice: Math.max(discountedPrice, 0),
+      coupon_apply: item?.plan?.coupon_apply,
     };
   });
 
@@ -129,6 +148,13 @@ const Checkout = () => {
     setPaymentModal(true);
   };
 
+  const removeCoupon = () => {
+    setCode("");
+    setCouponData();
+    setCouponButton(false);
+    setFreePlan(true);
+  }
+
   // handle coupon API
   const handleCoupon = async () => {
     const dataSend = {
@@ -140,11 +166,20 @@ const Checkout = () => {
         "https://portal.captainchef.net/public/connector/api/coupon/apply",
         dataSend
       );
-      if (response.data.status === "success") {
+      let min_cart_amount =
+        parseFloat(response?.data?.data?.min_cart_amount) || 0;
+      if (response.data.status === "success" && subTotal >= min_cart_amount) {
         setCouponError();
         setCouponData(response.data);
         setFreePlan(false);
         setDiscount(response.data.data.discount);
+        setCouponButton(true);
+      } else if (
+        response.data.status === "success" &&
+        subTotal < min_cart_amount
+      ) {
+        setCouponError("Cart amount is less");
+        setCouponData();
       } else {
         setCouponData();
         setCouponError("Enter a Valid Coupon Code");
@@ -166,8 +201,13 @@ const Checkout = () => {
     branch_id: SinglePlan?.branch_id, //done
     branch_name: SinglePlan?.branch_name, //done
     paid_amount_for_plan: SinglePlan?.paid_amount_for_plan, //done
+    discount_amount_for_plan: SinglePlan?.discountedPrice, //done
+    coupon_name_applied_for_plan: couponData?.data?.title, //done
+    coupon_percent_for_plan: couponData?.data?.discount, //done
+    coupon_id: couponData?.data?.id, //done
   }));
 
+  // Payment Status Check Function For Noor
   const paymentStatusCheckFunction = async (noon_order_id) => {
     try {
       const response = await axios.get(
@@ -175,10 +215,9 @@ const Checkout = () => {
       );
       console.log(response?.data?.result?.order?.status);
       if (response?.data?.result?.order?.status === "CAPTURED") {
-        clearInterval(intervalRef);
         setPaymentResult("CAPTURED");
         navigate("/mysubscriptions");
-      }else{
+      } else {
         // clearInterval(intervalRef);
         setPaymentResult("REJECTED");
         navigate("/mysubscriptions");
@@ -188,31 +227,46 @@ const Checkout = () => {
     }
   };
 
+  // Handle Payment
   const handlePayment = async () => {
-    const { post_url, return_url, noon_order_id } = await paymentNoon(
-      addedPlans,
-      subTotal,
-      couponData,
-      user
-    );
-    setInternalPostUrl(post_url);
-    setNoonOrderId(noon_order_id);
-    if (post_url) {
-      setShowIframe(true);
+    if (paymentMethod === "master") {
+      const { post_url, noon_order_id } = await paymentNoon(
+        addedPlans,
+        subTotal,
+        couponData,
+        user
+      );
+      setInternalPostUrl(post_url);
+      setNoonOrderId(noon_order_id);
+      if (post_url) {
+        setShowIframe(true);
+      }
+    } else if (paymentMethod === "wallet") {
+      const { message } = await paymentWallet(
+        addedPlans,
+        subTotal,
+        couponData,
+        user
+      );
+      if (message) {
+        setLoading(false);
+      }
+      if (message === "success") {
+        setPaymentResult("CAPTURED");
+      } else if (message === "failed") {
+        setPaymentResult("REJECTED");
+      }
+      navigate("/mysubscriptions");
     }
-    // intervalRef.current = setInterval(() => {
-    //   paymentStatusCheckFunction(noon_order_id);
-    // }, 3000);
   };
 
+  // Handle Iframe Load
   const handleIframeLoad = () => {
     setLoadCount(loadCount + 1);
-    if(loadCount > 0){
-      console.log('Redirect Now')
+    if (loadCount > 0) {
       paymentStatusCheckFunction(noonOrderId);
     }
-    console.log("Iframe loaded"+loadCount);
-  }
+  };
 
   // useEffect
   useEffect(() => {
@@ -307,7 +361,7 @@ const Checkout = () => {
                 justifyContent: "center",
                 flexDirection: {
                   xs: "column",
-                  sm: "row",
+                  sm: "column",
                   md: "row",
                   lg: "row",
                 },
@@ -317,6 +371,7 @@ const Checkout = () => {
                   sm: "750px",
                   xs: "400px",
                 },
+                marginBottom: "30px",
               }}
             >
               <Box
@@ -341,15 +396,15 @@ const Checkout = () => {
 
                 {/*paper 2 of 2nd container free plan*/}
 
-                {freePlan && (
+                {freePlans.length > 0 && freePlan && (
                   <Paper
                     elevation={0}
                     sx={{
                       padding: "16px",
                       width: {
-                        lg: "560px",
+                        lg: "600px",
                         md: "480px",
-                        sm: "331px",
+                        sm: "600px",
                         xs: "345px",
                       },
                       height: isCollapsed ? "auto" : "164px", // Adjust height dynamically
@@ -441,17 +496,27 @@ const Checkout = () => {
                     )}
                   </Paper>
                 )}
+              </Box>
 
-                {/*paper 3 of apply couon*/}
-
+              {/*paper 3 of apply couon*/}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: { xs: "28px", sm: "-170px", md: "0", lg: "0" },
+                  height: "auto",
+                  gap: "40px",
+                  mb: { sm: "10px", md: "0", xs: "0", lg: "0" },
+                }}
+              >
                 <Paper
                   elevation={0}
                   sx={{
                     padding: "16px",
                     width: {
-                      lg: "560px",
+                      lg: "600px",
                       md: "480px",
-                      sm: "331px",
+                      sm: "600px",
                       xs: "345px",
                     },
                     height: isCollapsed1 ? "auto" : "164px", // Adjust height dynamically
@@ -520,12 +585,12 @@ const Checkout = () => {
                         helperText={couponError}
                         onChange={(e) => setCode(e.target.value)}
                         InputProps={{
-                          disableUnderline: true, // Removes underline/border
+                          disableUnderline: true,
                         }}
                         InputLabelProps={{
                           sx: {
                             position: "absolute",
-                            top: "-10px", // Label positioned slightly above the field
+                            top: "-10px",
                             left: isArabic
                               ? {
                                   lg: "310px",
@@ -534,22 +599,22 @@ const Checkout = () => {
                                   xs: "175px",
                                 }
                               : "16px",
-                            fontSize: "14px", // Small, clean font size
-                            background: "white", // Matches the input field background
-                            padding: "0 4px", // Adds spacing around the label
-                            transform: "translate(0, 0)", // Ensures no extra shifting
-                            pointerEvents: "none", // Prevents interaction with the label
+                            fontSize: "14px",
+                            background: "white",
+                            padding: "0 4px",
+                            transform: "translate(0, 0)",
+                            pointerEvents: "none",
                             "&.Mui-focused": {
-                              color: "grey", // Label color remains consistent
+                              color: "grey",
                             },
                           },
                         }}
-                        placeholder="" // No placeholder since the label acts as one
+                        placeholder=""
                         sx={{
                           width: {
                             lg: "530px",
                             md: "450px",
-                            sm: "335px",
+                            sm: "420px",
                             xs: "313px",
                           },
                           height: {
@@ -559,41 +624,68 @@ const Checkout = () => {
                             xs: "63px",
                           },
                           border: couponError ? "1px solid red" : "none",
-                          backgroundColor: "#F8F8F8", // Subtle grey background
-                          borderRadius: "12px", // Smooth rounded edges
-                          paddingLeft: "14px", // Spacing inside the input field
-                          paddingRight: "10px", // Spacing inside the input field
-                          fontSize: "16px", // Adjusted text font size
+                          backgroundColor: "#F8F8F8",
+                          borderRadius: "12px",
+                          paddingLeft: "14px",
+                          paddingRight: "10px",
+                          fontSize: "16px",
                           display: "flex",
-                          // alignItems: "center", // Centers text vertically
-                          position: "relative", // To keep the label aligned
+                          position: "relative",
                         }}
                       />
 
-                      <Button
-                        variant="contained"
-                        sx={{
-                          width: {
-                            lg: "193px",
-                            md: "193px",
-                            sm: "80px",
-                            xs: "",
-                          },
-                          height: "60px",
-                          marginLeft: "8px",
-                          border: code ? "0.5px solid red" : "none",
-                          backgroundColor: "white",
-                          color: "#D92531",
-                          textTransform: "none",
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                          borderRadius: "10px",
-                        }}
-                        onClick={() => handleCoupon()}
-                        disabled={!code} // Disable button if no code is entered
-                      >
-                        {isArabic ? "تطبيق" : "Apply"}
-                      </Button>
+                      {!couponButton && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: {
+                              lg: "193px",
+                              md: "193px",
+                              sm: "150px",
+                              xs: "",
+                            },
+                            height: "60px",
+                            marginLeft: "8px",
+                            border: !code ? "none" : "1px solid #D92531",
+                            backgroundColor: "white",
+                            color: "#D92531",
+                            textTransform: "none",
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            borderRadius: "10px",
+                          }}
+                          onClick={() => handleCoupon()}
+                          disabled={!code}
+                        >
+                          {isArabic ? "تطبيق" : "Apply"}
+                        </Button>
+                      )}
+
+                      {couponButton && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: {
+                              lg: "193px",
+                              md: "193px",
+                              sm: "150px",
+                              xs: "",
+                            },
+                            height: "60px",
+                            marginLeft: "8px",
+                            border: "1px solid #D92531",
+                            backgroundColor: "white",
+                            color: "#D92531",
+                            textTransform: "none",
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            borderRadius: "10px",
+                          }}
+                          onClick={() => removeCoupon()}
+                        >
+                          {language === "en" ? "Remove" : "يزيل"}
+                        </Button>
+                      )}
                     </Box>
                   )}
                 </Paper>
@@ -605,9 +697,9 @@ const Checkout = () => {
                   sx={{
                     padding: "16px",
                     width: {
-                      lg: "560px",
+                      lg: "600px",
                       md: "480px",
-                      sm: "331px",
+                      sm: "600px",
                       xs: "345px",
                     },
                     height: "auto",
@@ -618,8 +710,6 @@ const Checkout = () => {
                     right: "32px",
                     bottom: "40px",
                     left: "32px",
-                    // mb: "30px",
-                    pb: "20px",
                   }}
                 >
                   <Box
@@ -633,7 +723,7 @@ const Checkout = () => {
                       sx={{
                         fontSize: "20px",
                         fontWeight: "600",
-                        mb: "8px", // Add space below the heading
+                        mb: "8px",
                       }}
                     >
                       {isArabic ? "تعليقات إضافية" : "Additional Comments"}
@@ -658,7 +748,7 @@ const Checkout = () => {
                     <Box
                       sx={{
                         mt: "0px",
-                        width: "100%", // Ensures full width
+                        width: "100%",
                       }}
                     >
                       <TextField
@@ -666,9 +756,9 @@ const Checkout = () => {
                         margin="normal"
                         variant="standard"
                         multiline
-                        rows={3} // Initial rows to display
+                        rows={3}
                         InputProps={{
-                          disableUnderline: true, // Removes underline/border
+                          disableUnderline: true,
                         }}
                         InputLabelProps={{
                           sx: {
@@ -683,21 +773,21 @@ const Checkout = () => {
                                 }
                               : "16px",
                             fontSize: "14px",
-                            background: "white", // Matches input field background
+                            background: "white",
                             padding: "0 4px",
-                            transform: "translate(0, 0)", // No extra shifts
-                            pointerEvents: "none", // Prevent interaction
+                            transform: "translate(0, 0)",
+                            pointerEvents: "none",
                             "&.Mui-focused": {
-                              color: "grey", // Label color on focus
+                              color: "grey",
                             },
                           },
                         }}
-                        placeholder="" // Empty placeholder since the label acts as one
+                        placeholder=""
                         sx={{
                           width: {
                             lg: "530px",
                             md: "450px",
-                            sm: "300px",
+                            sm: "560px",
                             xs: "313px",
                           },
                           minHeight: {
@@ -706,12 +796,12 @@ const Checkout = () => {
                             sm: "56px",
                             xs: "63px",
                           },
-                          backgroundColor: "#F8F8F8", // Subtle grey background
-                          borderRadius: "12px", // Rounded edges
-                          paddingLeft: "14px", // Spacing inside the input
-                          paddingRight: "10px", // Spacing inside the input
-                          position: "relative", // To keep the label aligned
-                          fontSize: "16px", // Text font size
+                          backgroundColor: "#F8F8F8",
+                          borderRadius: "12px",
+                          paddingLeft: "14px",
+                          paddingRight: "10px",
+                          position: "relative",
+                          fontSize: "16px",
                         }}
                       />
                     </Box>
@@ -745,7 +835,11 @@ const Checkout = () => {
             </Button>
           </Box>
           <PaymentModal
+            loading={loading}
+            setLoading={setLoading}
             paymentModal={paymentModal}
+            setPaymentMethod={setPaymentMethod}
+            paymentMethod={paymentMethod}
             setPaymentModal={setPaymentModal}
             setShowIframe={setShowIframe}
             handlePayment={handlePayment}
@@ -760,7 +854,7 @@ const Checkout = () => {
             src={internalPostUrl}
             title="Payment Iframe"
             onLoad={handleIframeLoad}
-            style={{ width: "100%", height: "500px", border: "none" }}
+            style={{ width: "100%", height: "100vh", border: "none" }}
           ></iframe>
         </>
       )}

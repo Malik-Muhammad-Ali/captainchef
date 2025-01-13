@@ -8,8 +8,10 @@ import 'swiper/css/scrollbar';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
 import { Box, IconButton, useMediaQuery } from '@mui/material';
+import useAppStore from '../../store/store';
 
 const Carousel = () => {
+  const { language } = useAppStore();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const isMobile = useMediaQuery("(max-width:640px)");
@@ -22,10 +24,13 @@ const Carousel = () => {
     borderBottomRightRadius:isMobile ? "32px" : "unset",
   };
 
+  const bannerImage = language === 'en' ? '/BannerMain.png' : '/BannerMainAr.png'
+
   return (
     <Box sx={{
       width:"100%",
       height:"auto",
+      bgcolor:"none",
     }}>
     <Swiper
       modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -54,28 +59,28 @@ const Carousel = () => {
       {/* Slides */}
       <SwiperSlide>
         <img
-          src="/BannerMain.png"
+          src={bannerImage}
           alt="Slide 1"
           style={swiperStyle}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
-          src="/BannerMain.png"
+          src={bannerImage}
           alt="Slide 2"
           style={swiperStyle}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
-          src="/BannerMain.png"
+          src={bannerImage}
           alt="Slide 3"
           style={swiperStyle}
         />
       </SwiperSlide>
       <SwiperSlide>
         <img
-          src="/BannerMain.png"
+          src={bannerImage}
           alt="Slide 4"
           style={swiperStyle}
         />

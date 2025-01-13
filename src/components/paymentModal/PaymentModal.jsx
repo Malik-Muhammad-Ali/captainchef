@@ -3,8 +3,6 @@ import {
   Box,
   Typography,
   Radio,
-  RadioGroup,
-  FormControlLabel,
   Button,
   Modal,
   useMediaQuery,
@@ -14,17 +12,29 @@ import {
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
-import LockIcon from "@mui/icons-material/Lock";
 
-const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePayment, subTotal }) => {
+const PaymentModal = ({
+  paymentModal,
+  setPaymentModal,
+  setShowIframe,
+  handlePayment,
+  subTotal,
+  setPaymentMethod,
+  paymentMethod,
+  loading,
+  setLoading,
+}) => {
   const theme = useTheme();
-  const { language, totalPriceWithVAT } = useAppStore();
+  const { language, user, loginUser } = useAppStore();
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const isMobile = useMediaQuery("(max-width:600px)");
 
   // States
   const [selectedPayment, setSelectedPayment] = useState(null);
   const navigate = useNavigate();
+  console.log(subTotal);
+  console.log(parseFloat(user?.wallet_balance) < subTotal);
+  console.log(selectedPayment);
 
   const isArabic = language === "ar";
   const paymentOptions = [
@@ -53,13 +63,18 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
   // handle Payment Method Selection
   const handleSelection = (paymentMethod) => {
     setSelectedPayment(paymentMethod);
+    setPaymentMethod(paymentMethod);
   };
 
   const handleModal = () => {
-    setPaymentModal(false)
-    handlePayment()
-    setShowIframe(true)
-  }
+    setPaymentModal(false);
+    setLoading(true);
+    handlePayment();
+    loginUser(user?.mobile);
+    if (paymentMethod === "master") {
+      setShowIframe(true);
+    }
+  };
 
   // payment modal props
   const modalProps = {
@@ -68,151 +83,237 @@ const PaymentModal = ({ paymentModal, setPaymentModal, setShowIframe, handlePaym
 
   // Component
   return (
-    <Modal open={paymentModal} {...modalProps}>
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: isMobile ? "100%" : -20,
-        }}
-        animate={{
-          opacity: 1,
-          y: isMobile ? 0 : 0,
-        }}
-        exit={{
-          opacity: 0,
-          y: isMobile ? "100%" : -20,
-        }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          width: isMobile ? "100%" : "400px",
-          left: isMobile ? 0 : isTablet ? "20%" : "35%",
-          bottom: isMobile ? 0 : isTablet ? "10%" : "auto",
-          top: isMobile ? "auto" : isTablet ? "25%" : "30%",
-          transform: isMobile ? "none" : "translate(-50%, -50%)",
-          outline: "none",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignitems: "center",
-            justifyContent: "center",
-            height: "auto",
-            gap: "40px",
-            // width: { xs: "100vw" },
-
-            mb: { sm: "350px", md: "0", xs: "0", lg: "0" },
-            // border: "1px solid red",
-          }}
-        >
-          {/* paper 2 (Payment Method )*/}
-          <Paper
-            elevation={0}
-            sx={{
-              padding: "16px",
-              width: { lg: "100%", md: "100%", sm: "100%", xs: "92%" },
-              height: "100%",
-              margin: "0 auto",
-              //   borderRadius: "30px",
-              direction: isArabic ? "rtl" : "ltr",
-              borderTopLeftRadius: isMobile ? "10px" : "0px",
-              borderTopRightRadius: isMobile ? "10px" : "20px",
-              borderRadius: isMobile ? "10px 10px 0 0" : "20px",
-
-              //   overflowY: "scroll",
-              //   overflow: "hidden",
+    <>
+      {loading === false ? (
+        // Payment Modal
+        <Modal open={paymentModal} {...modalProps}>
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: isMobile ? "100%" : -20,
+            }}
+            animate={{
+              opacity: 1,
+              y: isMobile ? 0 : 0,
+            }}
+            exit={{
+              opacity: 0,
+              y: isMobile ? "100%" : -20,
+            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              width: isMobile ? "100%" : "400px",
+              left: isMobile ? 0 : isTablet ? "20%" : "35%",
+              bottom: isMobile ? 0 : isTablet ? "10%" : "auto",
+              top: isMobile ? "auto" : isTablet ? "25%" : "30%",
+              transform: isMobile ? "none" : "translate(-50%, -50%)",
+              outline: "none",
             }}
           >
-            <Box component="form" noValidate autoComplete="off">
-              <Typography
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignitems: "center",
+                justifyContent: "center",
+                height: "auto",
+                gap: "40px",
+                // width: { xs: "100vw" },
+
+                mb: { sm: "350px", md: "0", xs: "0", lg: "0" },
+                // border: "1px solid red",
+              }}
+            >
+              {/* paper 2 (Payment Method )*/}
+              <Paper
+                elevation={0}
                 sx={{
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  marginBottom: "16px",
+                  padding: "16px",
+                  width: { lg: "100%", md: "100%", sm: "100%", xs: "92%" },
+                  height: "100%",
+                  margin: "0 auto",
+                  //   borderRadius: "30px",
+                  direction: isArabic ? "rtl" : "ltr",
+                  borderTopLeftRadius: isMobile ? "10px" : "0px",
+                  borderTopRightRadius: isMobile ? "10px" : "20px",
+                  borderRadius: isMobile ? "10px 10px 0 0" : "20px",
                 }}
               >
-                {language === "ar" ? "طريقة الدفع" : "Payment Method"}
-              </Typography>
-
-              {paymentOptions.map((option) => (
-                <Box
-                  key={option.id}
-                  onClick={() => handleSelection(option.id)}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "8px 16px",
-                    border: "1px solid",
-                    borderColor:
-                      selectedPayment === option.id ? "#D92531" : "#e0e0e0",
-                    borderRadius: "8px",
-                    backgroundColor:
-                      selectedPayment === option.id ? "#FAE9EA" : "#F8F8F8",
-                    width: {
-                      lg: "365px",
-                      md: "365px",
-                      sm: "367px",
-                      xs: "auto",
-                    },
-                    height: "64px",
-                    mt: "8px",
-                    cursor: "pointer",
-                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <Radio
-                    checked={selectedPayment === option.id}
-                    onChange={() => handleSelection(option.id)}
+                <Box component="form" noValidate autoComplete="off">
+                  <Typography
                     sx={{
-                      color: "#D92531",
-                      "&.Mui-checked": { color: "#D92531" },
-                    }}
-                  />
-                  <Typography variant="body1" sx={{ flexGrow: 1 }}>
-                    {isArabic ? option.label.ar : option.label.en}
-                  </Typography>
-                  <Box
-                    sx={{
-                      border: "2px solid #e0e0e0",
-                      borderRadius: "10%",
-                      backgroundColor: "#fff",
-                      padding: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: { sm: "50px" },
-                      height: { sm: "45px" },
+                      fontSize: "20px",
+                      fontWeight: "600",
+                      marginBottom: "16px",
                     }}
                   >
-                    <span dangerouslySetInnerHTML={{ __html: option.img }} />
-                  </Box>
+                    {language === "ar" ? "طريقة الدفع" : "Payment Method"}
+                  </Typography>
+
+                  {paymentOptions.map((option) => (
+                    <Box
+                      key={option.id}
+                      onClick={() => handleSelection(option.id)}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "8px 16px",
+                        border: "1px solid",
+                        borderColor:
+                          selectedPayment === option.id ? "#D92531" : "#e0e0e0",
+                        borderRadius: "8px",
+                        backgroundColor:
+                          selectedPayment === option.id ? "#FAE9EA" : "#F8F8F8",
+                        width: {
+                          lg: "365px",
+                          md: "365px",
+                          sm: "367px",
+                          xs: "auto",
+                        },
+                        height: "64px",
+                        mt: "8px",
+                        cursor: "pointer",
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
+                      <Radio
+                        checked={selectedPayment === option.id}
+                        onChange={() => handleSelection(option.id)}
+                        sx={{
+                          color: "#D92531",
+                          "&.Mui-checked": { color: "#D92531" },
+                        }}
+                      />
+                      <Typography variant="body1" sx={{ flexGrow: 1 }}>
+                        {isArabic ? option.label.ar : option.label.en}
+                        <br />
+                        {option.id === 'wallet' && `Wallet Amount: ${parseFloat(user?.wallet_balance)}`}
+                      </Typography>
+                      <Box
+                        sx={{
+                          border: "2px solid #e0e0e0",
+                          borderRadius: "10%",
+                          backgroundColor: "#fff",
+                          padding: "8px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: { sm: "50px" },
+                          height: { sm: "45px" },
+                        }}
+                      >
+                        <span
+                          dangerouslySetInnerHTML={{ __html: option.img }}
+                        />
+                      </Box>
+                    </Box>
+                  ))}
+                  <Button
+                    sx={{
+                      width: "100%",
+                      height: "48px",
+                      marginTop: "10px",
+                      borderRadius: "16px",
+                      background:
+                        selectedPayment === null
+                          ? "gray"
+                          : selectedPayment === "wallet" &&
+                            parseFloat(user?.wallet_balance) < subTotal
+                          ? "gray"
+                          : "#D92531",
+                      color: "white",
+                      fontSize: "22px",
+                      fontWeight: "400",
+                      textTransform: "none",
+                    }}
+                    disabled={
+                      !selectedPayment ||
+                      (selectedPayment === "wallet" &&
+                        parseFloat(user?.wallet_balance) < subTotal)
+                    }
+                    onClick={() => handleModal()}
+                  >
+                    {language === "en"
+                      ? `Pay ${subTotal} Now`
+                      : `ادفع ${subTotal} الآن`}
+                  </Button>
                 </Box>
-              ))}
-              <Button
-                sx={{
-                  width: "100%",
-                  height: "48px",
-                  marginTop: "10px",
-                  borderRadius: "16px",
-                  background: selectedPayment === null ? 'gray' : '#D92531',
-                  color: "white",
-                  fontSize: "22px",
-                  fontWeight: "400",
-                  textTransform: "none",
-                }}
-                disabled={selectedPayment === null ? true : false}
-                onClick={() => handleModal()}
-              >
-                {language === 'en' ? `Pay ${subTotal} Now` : `ادفع ${subTotal} الآن` }
-              </Button>
+              </Paper>
             </Box>
-          </Paper>
-        </Box>
-      </motion.div>
-    </Modal>
+          </motion.div>
+        </Modal>
+      ) : (
+        // Loading Modal
+        <Modal open={loading} {...modalProps}>
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: isMobile ? "100%" : -20,
+            }}
+            animate={{
+              opacity: 1,
+              y: isMobile ? 0 : 0,
+            }}
+            exit={{
+              opacity: 0,
+              y: isMobile ? "100%" : -20,
+            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              width: isMobile ? "100%" : "400px",
+              left: isMobile ? 0 : isTablet ? "20%" : "35%",
+              bottom: isMobile ? 0 : isTablet ? "10%" : "auto",
+              top: isMobile ? "auto" : isTablet ? "25%" : "30%",
+              transform: isMobile ? "none" : "translate(-50%, -50%)",
+              outline: "none",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignitems: "center",
+                justifyContent: "center",
+                height: "auto",
+                gap: "40px",
+
+                mb: { sm: "350px", md: "0", xs: "0", lg: "0" },
+              }}
+            >
+              <Paper
+                elevation={0}
+                sx={{
+                  padding: "16px",
+                  width: { lg: "100%", md: "100%", sm: "100%", xs: "92%" },
+                  height: "100%",
+                  margin: "0 auto",
+                  direction: isArabic ? "rtl" : "ltr",
+                  borderTopLeftRadius: isMobile ? "10px" : "0px",
+                  borderTopRightRadius: isMobile ? "10px" : "20px",
+                  borderRadius: isMobile ? "10px 10px 0 0" : "20px",
+                }}
+              >
+                <Box component="form" noValidate autoComplete="off">
+                  <Typography
+                    sx={{
+                      fontSize: "20px",
+                      fontWeight: "600",
+                      marginBottom: "16px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Making Payment Please Wait...
+                  </Typography>
+                </Box>
+              </Paper>
+            </Box>
+          </motion.div>
+        </Modal>
+      )}
+    </>
   );
 };
 

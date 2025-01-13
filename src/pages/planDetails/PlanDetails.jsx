@@ -33,6 +33,7 @@ const PlanDetails = () => {
     language,
     currentPlan,
     planAvailableDays,
+    selectedColor,
   } = useAppStore();
 
   // States
@@ -44,6 +45,10 @@ const PlanDetails = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [availableDays, setAvailableDays] = useState([]);
   const [modalData, setModalData] = useState({});
+  const [foodTypes, setFoodTypes] = useState();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [selectedFoodType, setSelectedFoodType] = useState();
+  const [filteredMeals, setFilteredMeals] = useState([]);
 
   const isArabic = language == "ar";
 
@@ -187,9 +192,105 @@ const PlanDetails = () => {
     ),
   };
 
+  // Arabic of Items
+  const itemsArabic = {
+    meals: "وجبات",
+    snacks: "وجبات خفيفة",
+    juice: "عصير",
+    "Big Salad": "سلطة كبيرة",
+  };
+
+  // Aranic of Days
+  const getDaysArabic = (currentDay) => {
+    switch (currentDay) {
+      case "Sunday":
+        return "الأحد";
+      case "Monday":
+        return "الاثنين";
+      case "Tuesday":
+        return "يوم الثلاثاء";
+      case "Wednesday":
+        return "الأربعاء";
+      case "Thursday":
+        return "يوم الخميس";
+      case "Friday":
+        return "جمعة";
+      case "Saturday":
+        return "السبت";
+      default:
+        return currentDay;
+    }
+  };
+
+  // Arabic of Months
+  const getMonthsArabic = (currentMonth) => {
+    const month = currentMonth.slice(3, currentMonth.length);
+    const date = currentMonth.slice(0, 2);
+    switch (month) {
+      case "Jan":
+        return date + " يناير";
+      case "Feb":
+        return date + " فبراير";
+      case "Mar":
+        return date + " مارس";
+      case "Apr":
+        return date + " أبريل";
+      case "May":
+        return date + " مايو";
+      case "June":
+        return date + " يونيو";
+      case "July":
+        return date + " يوليو";
+      case "Aug":
+        return date + " أغسطس";
+      case "Sep":
+        return date + " سبتمبر";
+      case "Oct":
+        return date + " أكتوبر";
+      case "Nov":
+        return date + " نوفمبر";
+      case "Dec":
+        return date + " ديسمبر";
+      default:
+        return currentMonth;
+    }
+  };
+
+  // Arabic of Food Types
+  const getTypeArabic = (currentType) => {
+    switch (currentType) {
+      case "Breakfast":
+        return "إفطار";
+      case "Snacks":
+        return "وجبات خفيفة";
+      case "Chicken":
+        return "فرخة";
+      case "Seafood":
+        return "المأكولات البحرية";
+      case "Sandwiches":
+        return "السندويشات";
+      case "Beef":
+        return "لحم";
+      case "Big salad":
+        return "سلطة كبيرة";
+      default:
+        return currentType;
+    }
+  };
+
+  const handleFoodType = (currentType) => {
+    setSelectedFoodType(currentType);
+    const filterByType = mealsByDay.filter((meal) => {
+      return meal?.detail?.category?.name === currentType;
+    });
+    setFilteredMeals(filterByType);
+    console.log(filterByType);
+  };
+
   // Add Icons in the Plan
   const updatedItems = currentPlan?.no_of_items?.items.map((item) => ({
     ...item,
+    arabicName: itemsArabic[item.name] || item.name,
     icon: iconsMap[item.name] || "❓",
   }));
 
@@ -199,6 +300,10 @@ const PlanDetails = () => {
     const selectedDay = availableDays[index].day.toLowerCase();
     const mealsForSelectedDay = meals[selectedDay] || [];
     setMealsByDay(mealsForSelectedDay);
+    const filterByType = mealsForSelectedDay.filter((meal) => {
+      return meal?.detail?.category?.name === selectedFoodType;
+    });
+    setFilteredMeals(filterByType);
   };
 
   // handle meal selection
@@ -216,6 +321,7 @@ const PlanDetails = () => {
     }
   };
 
+  // handle Info of Meal
   const handleInfoClick = (meal) => {
     setMealInfoModalOpen(true);
     setModalData({
@@ -235,14 +341,29 @@ const PlanDetails = () => {
 
   // useEfffect
   useEffect(() => {
-    setLoading(true);
     if (!currentPlan) {
       navigate("/subscriptions", { replace: true });
       return;
     }
-    fetchMeals(currentPlan.meal_list);
+    const fetchData = async () => {
+      const { message, data } = await fetchMeals(currentPlan.meal_list);
+      if (message === "success") {
+        const types = [
+          ...new Set(
+            mealsByDay
+              .map((meal) => meal.detail?.category?.name)
+              .filter(Boolean)
+          ),
+        ];
+        setFoodTypes(types);
+        if (data) {
+          setFilteredMeals(data);
+        }
+        setLoading(false);
+      }
+    };
+    fetchData();
     setSelectedIndex(0);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -251,6 +372,19 @@ const PlanDetails = () => {
       setAvailableDays(adjustedDays);
     }
   }, [planAvailableDays, currentPlan]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // Component
   return (
@@ -304,7 +438,8 @@ const PlanDetails = () => {
                       <strike
                         style={{ color: "#515151", fontFamily: "Poppins" }}
                       >
-                        {currentPlan?.free_plans[0]?.basic_amount} SR
+                        {currentPlan?.free_plans[0]?.basic_amount}{" "}
+                        {language === "en" ? "SR" : "ريال"}
                       </strike>
                     </p>
                     <p
@@ -314,7 +449,7 @@ const PlanDetails = () => {
                         fontFamily: "Poppins",
                       }}
                     >
-                      0 SR
+                      0 {language === "en" ? "SR" : "ريال"}
                     </p>
                   </div>
                 </div>
@@ -378,7 +513,8 @@ const PlanDetails = () => {
                         strokeLinecap="round"
                       />
                     </svg>
-                    {currentPlan?.total_days} Days
+                    {currentPlan?.total_days}{" "}
+                    {language === "en" ? "Days" : "أيام"}
                   </Typography>
                   <Typography className="textAndIcon freeplanIcons">
                     <svg
@@ -419,7 +555,8 @@ const PlanDetails = () => {
                         className="textAndIcon freeplanIcons"
                       >
                         {item.icon}
-                        {item.value} {item.name}
+                        {item.value}{" "}
+                        {language === "en" ? item.name : item.arabicName}
                       </Typography>
                     ))}
                 </div>
@@ -439,7 +576,7 @@ const PlanDetails = () => {
                       style={{
                         border:
                           selectedIndex === index
-                            ? "1px solid #D92531"
+                            ? `1px solid ${selectedColor}`
                             : "1px solid black",
                         cursor: "pointer",
                       }}
@@ -448,7 +585,7 @@ const PlanDetails = () => {
                         className="weekdayFirstDiv"
                         style={{
                           backgroundColor:
-                            selectedIndex === index ? "#D92531" : "white",
+                            selectedIndex === index ? selectedColor : "white",
                         }}
                       >
                         <Typography
@@ -475,12 +612,16 @@ const PlanDetails = () => {
                             fontWeight: "500",
                           }}
                         >
-                          {item.day.slice(0, 3)}
+                          {language === "en"
+                            ? item.day.slice(0, 3)
+                            : getDaysArabic(item.day)}
                         </Typography>
                         <Typography
                           sx={{ fontSize: isSmallScreen ? "8px" : "10px" }}
                         >
-                          {item.date}
+                          {language === "en"
+                            ? item.date
+                            : getMonthsArabic(item.date)}
                         </Typography>
                       </div>
                     </div>
@@ -491,32 +632,73 @@ const PlanDetails = () => {
               <div>
                 <p>{language === "en" ? "Food Type" : "نوع الغذاء"}</p>
                 <div className="foodType">
-                  <div>Snacks (0/1)</div>
-                  <div>Juice (0/1)</div>
-                  <div>Meals (0/2)</div>
+                  {foodTypes?.map((item, index) => {
+                    return (
+                      <div
+                        style={{
+                          cursor: "pointer",
+                          borderWidth: '3px',
+                          backgroundColor: selectedFoodType === item ? selectedColor : "white",
+                          color: selectedFoodType === item ? "white" : "black",
+                          borderColor:
+                            selectedFoodType === item ? selectedColor : "black",
+                        }}
+                        key={index}
+                        onClick={() => handleFoodType(item)}
+                      >
+                        {language === "en" ? item : getTypeArabic(item)}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </div>
         </div>
         {loading ? (
-          <Loader />
+          <Loader title="Meals" />
         ) : (
           <div className="meals">
             <p>{language === "en" ? "Select Meals" : "اختر الوجبات"}</p>
             <div className="mealCardContainer">
-              {mealsByDay.map((meal, index) => (
+              {filteredMeals?.map((meal, index) => (
                 <div key={index} className="mealCard">
                   {/* Image & Tags */}
                   <div style={{ position: "relative", textAlign: "center" }}>
+                    {/* {isLoaded === true ? (
+                      <img
+                        className="mealCardImg"
+                        src={meal?.detail?.image_url}
+                        alt="Meal"
+                        style={{
+                          borderRadius: "50%",
+                          width: "160px",
+                          height: "160px",
+                          objectFit: "cover",
+                        }}
+                        onLoad={() => setIsLoaded(true)}
+                      />
+                    ) : (
+                      <img
+                        className="mealCardImg"
+                        src="/Banner.png"
+                        alt="Meal"
+                        style={{
+                          borderRadius: "50%",
+                          width: "160px",
+                          height: "160px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )} */}
                     <img
                       className="mealCardImg"
                       src={meal?.detail?.image_url}
                       alt="Meal"
                       style={{
                         borderRadius: "50%",
-                        width: "160px",
-                        height: "160px",
+                        width: windowWidth < 321 ? "100px" : "160px",
+                        height: windowWidth < 321 ? "100px" : "160px",
                         objectFit: "cover",
                       }}
                     />
@@ -665,7 +847,7 @@ const PlanDetails = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        bgcolor: "#D92531",
+                        bgcolor: selectedColor,
                         color: "#fff",
                         borderRadius: 2,
                         width: "160px",
@@ -679,7 +861,7 @@ const PlanDetails = () => {
                       className="selectButton"
                       onClick={() => handleSelect()}
                     >
-                      Select
+                      {language === "en" ? "Select" : "يختار"}
                     </Button>
                   </CardContent>
                 </div>
@@ -703,7 +885,7 @@ const PlanDetails = () => {
         className="subscribeButtonContainer"
         onClick={() => handleNavigation()}
       >
-        <div className="subscribeButton">
+        <div className="subscribeButton" style={{backgroundColor:selectedColor}}>
           {language === "en"
             ? "Subscribe Now, Schedule Later"
             : "اشترك الآن، حدد موعدًا لاحقًا"}

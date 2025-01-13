@@ -112,6 +112,7 @@ const HeroSec = () => {
                 height:{xs:"48px",sm:"50px",lg:"56px"},
                 fontSize:{xs:"12px",sm:"14px",md:"16px"},
               }}
+              onClick={() => navigate("/videoModal")}
             >
               Watch Intro
             </Button>

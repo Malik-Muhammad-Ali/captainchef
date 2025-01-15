@@ -28,6 +28,9 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
 
+
+  const isRTL = language === "ar";
+
   const handleLogout = () => {
     console.log("Logged out!");
   };
@@ -60,6 +63,7 @@ const Navbar = () => {
         alignItems: "center",
         justifyContent: "center",
         boxShadow: "none",
+        direction: isRTL ? "rtl" : "ltr",
       }}
     >
       <Container maxWidth="xl">
@@ -137,6 +141,7 @@ const Navbar = () => {
             <FormControl
               sx={{
                 minWidth: { xs: "", sm: "", md: "150px", lg: "150px" },
+                direction: isRTL ? "rtl" : "ltr",
               }}
               variant="outlined"
             >
@@ -145,6 +150,7 @@ const Navbar = () => {
                 sx={{
                   color: "black",
                   display: { xs: "none", md: "flex", sm: "flex" },
+                  textAlign: "right",
                   "&.Mui-focused": {
                     color: "black",
                   },
@@ -177,7 +183,7 @@ const Navbar = () => {
                   <Box display="flex" alignItems="center" gap={1}>
                     <img src={flag} alt={language} width="20" height="15" />
                     <Typography>
-                      {language === "en" ? "English" : "Arabic"}
+                      {language === "en" ? "English" : "عربي"}
                     </Typography>
                   </Box>
                 )}
@@ -231,14 +237,14 @@ const Navbar = () => {
                 }}
               >
                 <Box
-                  onClick={() => setMenuOpen((prev) => !prev)} // Toggles the dropdown
+                  onClick={() => setMenuOpen((prev) => !prev)}
                   sx={{
-                    width: "64px", // Box size
+                    width: "64px",
                     height: "64px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: "50%", // Circular shape
+                    borderRadius: "50%",
                     cursor: "pointer",
                   }}
                 >
@@ -246,9 +252,9 @@ const Navbar = () => {
                   {src ? (
                     <Avatar
                       alt="Remy Sharp"
-                      src="myimg.jpg" // Replace with your dynamic `src` variable
+                      src="myimg.jpg"
                       sx={{
-                        width: "52px", // Slightly larger avatar
+                        width: "52px",
                         height: "52px",
                       }}
                     />

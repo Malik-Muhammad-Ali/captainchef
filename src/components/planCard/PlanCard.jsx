@@ -30,10 +30,6 @@ const PlanCard = memo(
       plan?.city.find((currentCity) => currentCity.city === city)
         ?.delivery_charges || plan?.city[0]?.delivery_charges;
 
-    // Set plan available days
-
-    // setPlanAvailableDays(availableDays)
-
     // Icons
     const iconsMap = {
       meals: (
@@ -133,6 +129,13 @@ const PlanCard = memo(
       ),
     };
 
+    const itemsArabic = {
+      meals: "وجبات",
+      snacks: 'وجبات خفيفة',
+      juice: 'عصير',
+      "Big Salad": "سلطة كبيرة",
+    }
+
     // Cart Items
     const cartItems = {
       user_id: user?.id,
@@ -152,6 +155,7 @@ const PlanCard = memo(
     // Update Items with Icons
     const updatedItems = plan.no_of_items.items.map((item) => ({
       ...item,
+      arabicName: itemsArabic[item.name] || "",
       icon: iconsMap[item.name] || "❓",
     }));
 
@@ -205,7 +209,8 @@ const PlanCard = memo(
               sx={{
                 position: "absolute",
                 top: { lg: 5, md: 5, sm: 5, xs: 15 },
-                left: { lg: 5, md: 5, sm: 5, xs: 14 },
+                left: language === 'en' && { lg: 5, md: 5, sm: 5, xs: 14 },
+                right: language !== 'en' && { lg: 5, md: 5, sm: 5, xs: 14 },
                 backgroundColor: selectedColor,
                 color: "#fff",
                 padding: "2px 8px",
@@ -276,7 +281,7 @@ const PlanCard = memo(
                 variant="h6"
                 sx={{
                   fontSize: "15px",
-                  textAlign: isArabic ? "right" : "left", // Adjusts text alignment based on language
+                  textAlign: isArabic ? "right" : "left", 
                 }}
               >
                 {title}
@@ -287,11 +292,11 @@ const PlanCard = memo(
                   <Typography
                     variant="body2"
                     sx={{
-                      color: "gray",
+                      color: "black",
                       fontSize: "1rem",
                     }}
                   >
-                    {plan.basic_amount} SR
+                    {plan.basic_amount} {language === 'en' ? 'SR' : 'ريال'}
                   </Typography>
                 ) : (
                   <>
@@ -312,7 +317,7 @@ const PlanCard = memo(
                         fontSize: "1rem",
                       }}
                     >
-                      {plan.discounted_amount} SR
+                      {plan.discounted_amount} {language === 'en' ? 'SR' : 'ريال'}
                     </Typography>
                   </>
                 )}
@@ -408,7 +413,7 @@ const PlanCard = memo(
                   variant="body2"
                   sx={{ fontSize: "0.7rem", textAlign: "center" }}
                 >
-                  {days} Days
+                  {days} {language === 'en' ? 'Days' : 'أيام'}
                 </Typography>
               </Box>
 
@@ -498,7 +503,7 @@ const PlanCard = memo(
                   variant="body2"
                   sx={{ fontSize: "0.7rem", textAlign: "center" }}
                 >
-                  {deliveryCharges} SR
+                  {deliveryCharges} {language === 'en' ? 'SR' : 'ريال'}
                 </Typography>
               </Box>
 
@@ -518,7 +523,7 @@ const PlanCard = memo(
                       {item.icon}
                     </Box>
                     <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                      {item.value} {item.name}
+                      {item.value} {language === 'en' ? item.name : item.arabicName}
                     </Typography>
                   </Box>
                 ))}

@@ -44,7 +44,6 @@ const Checkout = () => {
   const [paymentModal, setPaymentModal] = useState(false);
   const [discount, setDiscount] = useState();
   const iframeRef = useRef(null);
-  const intervalRef = useRef(null);
   const [loadCount, setLoadCount] = useState(0);
   const [noonOrderId, setNoonOrderId] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -149,6 +148,13 @@ const Checkout = () => {
     setPaymentModal(true);
   };
 
+  const removeCoupon = () => {
+    setCode("");
+    setCouponData();
+    setCouponButton(false);
+    setFreePlan(true);
+  }
+
   // handle coupon API
   const handleCoupon = async () => {
     const dataSend = {
@@ -160,7 +166,8 @@ const Checkout = () => {
         "https://portal.captainchef.net/public/connector/api/coupon/apply",
         dataSend
       );
-      let min_cart_amount = parseFloat(response.data.data.min_cart_amount) || 0;
+      let min_cart_amount =
+        parseFloat(response?.data?.data?.min_cart_amount) || 0;
       if (response.data.status === "success" && subTotal >= min_cart_amount) {
         setCouponError();
         setCouponData(response.data);
@@ -244,9 +251,9 @@ const Checkout = () => {
       if (message) {
         setLoading(false);
       }
-      if(message === "success"){
+      if (message === "success") {
         setPaymentResult("CAPTURED");
-      }else if (message === "failed"){
+      } else if (message === "failed") {
         setPaymentResult("REJECTED");
       }
       navigate("/mysubscriptions");
@@ -578,12 +585,12 @@ const Checkout = () => {
                         helperText={couponError}
                         onChange={(e) => setCode(e.target.value)}
                         InputProps={{
-                          disableUnderline: true, // Removes underline/border
+                          disableUnderline: true,
                         }}
                         InputLabelProps={{
                           sx: {
                             position: "absolute",
-                            top: "-10px", // Label positioned slightly above the field
+                            top: "-10px",
                             left: isArabic
                               ? {
                                   lg: "310px",
@@ -592,17 +599,17 @@ const Checkout = () => {
                                   xs: "175px",
                                 }
                               : "16px",
-                            fontSize: "14px", // Small, clean font size
-                            background: "white", // Matches the input field background
-                            padding: "0 4px", // Adds spacing around the label
-                            transform: "translate(0, 0)", // Ensures no extra shifting
-                            pointerEvents: "none", // Prevents interaction with the label
+                            fontSize: "14px",
+                            background: "white",
+                            padding: "0 4px",
+                            transform: "translate(0, 0)",
+                            pointerEvents: "none",
                             "&.Mui-focused": {
-                              color: "grey", // Label color remains consistent
+                              color: "grey",
                             },
                           },
                         }}
-                        placeholder="" // No placeholder since the label acts as one
+                        placeholder=""
                         sx={{
                           width: {
                             lg: "530px",
@@ -617,45 +624,68 @@ const Checkout = () => {
                             xs: "63px",
                           },
                           border: couponError ? "1px solid red" : "none",
-                          backgroundColor: "#F8F8F8", // Subtle grey background
-                          borderRadius: "12px", // Smooth rounded edges
-                          paddingLeft: "14px", // Spacing inside the input field
-                          paddingRight: "10px", // Spacing inside the input field
-                          fontSize: "16px", // Adjusted text font size
+                          backgroundColor: "#F8F8F8",
+                          borderRadius: "12px",
+                          paddingLeft: "14px",
+                          paddingRight: "10px",
+                          fontSize: "16px",
                           display: "flex",
-                          // alignItems: "center", // Centers text vertically
-                          position: "relative", // To keep the label aligned
+                          position: "relative",
                         }}
                       />
 
-                      <Button
-                        variant="contained"
-                        sx={{
-                          width: {
-                            lg: "193px",
-                            md: "193px",
-                            sm: "150px",
-                            xs: "",
-                          },
-                          height: "60px",
-                          marginLeft: "8px",
-                          border: code
-                            ? couponButton
-                              ? "none"
-                              : "0.5px solid red"
-                            : "none",
-                          backgroundColor: "white",
-                          color: "#D92531",
-                          textTransform: "none",
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                          borderRadius: "10px",
-                        }}
-                        onClick={() => handleCoupon()}
-                        disabled={!code || couponButton} // Disable button if no code is entered
-                      >
-                        {isArabic ? "تطبيق" : "Apply"}
-                      </Button>
+                      {!couponButton && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: {
+                              lg: "193px",
+                              md: "193px",
+                              sm: "150px",
+                              xs: "",
+                            },
+                            height: "60px",
+                            marginLeft: "8px",
+                            border: !code ? "none" : "1px solid #D92531",
+                            backgroundColor: "white",
+                            color: "#D92531",
+                            textTransform: "none",
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            borderRadius: "10px",
+                          }}
+                          onClick={() => handleCoupon()}
+                          disabled={!code}
+                        >
+                          {isArabic ? "تطبيق" : "Apply"}
+                        </Button>
+                      )}
+
+                      {couponButton && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: {
+                              lg: "193px",
+                              md: "193px",
+                              sm: "150px",
+                              xs: "",
+                            },
+                            height: "60px",
+                            marginLeft: "8px",
+                            border: "1px solid #D92531",
+                            backgroundColor: "white",
+                            color: "#D92531",
+                            textTransform: "none",
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            borderRadius: "10px",
+                          }}
+                          onClick={() => removeCoupon()}
+                        >
+                          {language === "en" ? "Remove" : "يزيل"}
+                        </Button>
+                      )}
                     </Box>
                   )}
                 </Paper>
@@ -680,8 +710,6 @@ const Checkout = () => {
                     right: "32px",
                     bottom: "40px",
                     left: "32px",
-                    // mb: "30px",
-                    // pb: "20px",
                   }}
                 >
                   <Box
@@ -695,7 +723,7 @@ const Checkout = () => {
                       sx={{
                         fontSize: "20px",
                         fontWeight: "600",
-                        mb: "8px", // Add space below the heading
+                        mb: "8px",
                       }}
                     >
                       {isArabic ? "تعليقات إضافية" : "Additional Comments"}
@@ -720,7 +748,7 @@ const Checkout = () => {
                     <Box
                       sx={{
                         mt: "0px",
-                        width: "100%", // Ensures full width
+                        width: "100%",
                       }}
                     >
                       <TextField
@@ -728,9 +756,9 @@ const Checkout = () => {
                         margin="normal"
                         variant="standard"
                         multiline
-                        rows={3} // Initial rows to display
+                        rows={3}
                         InputProps={{
-                          disableUnderline: true, // Removes underline/border
+                          disableUnderline: true,
                         }}
                         InputLabelProps={{
                           sx: {
@@ -745,16 +773,16 @@ const Checkout = () => {
                                 }
                               : "16px",
                             fontSize: "14px",
-                            background: "white", // Matches input field background
+                            background: "white",
                             padding: "0 4px",
-                            transform: "translate(0, 0)", // No extra shifts
-                            pointerEvents: "none", // Prevent interaction
+                            transform: "translate(0, 0)",
+                            pointerEvents: "none",
                             "&.Mui-focused": {
-                              color: "grey", // Label color on focus
+                              color: "grey",
                             },
                           },
                         }}
-                        placeholder="" // Empty placeholder since the label acts as one
+                        placeholder=""
                         sx={{
                           width: {
                             lg: "530px",
@@ -768,12 +796,12 @@ const Checkout = () => {
                             sm: "56px",
                             xs: "63px",
                           },
-                          backgroundColor: "#F8F8F8", // Subtle grey background
-                          borderRadius: "12px", // Rounded edges
-                          paddingLeft: "14px", // Spacing inside the input
-                          paddingRight: "10px", // Spacing inside the input
-                          position: "relative", // To keep the label aligned
-                          fontSize: "16px", // Text font size
+                          backgroundColor: "#F8F8F8",
+                          borderRadius: "12px",
+                          paddingLeft: "14px",
+                          paddingRight: "10px",
+                          position: "relative",
+                          fontSize: "16px",
                         }}
                       />
                     </Box>

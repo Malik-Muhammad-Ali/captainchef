@@ -10,8 +10,8 @@ import {
 import useAppStore from "../../store/store";
 
 const MySubscriptionCard = memo(({ plan }) => {
+  const { language } = useAppStore();
   const [isLoaded, setIsLoaded] = useState(false);
-  const {selectedColor}= useAppStore();
   const icons = [
     `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
        <path d="M17 3L17 7" stroke="#1F1F1F" strokeWidth="0.5" stroke-linecap="round"/>
@@ -59,6 +59,25 @@ const MySubscriptionCard = memo(({ plan }) => {
        <path d="M14 18H18" stroke="#1F1F1F" strokeWidth="0.5" stroke-linecap="round"/>
      </svg>`,
   ];
+  const isArabic = language === "ar";
+  console.log(plan);
+
+  const getArabicStatus = (currentStatus) => {
+    switch (currentStatus) {
+      case "active":
+        return "نشط";
+      case "inactive":
+        return "غير نشط";
+      case "cancel":
+        return "يلغي";
+      case "completed":
+        return "نشيط";
+      case "abort_by_user":
+        return "إحباط من قبل المستخدم";
+      default:
+        return currentStatus;
+    }
+  };
 
   return (
     <Card
@@ -103,15 +122,18 @@ const MySubscriptionCard = memo(({ plan }) => {
           sx={{
             position: "absolute",
             top: 20,
-            left: 22,
-            backgroundColor: selectedColor,
+            left: !isArabic && 22,
+            right: isArabic && 22,
+            backgroundColor: "#CE2729",
             color: "#fff",
             padding: "2px 8px",
             borderRadius: "6px",
             fontSize: "0.9rem",
           }}
         >
-          {plan?.plan_details[0]?.subscription_cat_name}
+          {!isArabic
+            ? plan?.plan_details[0]?.subscription_cat_name
+            : plan?.plan_details[0]?.subscription_cat_name_ar}
         </Typography>
       </Box>
 
@@ -137,18 +159,24 @@ const MySubscriptionCard = memo(({ plan }) => {
               },
             }}
           >
-            {plan?.plan_details[0]?.title}
+            {!isArabic
+              ? plan?.plan_details[0]?.title
+              : plan?.plan_details[0]?.title_ar}
           </Typography>
           <Typography
             variant="h6"
             sx={{
-              fontSize: "12px",
-              color: "#F8CD0F",
+              fontSize: "16px",
+              color: "#CE2729",
             }}
           >
             {plan?.order_details[0]?.status === "waiting_for_payment"
-              ? "Payment Pending"
-              : plan?.order_details[0]?.status}
+              ? !isArabic
+                ? "Payment Pending"
+                : "الدفع معلق"
+              : !isArabic
+              ? plan?.order_details[0]?.status
+              : getArabicStatus(plan?.order_details[0]?.status)}
           </Typography>
         </Box>
 
@@ -197,7 +225,8 @@ const MySubscriptionCard = memo(({ plan }) => {
                   }}
                 />
                 <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                  {plan?.plan_details[0]?.total_days} days
+                  {plan?.plan_details[0]?.total_days}{" "}
+                  {!isArabic ? "days" : "أيام"}
                 </Typography>
               </Box>
               <Box
@@ -217,7 +246,8 @@ const MySubscriptionCard = memo(({ plan }) => {
                   }}
                 />
                 <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                  {plan?.plan_details[0]?.no_of_items?.items[0].value} Meals
+                  {plan?.plan_details[0]?.no_of_items?.items[0].value}{" "}
+                  {!isArabic ? "Meals" : "وجبات"}
                 </Typography>
               </Box>
             </Box>
@@ -229,30 +259,52 @@ const MySubscriptionCard = memo(({ plan }) => {
                 gap: 0.5,
               }}
             >
-              {["Buy 31/5/23", "Buy 31/5/23"].map((feature, featureIndex) => (
+              {/* Start Data */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifySelf: "right",
+                }}
+              >
                 <Box
-                  key={featureIndex + 2}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifySelf: "right",
+                    width: "20px",
+                    height: "20px",
+                    marginRight: "8px",
                   }}
-                >
-                  <Box
-                    sx={{
-                      width: "20px",
-                      height: "20px",
-                      marginRight: "8px",
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: icons[featureIndex + 2],
-                    }}
-                  />
-                  <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                    {feature}
-                  </Typography>
-                </Box>
-              ))}
+                  dangerouslySetInnerHTML={{
+                    __html: icons[0],
+                  }}
+                />
+                <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
+                  {plan?.order_details[0]?.start_date ||
+                    (!isArabic ? "NA" : "غير متوفر")}{" "}
+                </Typography>
+              </Box>
+              {/* End Date */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifySelf: "right",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "20px",
+                    height: "20px",
+                    marginRight: "8px",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: icons[0],
+                  }}
+                />
+                <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
+                  {plan?.order_details[0]?.end_date ||
+                    (!isArabic ? "NA" : "غير متوفر")}{" "}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -262,7 +314,7 @@ const MySubscriptionCard = memo(({ plan }) => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: selectedColor,
+              bgcolor: "#CE2729",
               color: "#fff",
               borderRadius: 2,
               width: "100%",
@@ -274,7 +326,18 @@ const MySubscriptionCard = memo(({ plan }) => {
             }}
             onClick={() => navigate("/downloadapp")}
           >
-            Schedule Now
+            {plan?.order_details[0]?.status === "waiting_for_payment" &&
+              (!isArabic ? "Complete Payment" : "الدفع الكامل")}
+            {plan?.order_details[0]?.status === "completed" &&
+              (!isArabic ? "Completed" : "مكتمل")}
+            {plan?.order_details[0]?.status === "active" &&
+              (!isArabic ? "See Details" : "انظر التفاصيل")}
+            {plan?.order_details[0]?.status === "inactive" &&
+              (!isArabic ? "Set Starting Data" : "تعيين بيانات البداية")}
+            {plan?.order_details[0]?.status === "cancel" &&
+              (!isArabic ? "Resume Now" : "استئناف الآن")}
+            {plan?.order_details[0]?.status === "abort_by_user" &&
+              (!isArabic ? "Complete Payment" : "الدفع الكامل")}
           </Button>
         </Box>
       </CardContent>

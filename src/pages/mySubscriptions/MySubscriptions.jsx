@@ -71,7 +71,7 @@ const MySubscriptions = () => {
     });
 
     setFilteredPlans(filtered);
-    batchRenderPlans(filtered); // Batch render the filtered plans
+    batchRenderPlans(filtered);
     setSelectedPlanType(type);
     setSelectedPlanStatus("");
   };
@@ -103,25 +103,14 @@ const MySubscriptions = () => {
     batchRenderPlans(filtered); // Batch render the filtered plans
     setSelectedPlanStatus(status);
   };
-  console.log(filteredPlans);
 
   // fetch My Subscriptions
   const fetchMySubscriptions = async () => {
-    console.log("Api Hit");
     try {
       const response = await axios.get(
         `https://portal.captainchef.net/public/contact/get-purchased-subscription?user_id=${user?.id}`
       );
       setSubscribedPlans(response?.data?.data);
-      // setFilteredPlans(
-      //   response?.data?.data.filter((plan) => {
-      //     if (plan?.order_details?.length > 0) {
-      //       return plan.order_details[0].payment_status === "paid";
-      //     } else {
-      //       return null;
-      //     }
-      //   })
-      // );
       const initialFiltered = response?.data?.data?.filter((plan) => {
         if (plan?.order_details?.length > 0) {
           return plan.order_details[0].payment_status === "paid";

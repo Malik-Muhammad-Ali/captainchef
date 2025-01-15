@@ -7,16 +7,17 @@ import useAppStore from "../../store/store";
 
 const NotRegisterYet = () => {
   const navigate = useNavigate();
-  const { otp, message, planDetailUrl, setAuthenticated } = useAppStore();
+  const { otp, message, planDetailUrl, setAuthenticated, language } =
+    useAppStore();
   const [pin, setPin] = useState(["", "", "", ""]);
   const [error, setError] = useState();
-  console.log(otp)
+  console.log(otp);
 
   useEffect(() => {
-    if(!otp){
-      navigate('/login')
+    if (!otp) {
+      navigate("/login");
     }
-  })
+  });
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/\D/g, "");
@@ -32,15 +33,15 @@ const NotRegisterYet = () => {
 
   const handleSubmit = () => {
     const pinValue = pin.join("");
-    if (pinValue === otp && message === 'Exists') {
+    if (pinValue === otp && message === "Exists") {
       setError(null);
       setAuthenticated(true);
       navigate(planDetailUrl);
-    } else if(pinValue === otp && message === 'Not Exists') {
+    } else if (pinValue === otp && message === "Not Exists") {
       setError(null);
-      navigate('/createaccount')
-    }else {
-      setError("Invalid OTP")
+      navigate("/createaccount");
+    } else {
+      setError("Invalid OTP");
     }
   };
 
@@ -50,11 +51,6 @@ const NotRegisterYet = () => {
     }
   };
 
-  // if(!otp){
-  //   navigate('/login')
-  //   return ;
-  // }
-
   return (
     <>
       <Grid2
@@ -62,7 +58,6 @@ const NotRegisterYet = () => {
           backgroundColor: "#f5f5f5",
           display: "flex",
           flexDirection: "column",
-          // height: "100vh",
         }}
       >
         <Box
@@ -112,7 +107,7 @@ const NotRegisterYet = () => {
                 fontSize: { lg: "32px", md: "32px", sm: "28px", xs: "24px" },
               }}
             >
-              Enter OTP
+              {language === "en" ? "Enter OTP" : "أدخل كلمة المرور لمرة واحدة"}
             </Typography>
             {/* Description */}
             <Typography
@@ -125,8 +120,13 @@ const NotRegisterYet = () => {
                 fontSize: "20px",
               }}
             >
-              We have sent an OTP to your provided number. <br /> Enter that OTP
-              to procceed further.
+              {language === "en"
+                ? "We have sent an OTP to your provided number."
+                : "لقد أرسلنا كلمة مرور لمرة واحدة (OTP) إلى الرقم الذي قدمته."}{" "}
+              <br />{" "}
+              {language === "en"
+                ? "Enter that OTP to procceed further."
+                : "أدخل كلمة المرور لمرة واحدة (OTP) للمضي قدمًا."}
             </Typography>
 
             {/* Password TextField */}
@@ -199,7 +199,7 @@ const NotRegisterYet = () => {
                 }}
                 onClick={() => handleSubmit()}
               >
-                Submit
+                {language === "en" ? "Submit" : "يُقدِّم"}
               </Button>
             </Box>
           </Box>

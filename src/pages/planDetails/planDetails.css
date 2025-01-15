@@ -23,12 +23,10 @@
 }
 .leftCardImg {
   border-radius: 12px;
+  object-fit: cover;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 .categoryName {
-  position: absolute;
-  top: 0px;
-  left: 10px;
   font-family: "Poppins";
   /* background-color: black; */
   color: white;
@@ -52,6 +50,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+  overflow: hidden;
 }
 .freePlan {
   display: flex;
@@ -110,17 +110,24 @@
 .foodType {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
+  justify-content: flex-start; /* Start from the beginning */
+  gap: 10px;
+  width: 100%; /* Parent container will decide the width */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  scrollbar-width: none; /* Hide scrollbar (Firefox) */
+  -ms-overflow-style: none; /* Hide scrollbar (IE and Edge) */
   div {
-    flex: 1;
+    flex: 0 0 auto; /* Ensure the items do not shrink or grow */
     background-color: #f8f8f8;
     padding: 5px 10px;
     border-radius: 12px;
     text-align: center;
+    min-width: 100px;
     border: 1px solid #1f1f1f;
   }
+}
+.foodType::-webkit-scrollbar {
+  display: none;
 }
 .meals {
   margin-top: 40px;
@@ -426,7 +433,7 @@
     left: 6px;
   }
   .mealCard {
-    gap: 40px;
+    /* gap: 4px; */
   }
   .weekday {
     flex-direction: column-reverse;

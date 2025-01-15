@@ -61,7 +61,7 @@ const CreateAccount = () => {
       setError({ general: registrationResponse.message });
     }
     if (registrationResponse.status === true) {
-      setAuthenticated(true);
+      setAuthenticated(true); 
       navigate(planDetailUrl);
     }
   };

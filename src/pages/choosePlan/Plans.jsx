@@ -17,9 +17,7 @@ const Plans = () => {
   const [filteredPlans, setFilteredPlans] = useState([]);
 
   const handleFilterPlans = (type) => {
-    setFilteredPlans(
-      plans.filter((plan) => plan.plan_type_range === type)
-    );
+    setFilteredPlans(plans.filter((plan) => plan.plan_type_range === type));
   };
 
   useEffect(() => {
@@ -57,8 +55,9 @@ const Plans = () => {
       <Box
         sx={{
           display: "flex",
+          // border: "2px solid black",
           flexWrap: "wrap",
-          justifyContent: { xs: "flex-start", sm: "space-between" },
+          // justifyContent: { xs: "flex-start", sm: "space-evenly" },
           alignItems: "center",
           borderRadius: "10px",
           width: { xs: "350px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
@@ -76,7 +75,9 @@ const Plans = () => {
               sm: "center",
               xs: "flex-start",
             },
-            justifyContent: "center",
+            justifyContent: "start",
+            width: "35%",
+            // border: "2px solid black",
             gap: "15px",
             flexDirection: { lg: "row", md: "row", sm: "row", xs: "column" },
           }}
@@ -173,17 +174,18 @@ const Plans = () => {
           </Box>
         </Box>
         {/* Second Child Box */}
+
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: { xs: "center", sm: "flex-end" },
             backgroundColor: "#fff",
             borderRadius: "10px",
             border: "1px solid #ddd",
-            width: { xs: "100%", sm: "200px" },
+            width: { xs: "100%", sm: "400px", md: "400px", lg: "400px" },
             marginTop: { xs: "30px", sm: "0" },
             height: { xs: "63px", sm: "", md: "", lg: "" },
+            // mr: "80px",
           }}
         >
           {/* Weekly Option */}

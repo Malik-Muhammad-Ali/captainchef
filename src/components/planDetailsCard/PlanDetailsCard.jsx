@@ -1,11 +1,23 @@
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import { Box, CircularProgress, useTheme, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import useAppStore from "../../store/store";
 
 const PlanDetailsCard = () => {
   const { currentPlan, language, city, selectedColor } = useAppStore();
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+  const isLg = useMediaQuery(theme.breakpoints.up("lg"));
+
+  let size;
+  if (isXs) size = 40;
+  else if (isSm) size = 60; 
+  else if (isMd) size = 80;
+  else if (isLg) size = 100;
 
   // Icons
   const iconsMap = {
@@ -125,6 +137,57 @@ const PlanDetailsCard = () => {
     icon: iconsMap[item.name] || "❓",
   }));
 
+  const normilizeProtein = (currentPlan?.estimate?.protein / 100) * 100;
+  const normilizeCarbs = (currentPlan?.estimate?.carbs / 100) * 100;
+  const normilizeFats = (currentPlan?.estimate?.fats / 100) * 100;
+  const normilizeCalories = (currentPlan?.estimate?.calorie / 100) * 100;
+
+  const angleProtein = (normilizeProtein / 100) * 360;
+  const angleCarbs = (normilizeCarbs / 100) * 360;
+  const angleFats = (normilizeFats / 100) * 360;
+  const angleCalories = (normilizeCalories / 100) * 360;
+
+  // Protein Dot
+  const getDotPositionProtien = () => {
+    const radius = size / 2;
+    const radians = (angleProtein - 90) * (Math.PI / 180);
+    const xProtein = radius + radius * Math.cos(radians);
+    const yProtein = radius + radius * Math.sin(radians);
+    return { xProtein, yProtein };
+  };
+
+  // Carbs Dot
+  const getDotPositionCarbs = () => {
+    const radius = size / 2;
+    const radians = (angleCarbs - 90) * (Math.PI / 180);
+    const xCarbs = radius + radius * Math.cos(radians);
+    const yCarbs = radius + radius * Math.sin(radians);
+    return { xCarbs, yCarbs };
+  };
+
+  // Fats Dot
+  const getDotPositionFats = () => {
+    const radius = size / 2;
+    const radians = (angleFats - 90) * (Math.PI / 180);
+    const xFats = radius + radius * Math.cos(radians);
+    const yFats = radius + radius * Math.sin(radians);
+    return { xFats, yFats };
+  };
+
+  // Calories Dot
+  const getDotPositionCalories = () => {
+    const radius = size / 2;
+    const radians = (angleCalories - 90) * (Math.PI / 180);
+    const xCalories = radius + radius * Math.cos(radians);
+    const yCalories = radius + radius * Math.sin(radians);
+    return { xCalories, yCalories };
+  };
+
+  const { xProtein, yProtein } = getDotPositionProtien();
+  const { xCarbs, yCarbs } = getDotPositionCarbs();
+  const { xFats, yFats } = getDotPositionFats();
+  const { xCalories, yCalories } = getDotPositionCalories();
+
   // Component
   return (
     <>
@@ -137,7 +200,7 @@ const PlanDetailsCard = () => {
               alt="Plan"
               className="leftCardImg"
               width="100%"
-              height="250px"
+              height="200px"
               onLoad={() => setIsLoaded(true)}
             />
           ) : (
@@ -146,7 +209,7 @@ const PlanDetailsCard = () => {
               alt="Plan"
               className="leftCardImg"
               width="100%"
-              height="250px"
+              height="200px"
             />
           )}
           <p
@@ -206,17 +269,15 @@ const PlanDetailsCard = () => {
                 )}
               </div>
             </div>
+            {/* Info */}
             <Box
+              className="info"
               sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 0.5,
                 justifyContent: "center",
                 mb: 1,
                 padding: "4px",
                 borderRadius: 1,
                 color: "#515151",
-                fontFamily: "Work Sans",
                 alignItems: "center",
                 minHeight: "40px",
               }}
@@ -410,42 +471,353 @@ const PlanDetailsCard = () => {
             </Box>
           </div>
           {/* Lower */}
-          <div>
+          <div className="leftCardLower">
             <div>
-              <Typography variant="h6">
-                {language === "en" ? "Calories" : "السعرات الحرارية"}
-              </Typography>
+              <div>
+                <Typography variant="h6">
+                  {language === "en" ? "Calories" : "السعرات الحرارية"}
+                </Typography>
+              </div>
+              <div className="calInfo">
+                <div style={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#399272" }}>
+                    {currentPlan?.estimate.protein}g
+                  </Typography>
+                  <Typography>
+                    {language === "en" ? "Protein" : "بروتين"}
+                  </Typography>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#F7BE67" }}>
+                    {currentPlan?.estimate.carbs}g
+                  </Typography>
+                  <Typography>
+                    {language === "en" ? "Carb" : "الكربوهيدرات"}
+                  </Typography>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#A4131E" }}>
+                    {currentPlan?.estimate.fats}g
+                  </Typography>
+                  <Typography>{language === "en" ? "Fat" : "سمين"}</Typography>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#FFDA7C" }}>
+                    {currentPlan?.estimate.calorie}g
+                  </Typography>
+                  <Typography>
+                    {language === "en" ? "Calories" : "سعرات حرارية"}
+                  </Typography>
+                </div>
+              </div>
             </div>
-            <div className="calInfo">
-              <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#399272" }}>
-                  {currentPlan?.estimate.protein}g
-                </Typography>
-                <Typography>
-                  {language === "en" ? "Protein" : "بروتين"}
-                </Typography>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#F7BE67" }}>
-                  {currentPlan?.estimate.carbs}g
-                </Typography>
-                <Typography>
-                  {language === "en" ? "Carb" : "الكربوهيدرات"}
-                </Typography>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#A4131E" }}>
-                  {currentPlan?.estimate.fats}g
-                </Typography>
-                <Typography>{language === "en" ? "Fat" : "سمين"}</Typography>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <Typography sx={{ color: "#FFDA7C" }}>
-                  {currentPlan?.estimate.calorie}g
-                </Typography>
-                <Typography>
-                  {language === "en" ? "Calories" : "سعرات حرارية"}
-                </Typography>
+            <div>
+              {/* Circular Values */}
+              <div className="calInfoGraph" style={{  }}>
+                {/* Protein */}
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "inline-flex",
+                  }}
+                >
+                  {/* Background Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={100}
+                    sx={{
+                      color: "#f0f0f0",
+                      position: "absolute",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Progress Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={normilizeProtein}
+                    sx={{
+                      color: "green",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Center Content */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        fontWeight: "light",
+                        fontSize: size * 0.25,
+                        color: "green",
+                      }}
+                    >
+                      {currentPlan?.estimate?.protein}g
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#00000099",
+                        fontSize: size * 0.15,
+                      }}
+                    >
+                      Protein
+                    </Typography>
+                  </Box>
+
+                  {/* Dot at the edge */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: size * 0.1,
+                      height: size * 0.1,
+                      backgroundColor: "green",
+                      borderRadius: "50%",
+                      top: `${yProtein}px`,
+                      left: `${xProtein}px`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                </Box>
+                {/* Carbs */}
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "inline-flex",
+                  }}
+                >
+                  {/* Background Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={100}
+                    sx={{
+                      color: "#f0f0f0",
+                      position: "absolute",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Progress Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={normilizeCarbs}
+                    sx={{
+                      color: "gold",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Center Content */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        fontWeight: "light",
+                        fontSize: size * 0.25,
+                        color: "gold",
+                      }}
+                    >
+                      {currentPlan?.estimate?.carbs}g
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#00000099",
+                        fontSize: size * 0.15,
+                      }}
+                    >
+                      Carbs
+                    </Typography>
+                  </Box>
+
+                  {/* Dot at the edge */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: size * 0.1,
+                      height: size * 0.1,
+                      backgroundColor: "gold",
+                      borderRadius: "50%",
+                      top: `${yCarbs}px`,
+                      left: `${xCarbs}px`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                </Box>
+                {/* Fats */}
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "inline-flex",
+                  }}
+                >
+                  {/* Background Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={100}
+                    sx={{
+                      color: "#f0f0f0",
+                      position: "absolute",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Progress Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={normilizeFats}
+                    sx={{
+                      color: "red",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Center Content */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        fontWeight: "light",
+                        fontSize: size * 0.25,
+                        color: "red",
+                      }}
+                    >
+                      {currentPlan?.estimate?.fats}g
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#00000099",
+                        fontSize: size * 0.15,
+                      }}
+                    >
+                      Fats
+                    </Typography>
+                  </Box>
+
+                  {/* Dot at the edge */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: size * 0.1,
+                      height: size * 0.1,
+                      backgroundColor: "red",
+                      borderRadius: "50%",
+                      top: `${yFats}px`,
+                      left: `${xFats}px`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                </Box>
+                {/* Calories */}
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "inline-flex",
+                  }}
+                >
+                  {/* Background Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={100}
+                    sx={{
+                      color: "#f0f0f0",
+                      position: "absolute",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Progress Circle */}
+                  <CircularProgress
+                    variant="determinate"
+                    value={normilizeCalories}
+                    sx={{
+                      color: "blue",
+                    }}
+                    size={size}
+                    thickness={1}
+                  />
+
+                  {/* Center Content */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        fontWeight: "light",
+                        fontSize: size * 0.25,
+                        color: "blue",
+                      }}
+                    >
+                      {currentPlan?.estimate?.calorie}g
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "#00000099",
+                        fontSize: size * 0.15,
+                      }}
+                    >
+                      Calories
+                    </Typography>
+                  </Box>
+
+                  {/* Dot at the edge */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: size * 0.1,
+                      height: size * 0.1,
+                      backgroundColor: "blue",
+                      borderRadius: "50%",
+                      top: `${yCalories}px`,
+                      left: `${xCalories}px`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                </Box>
               </div>
             </div>
           </div>

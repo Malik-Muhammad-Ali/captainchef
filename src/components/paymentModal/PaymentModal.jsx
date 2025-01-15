@@ -307,6 +307,7 @@ const PaymentModal = ({
                   >
                     Making Payment Please Wait...
                   </Typography>
+                  <Loader />
                 </Box>
               </Paper>
             </Box>

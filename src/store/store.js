@@ -26,9 +26,35 @@ const useAppStore = create(
       ...cartSlice(set, get),
       ...paymentSlice(set, get),
       ...colorSlice(set,get),
+      logout: () => {
+        set((state) => ({
+          ...state,
+          authenticated: false,
+          user: null,
+          currentPlan: null,
+          city: null,
+          cartData: [],
+          cities: [],
+          selectedDeliveryAddress: null,
+          totalPrice: 0,
+          totalPriceWithVAT: 0,
+          selectedPickupAddress: null,
+          planAvailableDays: [],
+          meals: [],
+          mealsByDay: [],
+          finalDeliveryType: null,
+          mobile_number: null,
+          deliveryType: null,
+          message: null,
+          planDetailUrl: null,
+          plans: [],
+          otp: null,
+        }));
+        Object.keys(sessionStorage).forEach((key) => sessionStorage.removeItem(key));
+      }
     }),
     {
-      name: "app-storage", // Name of localStorage or sessionStorage key
+      name: "app-storage",
     },
     {
       name: "app-session",

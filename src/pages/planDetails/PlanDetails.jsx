@@ -628,30 +628,7 @@ const PlanDetails = () => {
                   ))}
                 </div>
               </div>
-              {/* Food Type */}
-              <div>
-                <p>{language === "en" ? "Food Type" : "نوع الغذاء"}</p>
-                <div className="foodType">
-                  {foodTypes?.map((item, index) => {
-                    return (
-                      <div
-                        style={{
-                          cursor: "pointer",
-                          borderWidth: '3px',
-                          backgroundColor: selectedFoodType === item ? selectedColor : "white",
-                          color: selectedFoodType === item ? "white" : "black",
-                          borderColor:
-                            selectedFoodType === item ? selectedColor : "black",
-                        }}
-                        key={index}
-                        onClick={() => handleFoodType(item)}
-                      >
-                        {language === "en" ? item : getTypeArabic(item)}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              {/* Previous Food Types were here */}
             </div>
           </div>
         </div>
@@ -660,6 +637,30 @@ const PlanDetails = () => {
         ) : (
           <div className="meals">
             <p>{language === "en" ? "Select Meals" : "اختر الوجبات"}</p>
+            {/* Food Type */}
+            <div>
+              {/* <p>{language === "en" ? "Food Type" : "نوع الغذاء"}</p> */}
+              <div className="foodType">
+                {foodTypes?.map((item, index) => {
+                  return (
+                    <div
+                      style={{
+                        cursor: "pointer",
+                        backgroundColor:
+                          selectedFoodType === item ? selectedColor : "white",
+                        color: selectedFoodType === item ? "white" : "black",
+                        borderColor:
+                          selectedFoodType === item ? selectedColor : "black",
+                      }}
+                      key={index}
+                      onClick={() => handleFoodType(item)}
+                    >
+                      {language === "en" ? item : getTypeArabic(item)}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
             <div className="mealCardContainer">
               {filteredMeals?.map((meal, index) => (
                 <div key={index} className="mealCard">
@@ -885,7 +886,10 @@ const PlanDetails = () => {
         className="subscribeButtonContainer"
         onClick={() => handleNavigation()}
       >
-        <div className="subscribeButton" style={{backgroundColor:selectedColor}}>
+        <div
+          className="subscribeButton"
+          style={{ backgroundColor: selectedColor }}
+        >
           {language === "en"
             ? "Subscribe Now, Schedule Later"
             : "اشترك الآن، حدد موعدًا لاحقًا"}

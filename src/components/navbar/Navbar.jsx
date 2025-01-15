@@ -12,7 +12,6 @@ import { Avatar, FormControl, InputLabel, Select } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
-// import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import Drawer from "@mui/material/Drawer";
 import useAppStore from "../../store/store";
 import Logo from "../../../public/logocaptainchef.png";
@@ -22,17 +21,16 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { authenticated, language, setLanguage, user } = useAppStore();
+  const { authenticated, language, setLanguage, user, logout } = useAppStore();
   const location = useLocation();
   const [flag, setFlag] = useState("https://flagcdn.com/w40/us.png");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-
   const isRTL = language === "ar";
 
   const handleLogout = () => {
-    console.log("Logged out!");
+    logout();
   };
   const src = "";
 
@@ -133,7 +131,7 @@ const Navbar = () => {
                       : "#656565",
                 }}
               >
-                {language === 'en' ? 'Subscriptions' : 'الاشتراكات'}
+                {language === "en" ? "Subscriptions" : "الاشتراكات"}
               </Button>
             </Link>
 
@@ -196,7 +194,9 @@ const Navbar = () => {
                       width="20"
                       height="15"
                     />
-                    <Typography>{language === 'en' ? 'English' : 'إنجليزي'}</Typography>
+                    <Typography>
+                      {language === "en" ? "English" : "إنجليزي"}
+                    </Typography>
                   </Box>
                 </MenuItem>
                 <MenuItem value="ar">
@@ -207,7 +207,9 @@ const Navbar = () => {
                       width="20"
                       height="15"
                     />
-                    <Typography>{language === 'en' ? 'Arabic' : 'عربي'}</Typography>
+                    <Typography>
+                      {language === "en" ? "Arabic" : "عربي"}
+                    </Typography>
                   </Box>
                 </MenuItem>
               </Select>
@@ -226,7 +228,7 @@ const Navbar = () => {
               }}
               onClick={() => navigate("/downloadapp")}
             >
-              {language === 'en' ? 'Download App' : 'تنزيل التطبيق'}
+              {language === "en" ? "Download App" : "تنزيل التطبيق"}
             </Button>
 
             {/* Account Icon */}
@@ -348,7 +350,7 @@ const Navbar = () => {
                           backgroundColor: "#f5f5f5",
                         },
                       }}
-                      onClick={handleLogout} // Add your logout function here
+                      onClick={handleLogout}
                     >
                       <svg
                         width="30"
@@ -384,7 +386,7 @@ const Navbar = () => {
                           backgroundColor: "#f5f5f5",
                         },
                       }}
-                      onClick={handleLogout} // Add your logout function here
+                      onClick={handleLogout}
                     >
                       <svg
                         width="30"
@@ -424,7 +426,7 @@ const Navbar = () => {
                           backgroundColor: "#f5f5f5",
                         },
                       }}
-                      onClick={handleLogout} // Add your logout function here
+                      onClick={handleLogout}
                     >
                       <svg
                         width="30"
@@ -511,7 +513,7 @@ const Navbar = () => {
                           backgroundColor: "#f5f5f5",
                         },
                       }}
-                      onClick={handleLogout} // Add your logout function here
+                      onClick={handleLogout}
                     >
                       <LogoutIcon sx={{ color: "red", marginRight: "8px" }} />
                       <Typography
@@ -604,7 +606,7 @@ const Navbar = () => {
             padding: 2,
             display: "flex",
             flexDirection: "column",
-            direction: language === "ar" ? "rtl" : "ltr", // Adjust direction based on language
+            direction: language === "ar" ? "rtl" : "ltr",
             gap: 2,
             height: "100%",
           }}
@@ -612,14 +614,14 @@ const Navbar = () => {
           <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
             {authenticated && (
               <Box
-                onClick={() => setMenuOpen((prev) => !prev)} // Toggles the dropdown
+                onClick={() => setMenuOpen((prev) => !prev)}
                 sx={{
-                  width: "64px", // Box size
+                  width: "64px",
                   height: "64px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: "50%", // Circular shape
+                  borderRadius: "50%",
                   cursor: "pointer",
                 }}
               >
@@ -627,9 +629,9 @@ const Navbar = () => {
                 {src ? (
                   <Avatar
                     alt="Remy Sharp"
-                    src="/myimg.jpg" // Replace with your dynamic `src` variable
+                    src="/myimg.jpg"
                     sx={{
-                      width: "52px", // Slightly larger avatar
+                      width: "52px",
                       height: "52px",
                     }}
                   />
@@ -638,9 +640,9 @@ const Navbar = () => {
                     sx={{
                       width: "52px",
                       height: "52px",
-                      backgroundColor: "#fff", // White background
-                      color: "#000", // Icon color
-                      border: "2px solid #fff", // White outline
+                      backgroundColor: "#fff",
+                      color: "#000",
+                      border: "2px solid #fff",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -724,7 +726,7 @@ const Navbar = () => {
               id="language-select-label"
               sx={{
                 color: "black",
-                left: language === "ar" ? "50px" : "auto", // Align to the right for Arabic
+                left: language === "ar" ? "50px" : "auto",
 
                 direction: language === "ar" ? "rtl" : "ltr",
 
@@ -808,51 +810,53 @@ const Navbar = () => {
               flexGrow: 1,
             }}
           />
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              padding: "8px 12px",
-              borderRadius: "6px",
-              cursor: "pointer",
-              "&:hover": {
-                backgroundColor: "#f5f5f5",
-              },
-            }}
-          >
-            <svg
-              width="30"
-              height="42"
-              viewBox="0 0 39 42"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect width="39" height="42" rx="6" fill="#D9D9D9" />
-              <path
-                d="M30.8817 31.0025L22.6608 27.8187C22.5503 27.776 22.4553 27.7009 22.3882 27.6033C22.3211 27.5057 22.2851 27.3901 22.2848 27.2716L22.2835 25.7843C22.2833 25.6516 22.3138 25.5206 22.3726 25.4015C22.4314 25.2825 22.517 25.1787 22.6225 25.0982C23.7942 24.2063 24.618 22.88 24.8503 21.3613C24.9084 20.9818 25.2035 20.6782 25.5834 20.6224C26.7593 20.45 27.6441 19.4936 27.6441 18.3633C27.6441 17.621 27.29 16.9124 26.722 16.4667C26.441 16.2461 26.3097 15.8756 26.4152 15.5343C26.4468 15.4319 26.4639 15.3232 26.4639 15.2108V10.5179C26.4639 9.39792 25.4739 8.58778 24.5031 8.68587C23.9631 8.74043 23.4748 8.35948 23.3702 7.82686C23.1899 6.90928 22.7337 6 20.959 6H14.793C12.53 6 10.6954 7.83452 10.6954 10.0976V14.5946C10.6947 14.9881 10.8296 15.3699 11.0772 15.6758C11.348 16.011 11.35 16.4902 11.0577 16.8068C10.6687 17.228 10.4193 17.7827 10.4193 18.3711C10.4193 19.5027 11.3095 20.4617 12.4926 20.6256C12.8614 20.6766 13.1548 20.9698 13.2099 21.338C13.4312 22.8178 14.2195 24.1716 15.4292 25.0871C15.646 25.2512 15.7751 25.5059 15.7751 25.7777L15.775 27.2681C15.775 27.5104 15.6585 27.6532 15.5244 27.7443L7.18178 31.0026C5.82145 31.5624 4 33.3239 4 35.9377V41.22C4 41.6508 4.34924 42 4.78005 42H33.2833C33.7141 42 34.0634 41.6508 34.0634 41.22V35.9377C34.0634 33.6867 32.6221 31.7188 30.8817 31.0025Z"
-                fill="#528EAF"
-              />
-              <path
-                d="M18.835 28.0386L18.8351 25.7777C18.8351 25.5059 18.706 25.2512 18.4892 25.0871C17.2795 24.1716 16.4912 22.8178 16.2699 21.338C16.2148 20.9699 15.9213 20.6767 15.5526 20.6256C14.3695 20.4617 13.4793 19.5027 13.4793 18.3711C13.4793 17.7826 13.7287 17.228 14.1177 16.8068C14.41 16.4903 14.408 16.011 14.1372 15.6758C13.8896 15.3699 13.7548 14.9881 13.7554 14.5946V10.0976C13.7553 7.83452 15.5898 6 17.8529 6H14.793C12.53 6 10.6954 7.83452 10.6954 10.0976V14.5946C10.6947 14.9881 10.8296 15.3699 11.0772 15.6758C11.348 16.011 11.35 16.4902 11.0577 16.8068C10.6687 17.228 10.4193 17.7827 10.4193 18.3711C10.4193 19.5027 11.3095 20.4617 12.4926 20.6256C12.8614 20.6766 13.1548 20.9698 13.2099 21.338C13.4312 22.8178 14.2195 24.1716 15.4292 25.0871C15.646 25.2512 15.7751 25.5059 15.7751 25.7777L15.775 27.2681C15.775 27.5104 15.6585 27.6532 15.5244 27.7443L7.18178 31.0026C5.82145 31.5624 4 33.3239 4 35.9377V41.22C4 41.6508 4.34924 42 4.78005 42H7.83998C7.40917 42 7.05993 41.6508 7.05993 41.22V35.9377C7.05993 33.3239 8.88144 32.7797 10.2417 32.2199L17.5406 29.3693C18.7749 28.8872 18.833 28.1417 18.835 28.0386Z"
-                fill="#477B9E"
-              />
-              <path
-                d="M9.21733 41.9999V35.8313C9.21733 35.76 9.20328 35.6893 9.17598 35.6234C9.14868 35.5575 9.10866 35.4976 9.05822 35.4472C9.00777 35.3968 8.94789 35.3567 8.88198 35.3294C8.81607 35.3021 8.74543 35.2881 8.67409 35.2881C8.60276 35.2881 8.53212 35.3021 8.46621 35.3294C8.4003 35.3567 8.34041 35.3968 8.28997 35.4472C8.23953 35.4976 8.19951 35.5575 8.17221 35.6234C8.14491 35.6893 8.13086 35.76 8.13086 35.8313V41.9999H9.21733ZM29.9322 35.8313C29.9322 35.6872 29.875 35.5491 29.7731 35.4472C29.6712 35.3453 29.5331 35.2881 29.389 35.2881C29.2449 35.2881 29.1068 35.3453 29.0049 35.4472C28.903 35.5491 28.8458 35.6872 28.8458 35.8313V41.9999H29.9323V35.8313H29.9322Z"
-                fill="#477B9E"
-              />
-            </svg>
-
-            <Typography
+          {user && authenticated && (
+            <Box
               sx={{
-                fontSize: "16px",
-                fontWeight: "500",
-                color: "black",
-                ml: "5px",
+                display: "flex",
+                alignItems: "center",
+                padding: "8px 12px",
+                borderRadius: "6px",
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                },
               }}
             >
-              {user?.name}
-            </Typography>
-          </Box>
+              <svg
+                width="30"
+                height="42"
+                viewBox="0 0 39 42"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="39" height="42" rx="6" fill="#D9D9D9" />
+                <path
+                  d="M30.8817 31.0025L22.6608 27.8187C22.5503 27.776 22.4553 27.7009 22.3882 27.6033C22.3211 27.5057 22.2851 27.3901 22.2848 27.2716L22.2835 25.7843C22.2833 25.6516 22.3138 25.5206 22.3726 25.4015C22.4314 25.2825 22.517 25.1787 22.6225 25.0982C23.7942 24.2063 24.618 22.88 24.8503 21.3613C24.9084 20.9818 25.2035 20.6782 25.5834 20.6224C26.7593 20.45 27.6441 19.4936 27.6441 18.3633C27.6441 17.621 27.29 16.9124 26.722 16.4667C26.441 16.2461 26.3097 15.8756 26.4152 15.5343C26.4468 15.4319 26.4639 15.3232 26.4639 15.2108V10.5179C26.4639 9.39792 25.4739 8.58778 24.5031 8.68587C23.9631 8.74043 23.4748 8.35948 23.3702 7.82686C23.1899 6.90928 22.7337 6 20.959 6H14.793C12.53 6 10.6954 7.83452 10.6954 10.0976V14.5946C10.6947 14.9881 10.8296 15.3699 11.0772 15.6758C11.348 16.011 11.35 16.4902 11.0577 16.8068C10.6687 17.228 10.4193 17.7827 10.4193 18.3711C10.4193 19.5027 11.3095 20.4617 12.4926 20.6256C12.8614 20.6766 13.1548 20.9698 13.2099 21.338C13.4312 22.8178 14.2195 24.1716 15.4292 25.0871C15.646 25.2512 15.7751 25.5059 15.7751 25.7777L15.775 27.2681C15.775 27.5104 15.6585 27.6532 15.5244 27.7443L7.18178 31.0026C5.82145 31.5624 4 33.3239 4 35.9377V41.22C4 41.6508 4.34924 42 4.78005 42H33.2833C33.7141 42 34.0634 41.6508 34.0634 41.22V35.9377C34.0634 33.6867 32.6221 31.7188 30.8817 31.0025Z"
+                  fill="#528EAF"
+                />
+                <path
+                  d="M18.835 28.0386L18.8351 25.7777C18.8351 25.5059 18.706 25.2512 18.4892 25.0871C17.2795 24.1716 16.4912 22.8178 16.2699 21.338C16.2148 20.9699 15.9213 20.6767 15.5526 20.6256C14.3695 20.4617 13.4793 19.5027 13.4793 18.3711C13.4793 17.7826 13.7287 17.228 14.1177 16.8068C14.41 16.4903 14.408 16.011 14.1372 15.6758C13.8896 15.3699 13.7548 14.9881 13.7554 14.5946V10.0976C13.7553 7.83452 15.5898 6 17.8529 6H14.793C12.53 6 10.6954 7.83452 10.6954 10.0976V14.5946C10.6947 14.9881 10.8296 15.3699 11.0772 15.6758C11.348 16.011 11.35 16.4902 11.0577 16.8068C10.6687 17.228 10.4193 17.7827 10.4193 18.3711C10.4193 19.5027 11.3095 20.4617 12.4926 20.6256C12.8614 20.6766 13.1548 20.9698 13.2099 21.338C13.4312 22.8178 14.2195 24.1716 15.4292 25.0871C15.646 25.2512 15.7751 25.5059 15.7751 25.7777L15.775 27.2681C15.775 27.5104 15.6585 27.6532 15.5244 27.7443L7.18178 31.0026C5.82145 31.5624 4 33.3239 4 35.9377V41.22C4 41.6508 4.34924 42 4.78005 42H7.83998C7.40917 42 7.05993 41.6508 7.05993 41.22V35.9377C7.05993 33.3239 8.88144 32.7797 10.2417 32.2199L17.5406 29.3693C18.7749 28.8872 18.833 28.1417 18.835 28.0386Z"
+                  fill="#477B9E"
+                />
+                <path
+                  d="M9.21733 41.9999V35.8313C9.21733 35.76 9.20328 35.6893 9.17598 35.6234C9.14868 35.5575 9.10866 35.4976 9.05822 35.4472C9.00777 35.3968 8.94789 35.3567 8.88198 35.3294C8.81607 35.3021 8.74543 35.2881 8.67409 35.2881C8.60276 35.2881 8.53212 35.3021 8.46621 35.3294C8.4003 35.3567 8.34041 35.3968 8.28997 35.4472C8.23953 35.4976 8.19951 35.5575 8.17221 35.6234C8.14491 35.6893 8.13086 35.76 8.13086 35.8313V41.9999H9.21733ZM29.9322 35.8313C29.9322 35.6872 29.875 35.5491 29.7731 35.4472C29.6712 35.3453 29.5331 35.2881 29.389 35.2881C29.2449 35.2881 29.1068 35.3453 29.0049 35.4472C28.903 35.5491 28.8458 35.6872 28.8458 35.8313V41.9999H29.9323V35.8313H29.9322Z"
+                  fill="#477B9E"
+                />
+              </svg>
+
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  color: "black",
+                  ml: "5px",
+                }}
+              >
+                {user?.name}
+              </Typography>
+            </Box>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -864,7 +868,7 @@ const Navbar = () => {
                 backgroundColor: "#f5f5f5",
               },
             }}
-            onClick={handleLogout} // Add your logout function here
+            onClick={handleLogout}
           >
             <svg
               width="30"
@@ -901,7 +905,7 @@ const Navbar = () => {
                 backgroundColor: "#f5f5f5",
               },
             }}
-            onClick={handleLogout} // Add your logout function here
+            onClick={handleLogout}
           >
             <svg
               width="30"
@@ -943,7 +947,7 @@ const Navbar = () => {
                 backgroundColor: "#f5f5f5",
               },
             }}
-            onClick={handleLogout} // Add your logout function here
+            onClick={handleLogout}
           >
             <svg
               width="30"
@@ -1033,7 +1037,7 @@ const Navbar = () => {
                 backgroundColor: "#f5f5f5",
               },
             }}
-            onClick={handleLogout} // Add your logout function here
+            onClick={handleLogout}
           >
             <LogoutIcon sx={{ color: "red", marginRight: "8px" }} />
             <Typography

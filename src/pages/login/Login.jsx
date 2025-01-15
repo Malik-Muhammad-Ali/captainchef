@@ -9,14 +9,15 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
+import LanguageIcon from "@mui/icons-material/Language";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loginUser, planDetailUrl, language } = useAppStore();
+  const { loginUser, language } = useAppStore();
   const [mobileNumber, setMobileNumber] = useState("");
   const [error, setError] = useState(false);
 
@@ -26,11 +27,19 @@ const Login = () => {
       return;
     }
 
-    await loginUser(mobileNumber);
     setError(false);
+    await loginUser(mobileNumber);
     navigate("/otp");
   };
 
+  const handleMobileChange = (number) => {
+    setMobileNumber(number);
+    if (number.startsWith("5")) {
+      setError(false);
+    } else {
+      setError(true);
+    }
+  };
   return (
     <>
       <Grid2
@@ -119,43 +128,74 @@ const Login = () => {
                 : "الرجاء إدخال رقم هاتفك المحمول قبل الانتقال إلى مكان آخر."}
             </Typography>
 
-            {/* Mobile Number TextField */}
-            <TextField
-              fullWidth
-              error={error}
-              helperText={
-                error
-                  ? language === "en"
+            {/* Country Code TextField */}
+            <Box sx={{ display: "flex", gap: "20px" }}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                disabled
+                value={966}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LanguageIcon sx={{ color: "#666" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  width: { xs: "55%", sm: "100px", md: "90px" },
+                  marginBottom: "20px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    "&.Mui-focused fieldset": {
+                      border: "2px solid grey",
+                    },
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                error={error}
+                helperText={
+                  error
+                    ? language === "en"
+                      ? "Enter a Mobile Number that starts with 5"
+                      : "أدخل رقم الجوال الذي يبدأ بـ 5"
+                    : ""
+                }
+                placeholder={
+                  language === "en"
                     ? "Enter a Mobile Number that starts with 5"
                     : "أدخل رقم الجوال الذي يبدأ بـ 5"
-                  : ""
-              }
-              placeholder={language === "en" ? "" : "البريد الإلكتروني"}
-              label={language === "en" ? "Mobile Number" : "رقم الهاتف المحمول"}
-              variant="outlined"
-              value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PersonIcon sx={{ color: "#666" }} />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              sx={{
-                width: { xs: "100%", sm: "360px", md: "512px" },
-                marginBottom: "20px",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "12px",
-                  "&.Mui-focused fieldset": {
-                    border: "2px solid grey",
+                }
+                label={
+                  language === "en" ? "Mobile Number" : "رقم الهاتف المحمول"
+                }
+                variant="outlined"
+                value={mobileNumber}
+                onChange={(e) => handleMobileChange(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PhoneIcon sx={{ color: "#666" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                sx={{
+                  width: { xs: "100%", sm: "360px", md: "512px" },
+                  marginBottom: "20px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px",
+                    "&.Mui-focused fieldset": {
+                      border: "2px solid grey",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+            </Box>
 
             {/* Submit Button */}
             <Button

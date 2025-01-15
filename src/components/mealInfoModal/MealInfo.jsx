@@ -15,8 +15,11 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTablet = useMediaQuery("(max-width:900px) and (min-width:601px)");
   const { language } = useAppStore();
-  const description = modalData?.description?.replace(/<\/?p>/g, '');
-  const arabicdescription = modalData?.arabicdescription?.replace(/<\/?p>/g, '');
+  const description = modalData?.description?.replace(/<\/?p>/g, "");
+  const arabicdescription = modalData?.arabicdescription?.replace(
+    /<\/?p>/g,
+    ""
+  );
 
   const modalProps = {
     disablePortal: true,
@@ -81,18 +84,9 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
               alignItems: "center",
             }}
           >
-            {/* <CancelOutlinedIcon onClick={handleSubmit} sx={{
-          fontSize:"32px",
-          color:"#0A0A0C",
-          opacity: 0.7,
-          cursor:"pointer",
-                   
-        }}/> */}
             <IconButton
               onClick={handleSubmit}
               sx={{
-                // backgroundColor: "#FAE9EA",
-                // color: "#D92531",
                 padding: "4px",
                 borderRadius: "50%",
               }}
@@ -164,7 +158,7 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
                 },
               }}
             >
-              {modalData?.isAlergic === 'no' && (
+              {modalData?.isAlergic === "no" && (
                 <Typography
                   sx={{ fontSize: "12px", fontWeight: 200, color: "#20A00B" }}
                 >
@@ -192,7 +186,13 @@ const MealInfo = ({ mealInfoModalOpen, setMealInfoModalOpen, modalData }) => {
               </Typography>
             </Box>
             <Box>
-              <DataChart modalData={modalData} />
+              <DataChart
+                protein={modalData.protein}
+                carbs={modalData.carbs}
+                fats={modalData.fats}
+                calories={modalData.calories}
+                modalData={modalData}
+              />
             </Box>
             <Box
               sx={{

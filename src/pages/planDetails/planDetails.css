@@ -9,7 +9,7 @@
 .planDetails {
   display: flex;
   justify-content: space-around;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 40px;
   gap: 40px;
 }
@@ -19,7 +19,11 @@
   flex: 1;
   background-color: white;
   padding: 10px;
+  gap: 20px;
   border-radius: 24px;
+  @media (min-width: 800px) {
+    flex-direction: row;
+  }
 }
 .leftCardImg {
   border-radius: 12px;
@@ -56,7 +60,6 @@
 .freePlan {
   display: flex;
   flex-direction: column;
-  /* gap: 10px; */
   background-color: #ccffdb;
   padding: 0px 20px 10px 20px;
   border-radius: 16px;
@@ -110,20 +113,21 @@
 .foodType {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start; /* Start from the beginning */
+  justify-content: flex-start;
   gap: 10px;
-  width: 100%; /* Parent container will decide the width */
-  overflow-x: auto; /* Allow horizontal scrolling */
-  scrollbar-width: none; /* Hide scrollbar (Firefox) */
-  -ms-overflow-style: none; /* Hide scrollbar (IE and Edge) */
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-bottom: 40px;
   div {
-    flex: 0 0 auto; /* Ensure the items do not shrink or grow */
+    flex: 1;
     background-color: #f8f8f8;
     padding: 5px 10px;
-    border-radius: 12px;
+    border-radius: 13px;
     text-align: center;
     min-width: 100px;
-    border: 1px solid #1f1f1f;
+    border: 2px solid #1f1f1f;
   }
 }
 .foodType::-webkit-scrollbar {
@@ -186,11 +190,9 @@
   height: 0px;
 }
 .subscribeButton {
-  /* background-color: black; */
   color: white;
   padding: 10px 20px;
   border-radius: 12px;
-  /* font-family: "Poppins"; */
   font-size: 18px;
   font-weight: 300;
   cursor: pointer;
@@ -204,6 +206,10 @@
   flex-direction: row;
   gap: 6px;
   align-items: center;
+  @media (min-width: 650px) {
+    flex: 1;
+    justify-content: space-around;
+  }
 }
 .weekdayFirstDiv {
   border: 1px solid #f8f8f8;
@@ -232,6 +238,41 @@
   font-size: 18px;
   color: #d92531;
   padding: 20px;
+}
+
+.leftCardText {
+  @media (min-width: 800px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  @media (min-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 20px;
+    gap: 20px;
+  }
+}
+
+.leftCardLower {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* justify-content: space-around; */
+}
+
+.calInfoGraph {
+  gap: 16px;
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 450px) {
+    
+  }
 }
 
 @media (min-width: 1131px) {

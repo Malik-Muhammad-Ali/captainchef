@@ -6,6 +6,7 @@ const paymentSlice = (set) => ({
   paymentResult: "",
   setPaymentResult: (result) => set({ paymentResult: result }),
   paymentNoon: async (addedPlans, totalPaid, couponData, user) => {
+    console.log(addedPlans);
     try {
       const response = await axios.post(
         `${BASE_URL}/api/ver2/save-purchased-subscription-with-noon`,
@@ -30,6 +31,7 @@ const paymentSlice = (set) => ({
           payment_token: null,
         }
       );
+      console.log(response?.data);
       if (
         response.data.status === "success" &&
         response.data.data.status === "INITIATED"
@@ -39,10 +41,12 @@ const paymentSlice = (set) => ({
         const noon_order_id = response.data.data.noon_order_id;
         console.log(noon_order_id);
         set({ postUrl: response?.data?.data?.checkout_data?.postUrl });
-        return { post_url, noon_order_id };
+        console.log(post_url);
+        return { post_url, noon_order_id, message: "success" };
       } else {
         console.log("No Resoponse");
         set({ postUrl: "" });
+        return { message: "failed" };
       }
       // console.log(response.data.data.checkout_data.postUrl);
     } catch (error) {

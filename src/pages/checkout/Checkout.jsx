@@ -218,7 +218,6 @@ const Checkout = () => {
         setPaymentResult("CAPTURED");
         navigate("/mysubscriptions");
       } else {
-        // clearInterval(intervalRef);
         setPaymentResult("REJECTED");
         navigate("/mysubscriptions");
       }
@@ -230,7 +229,7 @@ const Checkout = () => {
   // Handle Payment
   const handlePayment = async () => {
     if (paymentMethod === "master") {
-      const { post_url, noon_order_id } = await paymentNoon(
+      const { post_url, noon_order_id, message } = await paymentNoon(
         addedPlans,
         subTotal,
         couponData,
@@ -239,7 +238,7 @@ const Checkout = () => {
       setInternalPostUrl(post_url);
       setNoonOrderId(noon_order_id);
       if (post_url) {
-        setShowIframe(true);
+        setShowIframe(true);0
       }
     } else if (paymentMethod === "wallet") {
       const { message } = await paymentWallet(

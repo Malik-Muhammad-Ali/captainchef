@@ -62,7 +62,6 @@ const Plans = () => {
           alignItems: "center",
           borderRadius: "10px",
           width: { xs: "350px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
-          // border: "2px solid black",
           mr: { lg: "20px", sm: "0px", md: "0px", xs: "0px" },
         }}
       >

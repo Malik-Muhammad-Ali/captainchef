@@ -1,8 +1,10 @@
 import React from "react";
 import Lottie from "lottie-react";
-import mealAnimation from '../../lottie/meal.json'
+import mealAnimation from "../../lottie/meal.json";
+import useAppStore from "../../store/store";
 
 const Loader = () => {
+  const { language } = useAppStore();
   return (
     <div
       style={{
@@ -30,9 +32,11 @@ const Loader = () => {
           textAlign: "center",
         }}
       >
-        Please wait...
+        {language === "en" ? "Please wait..." : "انتظر من فضلك..."}
         <br />
-        We are Preparing Your Meal
+        {language === "en"
+          ? "We are Preparing Your Meal"
+          : " نحن نقوم بإعداد وجبتك"}
       </p>
     </div>
   );

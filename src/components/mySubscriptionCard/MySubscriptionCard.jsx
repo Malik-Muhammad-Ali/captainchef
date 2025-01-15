@@ -8,8 +8,10 @@ import {
   Button,
 } from "@mui/material";
 import useAppStore from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 const MySubscriptionCard = memo(({ plan }) => {
+  const navigate = useNavigate();
   const { language } = useAppStore();
   const [isLoaded, setIsLoaded] = useState(false);
   const icons = [

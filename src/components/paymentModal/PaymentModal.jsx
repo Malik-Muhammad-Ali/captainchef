@@ -12,6 +12,7 @@ import {
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useAppStore from "../../store/store";
+import Loader from "../loader/Loader";
 
 const PaymentModal = ({
   paymentModal,

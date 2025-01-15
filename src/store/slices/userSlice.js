@@ -20,7 +20,6 @@ const userSlice = (set) => ({
         user: response.data.data,
         otp: response.data.otp,
         message: response.data.message,
-        authenticated: true,
         mobile_number: mobileNumber,
       }));
     }

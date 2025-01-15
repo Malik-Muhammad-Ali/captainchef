@@ -209,6 +209,7 @@ const Checkout = () => {
 
   // Payment Status Check Function For Noor
   const paymentStatusCheckFunction = async (noon_order_id) => {
+    console.log(noon_order_id)
     try {
       const response = await axios.get(
         `https://backend-api-captain-chef-production.up.railway.app/paymentStatusCheckAPI/${noon_order_id}`
@@ -238,7 +239,7 @@ const Checkout = () => {
       setInternalPostUrl(post_url);
       setNoonOrderId(noon_order_id);
       if (post_url) {
-        setShowIframe(true);0
+        setShowIframe(true);
       }
     } else if (paymentMethod === "wallet") {
       const { message } = await paymentWallet(
@@ -406,7 +407,7 @@ const Checkout = () => {
                         sm: "600px",
                         xs: "345px",
                       },
-                      height: isCollapsed ? "auto" : "164px", // Adjust height dynamically
+                      height: isCollapsed ? "auto" : "164px",
                       margin: "0 auto",
                       borderRadius: "24px",
                       gap: "40px",
@@ -441,9 +442,9 @@ const Checkout = () => {
                         sx={{
                           width: "48px",
                           height: "48px",
-                          cursor: "pointer", // Add cursor pointer for better UX
+                          cursor: "pointer",
                         }}
-                        onClick={toggleCollapse} // Add toggle logic
+                        onClick={toggleCollapse}
                       >
                         {isCollapsed ? (
                           <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
@@ -452,7 +453,7 @@ const Checkout = () => {
                         )}
                       </Box>
                     </Box>
-                    {!isCollapsed && ( // Conditionally render this content
+                    {!isCollapsed && (
                       <Box
                         sx={{
                           display: "flex",
@@ -518,7 +519,7 @@ const Checkout = () => {
                       sm: "600px",
                       xs: "345px",
                     },
-                    height: isCollapsed1 ? "auto" : "164px", // Adjust height dynamically
+                    height: isCollapsed1 ? "auto" : "164px",
                     margin: "0 auto",
                     borderRadius: "24px",
                     gap: "40px",
@@ -551,9 +552,9 @@ const Checkout = () => {
                       sx={{
                         width: "48px",
                         height: "48px",
-                        cursor: "pointer", // Add cursor pointer for better UX
+                        cursor: "pointer",
                       }}
-                      onClick={toggleCollapse1} // Toggle logic
+                      onClick={toggleCollapse1}
                     >
                       {isCollapsed1 ? (
                         <KeyboardArrowDownIcon sx={{ fontSize: "35px" }} />
@@ -562,7 +563,7 @@ const Checkout = () => {
                       )}
                     </Box>
                   </Box>
-                  {!isCollapsed1 && ( // Conditionally render this content
+                  {!isCollapsed1 && (
                     <Box
                       sx={{
                         height: "80px",
@@ -571,8 +572,7 @@ const Checkout = () => {
                         backgroundColor: "white",
                         borderRadius: "8px",
                         padding: "8px",
-                        // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                        mt: "16px", // Add margin top for spacing
+                        mt: "16px",
                       }}
                     >
                       <TextField

@@ -19,7 +19,7 @@ const DataChart = ({protein, carbs, fats, calories, modalData}) => {
     { value: protein, label: "Protein", color: "green", maxValue: 100 },
     { value: carbs, label: "Carbs", color: "gold", maxValue: 100 },
     { value: fats, label: "Fats", color: "red", maxValue: 100 },
-    { value: calories, label: "Calories", color: "blue", maxValue: calories > 1000 ? 5000 : 1000 },
+    { value: calories, label: "Calories", color: "blue", maxValue: 1000 },
   ];
 
   return (

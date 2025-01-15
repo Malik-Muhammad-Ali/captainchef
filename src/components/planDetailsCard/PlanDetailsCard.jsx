@@ -140,7 +140,7 @@ const PlanDetailsCard = () => {
   const normilizeProtein = (currentPlan?.estimate?.protein / 100) * 100;
   const normilizeCarbs = (currentPlan?.estimate?.carbs / 100) * 100;
   const normilizeFats = (currentPlan?.estimate?.fats / 100) * 100;
-  const normilizeCalories = (currentPlan?.estimate?.calorie / 100) * 100;
+  const normilizeCalories = (currentPlan?.estimate?.calorie / 1000) * 100;
 
   const angleProtein = (normilizeProtein / 100) * 360;
   const angleCarbs = (normilizeCarbs / 100) * 360;

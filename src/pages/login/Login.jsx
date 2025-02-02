@@ -129,7 +129,7 @@ const Login = () => {
             </Typography>
 
             {/* Country Code TextField */}
-            <Box sx={{ display: "flex", gap: "20px" }}>
+            <Box sx={{ display: "flex", gap: "10px" }}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -138,12 +138,17 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <LanguageIcon sx={{ color: "#666" }} />
+                      <img
+                        src="https://flagcdn.com/w40/sa.png"
+                        alt="Arabic"
+                        width="20"
+                        height="15"
+                      />
                     </InputAdornment>
                   ),
                 }}
                 sx={{
-                  width: { xs: "55%", sm: "100px", md: "90px" },
+                  width: { xs: "30%", sm: "100px", md: "90px" },
                   marginBottom: "20px",
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "12px",
@@ -185,7 +190,7 @@ const Login = () => {
                   shrink: true,
                 }}
                 sx={{
-                  width: { xs: "100%", sm: "360px", md: "512px" },
+                  width: { xs: "100%", sm: "250px", md: "400px" },
                   marginBottom: "20px",
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "12px",

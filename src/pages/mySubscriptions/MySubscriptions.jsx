@@ -162,7 +162,7 @@ const MySubscriptions = () => {
             justifyContent: "start",
           }}
         >
-          <IconButton
+          {/* <IconButton
             sx={{
               width: { xs: "48px", sm: "56px" },
               height: { xs: "48px", sm: "56px" },
@@ -185,7 +185,7 @@ const MySubscriptions = () => {
                 transition: "transform 0.3s ease-in-out",
               }}
             />
-          </IconButton>
+          </IconButton> */}
         </Box>
 
         {/* HURRAY!!! Content */}

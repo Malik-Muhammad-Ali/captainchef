@@ -284,7 +284,9 @@ const Navbar = () => {
                   <Box
                     sx={{
                       position: "absolute",
-                      top: "60px",
+                      direction: language == "ar" ? "rtl" : "ltr",
+                      mr: language == "ar" ? "-220px" : "10px",
+                      // top: "60px",
                       right: 0,
                       backgroundColor: "#fff",
                       border: "1px solid #ddd",
@@ -1048,7 +1050,7 @@ const Navbar = () => {
                 ml: "5px",
               }}
             >
-              Logout
+              {language == "ar" ? "تسجيل الخروج " : "Logout"}
             </Typography>
           </Box>
         </Box>

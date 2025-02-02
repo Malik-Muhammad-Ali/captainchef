@@ -60,7 +60,7 @@ const Plans = () => {
           // justifyContent: { xs: "flex-start", sm: "space-evenly" },
           alignItems: "center",
           borderRadius: "10px",
-          width: { xs: "350px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
+          width: { xs: "400px", sm: "90%", md: "100%", lg: "95%", xl: "92.8%" },
           mr: { lg: "20px", sm: "0px", md: "0px", xs: "0px" },
         }}
       >
@@ -180,10 +180,11 @@ const Plans = () => {
             alignItems: "center",
             backgroundColor: "#fff",
             borderRadius: "10px",
-            border: "1px solid #ddd",
-            width: { xs: "100%", sm: "400px", md: "400px", lg: "400px" },
+            // border: "1px solid #ddd",
+            width: { xs: "400px", sm: "400px", md: "400px", lg: "400px" },
             marginTop: { xs: "30px", sm: "0" },
             height: { xs: "63px", sm: "", md: "", lg: "" },
+            // border: "2px solid black",
             // mr: "80px",
           }}
         >
@@ -220,12 +221,13 @@ const Plans = () => {
             }}
             sx={{
               flex: 1,
+              // border: "2px solid black",
               textAlign: "center",
               backgroundColor:
                 selectedPlan === "monthly" ? selectedColor : "transparent",
               color: selectedPlan === "monthly" ? "#fff" : "#000",
               padding: {
-                xs: "18px 10px",
+                xs: "18px 2px",
                 sm: "12px 0px",
               },
               marginRight: { xs: "4px", sm: "0" },

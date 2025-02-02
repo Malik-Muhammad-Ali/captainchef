@@ -20,8 +20,14 @@ const PlanCard = memo(
   ({ plan, planID, days, heading, language, freePlans, title }) => {
     const navigate = useNavigate();
     const { categoryId } = useParams();
-    const { setCurrentPlan, city, addToCart, user, setPlanAvailableDays,selectedColor } =
-      useAppStore();
+    const {
+      setCurrentPlan,
+      city,
+      addToCart,
+      user,
+      setPlanAvailableDays,
+      selectedColor,
+    } = useAppStore();
     const isArabic = language === "ar";
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -131,10 +137,10 @@ const PlanCard = memo(
 
     const itemsArabic = {
       meals: "وجبات",
-      snacks: 'وجبات خفيفة',
-      juice: 'عصير',
+      snacks: "وجبات خفيفة",
+      juice: "عصير",
       "Big Salad": "سلطة كبيرة",
-    }
+    };
 
     // Cart Items
     const cartItems = {
@@ -177,7 +183,7 @@ const PlanCard = memo(
       >
         <Card
           sx={{
-            width: { lg: 300, md: 300, sm: 300, xs: 350 },
+            width: { lg: 300, md: 300, sm: 300, xs: 400 },
             height: "auto",
             margin: "auto",
             borderRadius: 4,
@@ -200,7 +206,7 @@ const PlanCard = memo(
                 component="img"
                 alt="Plan Image"
                 height="140"
-                image='/Banner.png'
+                image="/Banner.png"
                 onLoad={() => setIsLoaded(true)}
               />
             )}
@@ -209,8 +215,8 @@ const PlanCard = memo(
               sx={{
                 position: "absolute",
                 top: { lg: 5, md: 5, sm: 5, xs: 15 },
-                left: language === 'en' && { lg: 5, md: 5, sm: 5, xs: 14 },
-                right: language !== 'en' && { lg: 5, md: 5, sm: 5, xs: 14 },
+                left: language === "en" && { lg: 5, md: 5, sm: 5, xs: 14 },
+                right: language !== "en" && { lg: 5, md: 5, sm: 5, xs: 14 },
                 backgroundColor: selectedColor,
                 color: "#fff",
                 padding: "2px 8px",
@@ -281,7 +287,7 @@ const PlanCard = memo(
                 variant="h6"
                 sx={{
                   fontSize: "15px",
-                  textAlign: isArabic ? "right" : "left", 
+                  textAlign: isArabic ? "right" : "left",
                 }}
               >
                 {title}
@@ -296,7 +302,7 @@ const PlanCard = memo(
                       fontSize: "1rem",
                     }}
                   >
-                    {plan.basic_amount} {language === 'en' ? 'SR' : 'ريال'}
+                    {plan.basic_amount} {language === "en" ? "SR" : "ريال"}
                   </Typography>
                 ) : (
                   <>
@@ -317,7 +323,8 @@ const PlanCard = memo(
                         fontSize: "1rem",
                       }}
                     >
-                      {plan.discounted_amount} {language === 'en' ? 'SR' : 'ريال'}
+                      {plan.discounted_amount}{" "}
+                      {language === "en" ? "SR" : "ريال"}
                     </Typography>
                   </>
                 )}
@@ -413,7 +420,7 @@ const PlanCard = memo(
                   variant="body2"
                   sx={{ fontSize: "0.7rem", textAlign: "center" }}
                 >
-                  {days} {language === 'en' ? 'Days' : 'أيام'}
+                  {days} {language === "en" ? "Days" : "أيام"}
                 </Typography>
               </Box>
 
@@ -503,7 +510,7 @@ const PlanCard = memo(
                   variant="body2"
                   sx={{ fontSize: "0.7rem", textAlign: "center" }}
                 >
-                  {deliveryCharges} {language === 'en' ? 'SR' : 'ريال'}
+                  {deliveryCharges} {language === "en" ? "SR" : "ريال"}
                 </Typography>
               </Box>
 
@@ -523,7 +530,8 @@ const PlanCard = memo(
                       {item.icon}
                     </Box>
                     <Typography variant="body2" sx={{ fontSize: "0.7rem" }}>
-                      {item.value} {language === 'en' ? item.name : item.arabicName}
+                      {item.value}{" "}
+                      {language === "en" ? item.name : item.arabicName}
                     </Typography>
                   </Box>
                 ))}
